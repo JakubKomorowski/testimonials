@@ -8,7 +8,7 @@ export default async function Home() {
     <main className="">
       {posts.map((post) => (
         <>
-          <Link href={`/blogs/${post.slug}`} key={post._id}>
+          <Link href={`/blog/${post.slug}`} key={post._id}>
             {" "}
             {post.title}
           </Link>
