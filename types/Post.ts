@@ -8,6 +8,12 @@ export type Post = {
   author: string;
   mainImage: string;
   alt: string;
-  categories: string[];
+  categories: Category[];
   body: PortableTextBlock[];
 };
+
+interface Category {
+  _ref: string;
+  _type: string;
+  _key: string;
+}

@@ -1,20 +1,62 @@
 import { MENU_LIST } from "@/routes";
 import NavItem from "./NavItem";
-import { useRouter } from "next/router";
+import { Button } from "@/components/ui/button";
+import {
+  Sheet,
+  SheetContent,
+  SheetTrigger,
+  SheetClose,
+} from "@/components/ui/sheet";
+import Link from "next/link";
 
 const Navbar = () => {
   return (
-    <nav className="container text-white font-medium py-8 px-16 flex justify-between">
-      <div>Logo</div>
-      <ul className="flex gap-12">
+    <nav className="container text-white  py-4 px-4 md:px-16 flex justify-between items-center">
+      <Link href={"/"}>Logo</Link>
+      <ul className="hidden md:flex gap-12 ">
         {MENU_LIST.map((menu) => {
           return (
-            <li key={menu.text} className="w-full">
+            <li
+              key={menu.text}
+              className=" cursor-pointer relative transition-all w-min-content before:left-[50%]
+            before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300
+            hover:before:w-full hover:before:left-0 hover:before:black"
+            >
               <NavItem {...menu} />
             </li>
           );
         })}
       </ul>
+      <div className="flex items-center gap-2 md:gap-3">
+        <Button variant="ghost" className=" md:text-base">
+          Sign In
+        </Button>
+        <Button className="font-medium md:text-base  " size={"lg"}>
+          Start For Free
+        </Button>
+        <Sheet>
+          <SheetTrigger>
+            <div className="flex flex-col gap-1 ml-2 px-1  md:hidden">
+              <div className="w-3 h-0.5 bg-white"></div>
+              <div className="w-6 h-0.5 bg-white"></div>
+              <div className="w-3 h-0.5 bg-white ml-auto"></div>
+            </div>
+          </SheetTrigger>
+          <SheetContent>
+            <ul className="flex h-full justify-around flex-col">
+              {MENU_LIST.map((menu) => {
+                return (
+                  <li key={menu.text} className="w-full">
+                    <SheetClose asChild>
+                      <NavItem {...menu} />
+                    </SheetClose>
+                  </li>
+                );
+              })}
+            </ul>
+          </SheetContent>
+        </Sheet>
+      </div>
     </nav>
   );
 };

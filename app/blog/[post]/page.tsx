@@ -5,7 +5,7 @@ type Props = {
   params: { post: string };
 };
 
-const Blog = async ({ params }: Props) => {
+const Post = async ({ params }: Props) => {
   const slug = params.post;
   const post = await getPost(slug);
   return (
@@ -18,4 +18,4 @@ const Blog = async ({ params }: Props) => {
   );
 };
 
-export default Blog;
+export default Post;
