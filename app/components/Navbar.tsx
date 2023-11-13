@@ -1,3 +1,4 @@
+"use client";
 import { MENU_LIST } from "@/routes";
 import NavItem from "./NavItem";
 import { Button } from "@/components/ui/button";
@@ -8,8 +9,10 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import Link from "next/link";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
+  const { data: session } = useSession();
   return (
     <nav className="container text-white  py-4 px-4 md:px-16 flex justify-between items-center">
       <Link href={"/"}>Logo</Link>
@@ -28,12 +31,32 @@ const Navbar = () => {
         })}
       </ul>
       <div className="flex items-center gap-2 md:gap-3">
-        <Button variant="ghost" className=" md:text-base">
-          Sign In
-        </Button>
-        <Button className="font-medium md:text-base  " size={"lg"}>
-          Start For Free
-        </Button>
+        {!session ? (
+          <>
+            <Button
+              onClick={() => signIn()}
+              variant="ghost"
+              className=" md:text-base"
+            >
+              Sign In
+            </Button>
+            <Button className="font-medium md:text-base  " size={"lg"}>
+              Start For Free
+            </Button>
+          </>
+        ) : (
+          <>
+            <div> {session?.user?.name}</div>
+            <Button
+              onClick={() => signOut()}
+              variant="ghost"
+              className=" md:text-base"
+            >
+              Sign Out
+            </Button>
+          </>
+        )}
+
         <Sheet>
           <SheetTrigger>
             <div className="flex flex-col gap-1 ml-2 px-1  md:hidden">
