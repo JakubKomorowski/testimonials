@@ -10,6 +10,8 @@ export type Post = {
   alt: string;
   categories: Category[];
   body: PortableTextBlock[];
+  customTable: any;
+  showImage: boolean;
 };
 
 interface Category {

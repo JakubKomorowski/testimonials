@@ -28,7 +28,9 @@ export const getPost = async (slug: string): Promise<Post> => {
               "mainImage": mainImage.asset->url,
               "alt": mainImage.asset->alt,
               body,
-              categories
+              categories,
+              customTable,
+              showImage
      } `,
     { slug }
   );

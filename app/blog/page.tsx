@@ -38,7 +38,7 @@ const Blog = async () => {
               >
                 <div className="h-[180px] overflow-hidden object-cover relative rounded-xl">
                   {categoryObject?.title && (
-                    <div className="absolute z-20 top-3 right-3 bg-primary-foreground px-3 py-1 text-white text-sm  rounded-full">
+                    <div className="absolute z-20 top-3 right-3 bg-primary-foreground px-3 py-1 text-white text-sm rounded-[10px]">
                       {categoryObject?.title}
                     </div>
                   )}
@@ -60,7 +60,7 @@ const Blog = async () => {
                   <div className="py-4 px-2 font-semibold text-lg ">
                     {post.title}
                   </div>
-                  <div className="bg-muted w-full h-6 rounded-full text-sm text-slate-400 flex justify-end items-center px-2">
+                  <div className="bg-muted w-full h-6 rounded-[10px] text-sm text-slate-400 flex justify-end items-center px-2">
                     {createdDate}
                   </div>
                 </div>

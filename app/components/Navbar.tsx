@@ -13,6 +13,14 @@ import { signIn, signOut, useSession } from "next-auth/react";
 
 const Navbar = () => {
   const { data: session } = useSession();
+
+  let name = session?.user?.name as string;
+  let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+  let initials = [...name.matchAll(rgx)] || [];
+  const formatedInitials = (
+    (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+  ).toUpperCase();
+
   return (
     <nav className="container text-white  py-4 px-4 md:px-16 flex justify-between items-center">
       <Link href={"/"}>Logo</Link>
@@ -46,7 +54,9 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <div> {session?.user?.name}</div>
+            <div className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-primary-foreground font-medium rounded-full">
+              {formatedInitials}
+            </div>
             <Button
               onClick={() => signOut()}
               variant="ghost"
