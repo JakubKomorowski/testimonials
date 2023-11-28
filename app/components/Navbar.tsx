@@ -10,15 +10,20 @@ import {
 } from "@/components/ui/sheet";
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const { data: session } = useSession();
+  const router = useRouter();
 
   let name = session?.user?.name as string;
   let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
-  let initials = [...name.matchAll(rgx)] || [];
+  let initials;
+  if (name) {
+    initials = [...name.matchAll(rgx)] || [];
+  }
   const formatedInitials = (
-    (initials.shift()?.[1] || "") + (initials.pop()?.[1] || "")
+    (initials?.shift()?.[1] || "") + (initials?.pop()?.[1] || "")
   ).toUpperCase();
 
   return (
@@ -41,15 +46,19 @@ const Navbar = () => {
       <div className="flex items-center gap-2 md:gap-3">
         {!session ? (
           <>
-            <Button
+            {/* <Button
               onClick={() => signIn()}
               variant="ghost"
               className=" md:text-base"
             >
               Sign In
-            </Button>
-            <Button className="font-medium md:text-base  " size={"lg"}>
-              Start For Free
+            </Button> */}
+            <Button
+              onClick={() => router.push("signin")}
+              className="font-medium md:text-base  "
+              size={"lg"}
+            >
+              Sign In / Sign Up
             </Button>
           </>
         ) : (

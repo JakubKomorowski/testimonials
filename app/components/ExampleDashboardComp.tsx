@@ -8,7 +8,7 @@ const ExampleDashboardComp = () => {
 
   return (
     <div>
-      <div>{users?.docs[0].data().email}</div>
+      <div>{users?.docs[0]?.data().email}</div>
     </div>
   );
 };

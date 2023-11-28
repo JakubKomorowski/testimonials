@@ -6,11 +6,12 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
   if (!session || !session.user) {
-    redirect("/api/auth/signin");
+    redirect("/signin");
   }
   return (
     <div>
       <ExampleDashboardComp />
+      {session?.user.email}
     </div>
   );
 };
