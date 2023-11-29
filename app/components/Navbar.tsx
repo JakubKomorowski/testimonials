@@ -11,12 +11,22 @@ import {
 import Link from "next/link";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const router = useRouter();
 
   let name = session?.user?.name as string;
+  let mail = session?.user?.email as string;
+  const firstTwoChars = mail.slice(0, 2).toUpperCase();
   let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
   let initials;
   if (name) {
@@ -63,16 +73,30 @@ const Navbar = () => {
           </>
         ) : (
           <>
-            <div className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-primary-foreground font-medium rounded-full">
-              {formatedInitials}
-            </div>
-            <Button
+            <DropdownMenu>
+              <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-primary-foreground font-medium rounded-full">
+                {formatedInitials || firstTwoChars}
+              </DropdownMenuTrigger>
+              <DropdownMenuContent>
+                <DropdownMenuItem className="cursor-pointer">
+                  Profile
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => signOut()}
+                  className="cursor-pointer"
+                >
+                  Sign Out
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+
+            {/* <Button
               onClick={() => signOut()}
               variant="ghost"
               className=" md:text-base"
             >
               Sign Out
-            </Button>
+            </Button> */}
           </>
         )}
 

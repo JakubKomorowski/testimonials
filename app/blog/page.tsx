@@ -17,7 +17,7 @@ const Blog = async () => {
       <header className="bg-primary-foreground h-[280px] flex items-center justify-center ">
         <h1 className="text-white text-[54px]">Blog</h1>
       </header>
-      <section className="flex gap-11 justify-center mt-[100px] flex-wrap max-w-[1100px] mx-auto">
+      <section className="flex gap-11 justify-center md:justify-start mt-[100px] flex-wrap max-w-[1100px] mx-auto">
         {posts.map((post) => {
           const categoryObject = categories.find(
             (el) => el?._id === post?.categories?.[0]._ref
@@ -57,9 +57,7 @@ const Blog = async () => {
                   />
                 </div>
                 <div className="flex justify-between flex-col grow">
-                  <div className="py-4 px-2 font-semibold text-lg ">
-                    {post.title}
-                  </div>
+                  <div className="py-4 px-2  text-lg ">{post.title}</div>
                   <div className="bg-muted w-full h-6 rounded-[10px] text-sm text-slate-400 flex justify-end items-center px-2">
                     {createdDate}
                   </div>

@@ -6,11 +6,13 @@ export default async function Home() {
   const posts = await getPosts();
   const session = await getServerSession(authOptions);
 
+  console.log(session?.user);
+
   return (
     <main className="">
-      {session?.user?.name ? (
+      {session?.user?.email ? (
         <>
-          <div>{session.user.name}</div>
+          <div>{session?.user.email}</div>
         </>
       ) : (
         <>
