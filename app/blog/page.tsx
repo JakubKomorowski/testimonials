@@ -15,7 +15,7 @@ const Blog = async () => {
   return (
     <>
       <header className="bg-primary-foreground h-[280px] flex items-center justify-center ">
-        <h1 className="text-white text-[54px]">Blog</h1>
+        <h1 className="text-white">Blog</h1>
       </header>
       <section className="flex gap-11 justify-center md:justify-start mt-[100px] flex-wrap max-w-[1100px] mx-auto">
         {posts.map((post) => {

@@ -1,15 +1,22 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { signIn, getProviders, useSession } from "next-auth/react";
+import * as NProgress from "nprogress";
+import { usePRouter } from "@/hooks/usePRouter";
 
 const Signin = () => {
   const [email, setEmail] = useState("");
-  const router = useRouter();
+  // const router = useRouter();
   // const providers = await getProviders();
+  const router = usePRouter();
   const { status } = useSession();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  console.log({ status, router, pathname, searchParams });
   useEffect(() => {
     if (status === "authenticated") {
+      NProgress.start();
       router.push("/dashboard");
     }
   }, [status]);

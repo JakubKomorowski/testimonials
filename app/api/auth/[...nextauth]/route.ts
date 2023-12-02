@@ -5,8 +5,10 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { cert } from "firebase-admin/app";
 import { NextAuthOptions } from "next-auth";
 import { auth } from "@/app/firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import EmailProvider from "next-auth/providers/email";
+import admin from "firebase-admin";
+import { adminAuth } from "@/firebase-admin";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -58,6 +60,27 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  callbacks: {
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        if (token.sub) {
+          session.user.id = token.sub;
+          const firebaseToken = await adminAuth.createCustomToken(token.sub);
+          session.firebaseToken = firebaseToken;
+        }
+      }
+      return session;
+    },
+    jwt: async ({ user, token }) => {
+      if (user) {
+        token.sub = user.id;
+      }
+      return token;
+    },
+  },
+  session: {
+    strategy: "jwt",
+  },
   adapter: FirestoreAdapter({
     credential: cert({
       projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,

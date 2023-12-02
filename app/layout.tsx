@@ -5,6 +5,8 @@ import Navbar from "./components/Navbar";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/SessionProvider";
 import { authOptions } from "./api/auth/[...nextauth]/route";
+import NextTopLoader from "nextjs-toploader";
+import FirebaseAuthProvider from "./components/FirebaseAuthProvider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -22,11 +24,14 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
+        <NextTopLoader color="#D2DE32" showSpinner={false} />
         <SessionProvider session={session}>
-          <header className=" bg-primary-foreground">
-            <Navbar />
-          </header>
-          {children}
+          <FirebaseAuthProvider>
+            <header className=" bg-primary-foreground">
+              <Navbar />
+            </header>
+            {children}
+          </FirebaseAuthProvider>
         </SessionProvider>
       </body>
     </html>

@@ -5,10 +5,11 @@ import { authOptions } from "../api/auth/[...nextauth]/route";
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
-  // console.log(session?.user?.email);
+
   if (!session || !session.user) {
     redirect("/signin");
   }
+  console.log(session);
   return (
     <div>
       <ExampleDashboardComp />

@@ -9,14 +9,12 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -26,7 +24,7 @@ const Navbar = () => {
 
   let name = session?.user?.name as string;
   let mail = session?.user?.email as string;
-  const firstTwoChars = mail.slice(0, 2).toUpperCase();
+  const firstTwoChars = mail?.slice(0, 2).toUpperCase();
   let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
   let initials;
   if (name) {
@@ -55,22 +53,12 @@ const Navbar = () => {
       </ul>
       <div className="flex items-center gap-2 md:gap-3">
         {!session ? (
-          <>
-            {/* <Button
-              onClick={() => signIn()}
-              variant="ghost"
-              className=" md:text-base"
-            >
-              Sign In
-            </Button> */}
-            <Button
-              onClick={() => router.push("signin")}
-              className="font-medium md:text-base  "
-              size={"lg"}
-            >
-              Sign In / Sign Up
-            </Button>
-          </>
+          <Button
+            onClick={() => router.push("signin")}
+            className="font-medium  px-6  py-4"
+          >
+            Sign In / Sign Up
+          </Button>
         ) : (
           <>
             <DropdownMenu>
@@ -89,14 +77,6 @@ const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-
-            {/* <Button
-              onClick={() => signOut()}
-              variant="ghost"
-              className=" md:text-base"
-            >
-              Sign Out
-            </Button> */}
           </>
         )}
 

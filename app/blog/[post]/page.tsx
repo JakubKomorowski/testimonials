@@ -38,9 +38,7 @@ const Post = async ({ params }: Props) => {
               {createdDate}
             </div>
           </div>
-          <h1 className="text-white text-[54px] leading-[1.15]">
-            {post.title}
-          </h1>
+          <h1 className="text-white leading-[1.15]">{post.title}</h1>
         </div>
       </header>
       <article className="">
