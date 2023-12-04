@@ -9,7 +9,6 @@ const Dashboard = async () => {
   if (!session || !session.user) {
     redirect("/signin");
   }
-  console.log(session);
   return (
     <div>
       <ExampleDashboardComp />

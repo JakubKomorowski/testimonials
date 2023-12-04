@@ -13,7 +13,7 @@ const Signin = () => {
   const { status } = useSession();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  console.log({ status, router, pathname, searchParams });
+
   useEffect(() => {
     if (status === "authenticated") {
       NProgress.start();
