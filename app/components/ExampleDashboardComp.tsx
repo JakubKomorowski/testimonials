@@ -8,6 +8,8 @@ import * as NProgress from "nprogress";
 import { useSession } from "next-auth/react";
 import { useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./ManageAccountButton";
+import { auth } from "../firebase";
+import { doc, getDoc, getDocs } from "firebase/firestore";
 
 const ExampleDashboardComp = () => {
   const [users, loading, error] = useCollection(query(collection(db, "users")));
@@ -16,12 +18,18 @@ const ExampleDashboardComp = () => {
   const searchParams = useSearchParams();
   const [loadingState, setLoadingState] = useState(false);
   const subscription = useSubscriptionStore((state) => state.subscription);
+  if (auth.currentUser && auth.currentUser.emailVerified) {
+    const docRef = doc(db, "users", auth.currentUser.uid);
+    getDoc(docRef).then((snapshot) => {
+      console.log(snapshot);
+    });
+  }
 
-  console.log(subscription);
+  // useEffect(() => {
+  //   NProgress.done();
+  // }, [pathname, searchParams]);
 
-  useEffect(() => {
-    NProgress.done();
-  }, [pathname, searchParams]);
+  console.log(auth.currentUser);
 
   const createCheckoutSession = async () => {
     if (!session?.user.id) return;
@@ -34,6 +42,7 @@ const ExampleDashboardComp = () => {
         cancel_url: window.location.origin,
       }
     );
+
     return onSnapshot(docRef, (snap) => {
       const data = snap.data();
       const url = data?.url;
@@ -51,10 +60,9 @@ const ExampleDashboardComp = () => {
       }
     });
   };
-
+  // console.log(auth.currentUser);
   return (
     <div>
-      <div>{users?.docs[0]?.data().email}</div>
       <button
         onClick={() => {
           createCheckoutSession();

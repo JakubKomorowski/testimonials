@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import Image from "next/image";
 import LinkButton from "./components/LinkButton";
-import Circle from "./components/Circle";
+import Circle from "./components/ui/Circle";
 
 export default async function Home() {
   const posts = await getPosts();
@@ -81,6 +81,7 @@ export default async function Home() {
             iconAlt="publish icon"
           />
         </div>
+        {/* {session?.data?.user.email} */}
       </header>
     </main>
   );

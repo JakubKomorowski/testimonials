@@ -9,11 +9,12 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import EmailProvider from "next-auth/providers/email";
 import admin from "firebase-admin";
 import { adminAuth } from "@/firebase-admin";
+import { ROUTES } from "@/routes";
 
 export const authOptions: NextAuthOptions = {
   pages: {
-    signIn: "/signin",
-    // verifyRequest: '/auth/verify-request',
+    signIn: ROUTES.signin,
+    verifyRequest: ROUTES.verifyRequest,
   },
   providers: [
     GoogleProvider({
@@ -33,13 +34,22 @@ export const authOptions: NextAuthOptions = {
         },
       },
       from: process.env.EMAIL_FROM,
-
       // maxAge: 24 * 60 * 60, // How long email links are valid for (default 24h)
     }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {},
       async authorize(credentials): Promise<any> {
+        // await adminAuth
+        //   .getUserByEmail((credentials as any).email)
+        //   .then((data) => {
+        //     (credentials as any).id = data.uid;
+        //   });
+        // .catch((error) => console.log(error))
+        // .catch((error) => {
+        //   console.log(error);
+        // });
+
         return await signInWithEmailAndPassword(
           auth,
           (credentials as any).email || "",
@@ -47,16 +57,17 @@ export const authOptions: NextAuthOptions = {
         )
           .then((userCredential) => {
             if (userCredential.user) {
+              (userCredential.user as any).id = userCredential.user.uid;
               return userCredential.user;
             }
             return null;
           })
           .catch((error) => console.log(error))
           .catch((error) => {
-            const errorCode = error.code;
-            const errorMessage = error.message;
             console.log(error);
           });
+
+        // return credentials;
       },
     }),
   ],
@@ -67,6 +78,10 @@ export const authOptions: NextAuthOptions = {
           session.user.id = token.sub;
           const firebaseToken = await adminAuth.createCustomToken(token.sub);
           session.firebaseToken = firebaseToken;
+          if (session?.user?.image?.includes("google")) {
+            adminAuth.updateUser(token.sub, { email: session.user.email });
+            adminAuth.updateUser(token.sub, { emailVerified: true });
+          }
         }
       }
       return session;
@@ -74,6 +89,7 @@ export const authOptions: NextAuthOptions = {
     jwt: async ({ user, token }) => {
       if (user) {
         token.sub = user.id;
+        token.email = user.email;
       }
       return token;
     },

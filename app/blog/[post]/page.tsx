@@ -1,6 +1,6 @@
-import Box from "@/app/components/PortableTextBox";
-import ImageComponent from "@/app/components/PortableTextImage";
-import Table from "@/app/components/PortableTextTable";
+import Box from "@/app/components/ui/sanity/PortableTextBox";
+import ImageComponent from "@/app/components/ui/sanity/PortableTextImage";
+import Table from "@/app/components/ui/sanity/PortableTextTable";
 import { getCategories, getPost } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";

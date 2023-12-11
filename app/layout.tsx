@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/Navbar";
+import Navbar from "./components/ui/nav/Navbar";
 import { getServerSession } from "next-auth";
-import SessionProvider from "./components/SessionProvider";
+import SessionProvider from "./components/providers/SessionProvider";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import NextTopLoader from "nextjs-toploader";
-import FirebaseAuthProvider from "./components/FirebaseAuthProvider";
-import SubscriptionProvider from "./components/SubscriptionProvider";
+import FirebaseAuthProvider from "./components/providers/FirebaseAuthProvider";
+import SubscriptionProvider from "./components/providers/SubscriptionProvider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -25,7 +25,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <NextTopLoader color="#D2DE32" showSpinner={false} />
+        {/* <NextTopLoader color="#D2DE32" showSpinner={false} /> */}
         <SessionProvider session={session}>
           <FirebaseAuthProvider>
             <SubscriptionProvider>

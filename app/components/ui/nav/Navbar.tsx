@@ -1,5 +1,5 @@
 "use client";
-import { MENU_LIST } from "@/routes";
+import { MENU_LIST, ROUTES } from "@/routes";
 import NavItem from "./NavItem";
 import { Button } from "@/components/ui/button";
 import {
@@ -54,7 +54,7 @@ const Navbar = () => {
       <div className="flex items-center gap-2 md:gap-3">
         {!session ? (
           <Button
-            onClick={() => router.push("signin")}
+            onClick={() => router.push(ROUTES.signin)}
             className="font-medium  px-6  py-4"
           >
             Sign In / Sign Up
