@@ -1,41 +1,48 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import {
-  signIn,
-  getProviders,
-  useSession,
-  SignInResponse,
-} from "next-auth/react";
-import * as NProgress from "nprogress";
-import { usePRouter } from "@/hooks/usePRouter";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { signIn, useSession } from "next-auth/react";
 import Link from "next/link";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { ROUTES } from "@/routes";
+
+type Inputs = {
+  email: string;
+  password: string;
+};
 
 const Signin = () => {
-  const [email, setEmail] = useState("");
   const [wrongPass, setWrongPass] = useState("");
-  // const providers = await getProviders();
-  const [password, setPassword] = useState("");
-
   const router = useRouter();
   const { status } = useSession();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   console.log(status);
 
-  // useEffect(() => {
-  //   if (status === "authenticated") {
-  //     NProgress.start();
-  //     router.push("/dashboard");
-  //   }
-  // }, [status]);
+  const schema = yup
+    .object({
+      email: yup.string().email().required(),
+      password: yup
+        .string()
+        .required("Password is required")
+        .min(4, "Password length should be at least 4 characters"),
+    })
+    .required();
 
-  const handleSubmit = (e: React.SyntheticEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitSuccessful },
+  } = useForm<Inputs>({
+    resolver: yupResolver(schema),
+    mode: "onTouched",
+    reValidateMode: "onChange",
+  });
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     signIn("credentials", {
-      email: email,
-      password: password,
+      email: data.email,
+      password: data.password,
       redirect: false,
     }).then((res) => {
       if (res?.ok) {
@@ -52,12 +59,12 @@ const Signin = () => {
       <div className="sm:mx-auto sm:w-full sm:max-w-sm">
         <div className="mx-auto h-10 w-auto text-center">Logo</div>
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-          Welcome to useSocialProof
+          Sign in
         </h2>
       </div>
 
       <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form className="space-y-6" onSubmit={handleSubmit}>
+        <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           <div>
             <label
               htmlFor="email"
@@ -68,14 +75,14 @@ const Signin = () => {
             <div className="mt-2">
               <input
                 id="email"
-                name="email"
                 type="email"
                 autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
+                placeholder="johnsmith@gmail.com"
+                {...register("email", { required: true })}
                 className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
               />
             </div>
+            <p className="text-sm text-red-600 pt-1">{errors.email?.message}</p>
           </div>
 
           <div>
@@ -98,23 +105,25 @@ const Signin = () => {
             <div className="mt-2">
               <input
                 id="password"
-                name="password"
                 type="password"
                 autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
-                required
+                {...register("password", {
+                  required: true,
+                })}
                 className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
               />
             </div>
+            <p className="text-sm text-red-600 pt-1">
+              {errors.password?.message}
+            </p>
             {wrongPass && (
-              <p className="text-red-500 text-sm pt-1">{wrongPass}</p>
+              <p className="text-red-600 text-sm pt-1">{wrongPass}</p>
             )}
           </div>
 
           <div>
             <button
               type="submit"
-              disabled={!email || !password}
               className="cursor-pointer flex w-full justify-center rounded-md bg-primary-foreground px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
             >
               Sign in
@@ -129,41 +138,6 @@ const Signin = () => {
               Sign up
             </Link>
           </p>
-
-          {/* <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Email address
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                name="email"
-                type="email"
-                autoComplete="email"
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
-              />
-            </div>
-          </div>
-
-          <div>
-            <button
-              onClick={() =>
-                signIn("email", {
-                  email,
-                  callbackUrl: "/dashboard",
-                })
-              }
-              disabled={!email}
-              className="cursor-pointer flex w-full justify-center rounded-md bg-primary-foreground px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
-            >
-              Continue with email
-            </button>
-          </div> */}
         </form>
         <div className="relative flex py-8 items-center">
           <div className="flex-grow border-t border-gray-400"></div>

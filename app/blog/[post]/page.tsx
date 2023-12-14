@@ -1,9 +1,15 @@
-import Box from "@/app/components/ui/sanity/PortableTextBox";
-import ImageComponent from "@/app/components/ui/sanity/PortableTextImage";
-import Table from "@/app/components/ui/sanity/PortableTextTable";
+import TableOfContents from "@/app/components/TableOfContents";
+import { convertDateFormat, parseOutline } from "@/lib/utils";
 import { getCategories, getPost } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { components } from "@/app/components/PortableTextComponents";
 
 type Props = {
   params: { post: string };
@@ -13,18 +19,11 @@ const Post = async ({ params }: Props) => {
   const slug = params.post;
   const post = await getPost(slug);
   const categories = await getCategories();
-  const options = {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-  } as const;
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
   );
-  const createdDate = new Date(post._createdAt).toLocaleDateString(
-    "en-US",
-    options
-  );
+  const createdDate = convertDateFormat(post._createdAt);
+  const outline = parseOutline(post.headings);
 
   return (
     <main>
@@ -41,7 +40,7 @@ const Post = async ({ params }: Props) => {
           <h1 className="text-white leading-[1.15]">{post.title}</h1>
         </div>
       </header>
-      <article className="">
+      <article className="pb-24">
         {post.showImage && (
           <div className="md:h-[700px] h-[300px] max-w-[1300px] mx-auto  relative">
             <Image
@@ -58,35 +57,29 @@ const Post = async ({ params }: Props) => {
           </div>
         )}
 
-        <div className="mx-auto  max-w-[800px] md:mt-20 mt-12 container px-8 md:px-12 ">
-          <PortableText
-            value={post.body}
-            components={{
-              types: {
-                image: ImageComponent,
-              },
-              block: {
-                //customizing common block types
-                h1: ({ children }) => <h1 className="text-5xl">{children}</h1>,
-                h2: ({ children }) => (
-                  <h2 className="py-4 text-4xl">{children}</h2>
-                ),
-                normal: ({ children }) => (
-                  <p className="py-4 text-lg">{children}</p>
-                ),
-                blockquote: ({ children }) => (
-                  <blockquote className="border-l-purple-500">
-                    {children}
-                  </blockquote>
-                ),
-                //rendering custom styles
-                customTable: ({ children }) => (
-                  <Table post={post} children={children} />
-                ),
-                highlightBox: ({ children }) => <Box children={children} />,
-              },
-            }}
-          />
+        <div className="flex flex-col xl:flex-row items-center xl:items-start xl:justify-center xl:gap-16 container md:mt-20 mt-12  ">
+          <Accordion
+            type="single"
+            collapsible
+            className=" xl:hidden min-w-[300px]"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger>Table of Contents</AccordionTrigger>
+              <AccordionContent>
+                <TableOfContents outline={outline} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+          <div
+            id="toc_container"
+            className="border border-gray-300 p-2 rounded-lg h-fit flex-shrink-0 hidden xl:block "
+          >
+            <p className="font-medium">Table of Contents</p>
+            <TableOfContents outline={outline} />
+          </div>
+          <div className="max-w-[800px]  md:px-12">
+            <PortableText value={post.body} components={components(post)} />
+          </div>
         </div>
       </article>
     </main>

@@ -20,6 +20,7 @@ const ImageComponent = ({ value }: any) => {
         alt={value.alt || " "}
         loading="lazy"
         fill={true}
+        sizes="100%"
         style={{
           borderRadius: "10px",
           objectFit: "cover",

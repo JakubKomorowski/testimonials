@@ -5,9 +5,8 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { cert } from "firebase-admin/app";
 import { NextAuthOptions } from "next-auth";
 import { auth } from "@/app/firebase";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import EmailProvider from "next-auth/providers/email";
-import admin from "firebase-admin";
 import { adminAuth } from "@/firebase-admin";
 import { ROUTES } from "@/routes";
 
@@ -40,16 +39,6 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {},
       async authorize(credentials): Promise<any> {
-        // await adminAuth
-        //   .getUserByEmail((credentials as any).email)
-        //   .then((data) => {
-        //     (credentials as any).id = data.uid;
-        //   });
-        // .catch((error) => console.log(error))
-        // .catch((error) => {
-        //   console.log(error);
-        // });
-
         return await signInWithEmailAndPassword(
           auth,
           (credentials as any).email || "",
@@ -66,8 +55,6 @@ export const authOptions: NextAuthOptions = {
           .catch((error) => {
             console.log(error);
           });
-
-        // return credentials;
       },
     }),
   ],
@@ -105,8 +92,6 @@ export const authOptions: NextAuthOptions = {
     }),
   }),
 };
-
-// export default NextAuth(authOptions);
 
 export const handler = NextAuth(authOptions);
 

@@ -1,9 +1,5 @@
 "use client";
-import {
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import { redirect } from "next/navigation";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../firebase";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -22,58 +18,29 @@ import { useEffect, useState } from "react";
 
 type Inputs = {
   email: string;
-  password: string;
-  confirmPassword: string;
 };
 
-export default function Signup() {
+export default function ForgotPassword() {
   const schema = yup
     .object({
       email: yup.string().email().required(),
-      password: yup
-        .string()
-        .required("Password is required")
-        .min(4, "Password length should be at least 4 characters"),
-      confirmPassword: yup
-        .string()
-        .required("Confirm Password is required")
-        .min(4, "Password length should be at least 4 characters")
-        .oneOf([yup.ref("password")], "Passwords do not match"),
     })
     .required();
 
   const {
     register,
-    handleSubmit,
     reset,
+    handleSubmit,
     formState: { errors, isSubmitSuccessful },
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
-    mode: "onTouched",
-    reValidateMode: "onChange",
   });
 
-  console.log(errors);
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      data.email,
-      data.password
-    ).catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      if (errorCode == "auth/email-already-in-use") {
-        alert("email-already-in-use.");
-      } else {
-        alert(errorMessage);
-      }
-    });
-    if (userCredential) {
-      await sendEmailVerification(userCredential.user);
-    }
-    return userCredential;
+    sendPasswordResetEmail(auth, data.email);
   };
+
+  console.log(errors);
 
   const [modalOpen, setModalOpen] = useState(isSubmitSuccessful);
 
@@ -94,7 +61,7 @@ export default function Signup() {
             alt="Your Company"
           />
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign up
+            Reset password
           </h2>
         </div>
 
@@ -121,62 +88,12 @@ export default function Signup() {
                 {errors.email?.message}
               </p>
             </div>
-
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  type="password"
-                  autoComplete="current-password"
-                  {...register("password", {
-                    required: true,
-                  })}
-                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
-                />
-              </div>
-              <p className="text-sm text-red-600 pt-1">
-                {errors.password?.message}
-              </p>
-            </div>
-            <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm password
-                </label>
-              </div>
-              <div className="mt-2">
-                <input
-                  id="confirmPassword"
-                  type="password"
-                  autoComplete="current-password"
-                  {...register("confirmPassword", {
-                    required: true,
-                  })}
-                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
-                />
-              </div>
-              <p className="text-sm text-red-600 pt-1">
-                {errors.confirmPassword?.message}
-              </p>
-            </div>
-
             <div>
               <button
                 type="submit"
                 className="cursor-pointer flex w-full justify-center rounded-md bg-primary-foreground px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
               >
-                Sign Up
+                Send reset pasword email
               </button>
             </div>
           </div>
@@ -185,9 +102,9 @@ export default function Signup() {
       <Dialog open={modalOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Verify email has been sent</DialogTitle>
+            <DialogTitle>Email has been sent</DialogTitle>
             <DialogDescription>
-              You will soon get an email to verify your email.
+              You will soon get an email to reset your password.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">

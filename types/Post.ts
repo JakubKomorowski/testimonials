@@ -12,6 +12,7 @@ export type Post = {
   body: PortableTextBlock[];
   customTable: any;
   showImage: boolean;
+  headings: any;
 };
 
 interface Category {
