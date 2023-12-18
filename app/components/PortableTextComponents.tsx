@@ -53,7 +53,7 @@ export const components = (post: Post) => {
     list: {
       // Ex. 1: customizing common list types
       bullet: ({ children }) => (
-        <ul className="list-disc  pl-5 text-gray-800">{children}</ul>
+        <ul className="list-disc  pl-10 text-gray-800">{children}</ul>
       ),
       number: ({ children }) => <ol className="mt-lg">{children}</ol>,
 

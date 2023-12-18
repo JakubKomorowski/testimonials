@@ -4,6 +4,12 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 import Image from "next/image";
 import LinkButton from "./components/LinkButton";
 import Circle from "./components/ui/Circle";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Testi Crafter",
+  description: "Collect, customize and publish testimonials",
+};
 
 export default async function Home() {
   const posts = await getPosts();

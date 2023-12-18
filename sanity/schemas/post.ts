@@ -66,6 +66,16 @@ export default defineType({
       title: "Show featured image",
       type: "boolean",
     }),
+    defineField({
+      name: "metaTitle",
+      title: "Meta title",
+      type: "string",
+    }),
+    defineField({
+      name: "metaDescription",
+      title: "Meta description",
+      type: "string",
+    }),
   ],
 
   preview: {

@@ -19,6 +19,9 @@ module.exports = {
       screens: {
         xs: "500px",
       },
+      gridTemplateColumns: {
+        fluid: "repeat(auto-fit, minmax(270px, 1fr))",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

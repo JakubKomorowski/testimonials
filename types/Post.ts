@@ -13,6 +13,8 @@ export type Post = {
   customTable: any;
   showImage: boolean;
   headings: any;
+  metaTitle: string;
+  metaDescription: string;
 };
 
 interface Category {

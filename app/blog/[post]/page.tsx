@@ -10,9 +10,21 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { components } from "@/app/components/PortableTextComponents";
+import { Metadata } from "next";
 
 type Props = {
   params: { post: string };
+};
+
+export const generateMetadata = async ({
+  params,
+}: Props): Promise<Metadata> => {
+  const slug = params.post;
+  const post = await getPost(slug);
+  return {
+    title: post.metaTitle ?? `${post.title} - Testi Crafter`,
+    description: post.metaDescription ?? "",
+  };
 };
 
 const Post = async ({ params }: Props) => {

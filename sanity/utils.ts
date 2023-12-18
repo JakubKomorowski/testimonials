@@ -31,7 +31,9 @@ export const getPost = async (slug: string): Promise<Post> => {
               categories,
               customTable,
               showImage,
-              "headings": body[length(style) == 2 && string::startsWith(style, "h")]
+              "headings": body[length(style) == 2 && string::startsWith(style, "h")],
+              metaTitle,
+              metaDescription
      } `,
     { slug }
   );
