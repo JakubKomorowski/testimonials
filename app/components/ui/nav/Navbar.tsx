@@ -17,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Image from "next/image";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -36,7 +37,21 @@ const Navbar = () => {
 
   return (
     <nav className="container text-white  py-4 px-4 md:px-16 flex justify-between items-center">
-      <Link href={"/"}>Logo</Link>
+      <Link className="flex gap-3 items-center" href={"/"}>
+        <Image
+          src="/logo.png"
+          alt="logo"
+          width={0}
+          height={0}
+          sizes="100%"
+          style={{
+            width: "30px",
+            height: "auto",
+            objectFit: "cover",
+          }}
+        />
+        <div className="font-bold text-lg">Testi Crafter</div>
+      </Link>
       <ul className="hidden md:flex gap-12 ">
         {MENU_LIST.map((menu) => {
           return (
@@ -57,7 +72,7 @@ const Navbar = () => {
             onClick={() => router.push(ROUTES.signin)}
             className="font-medium  px-6  py-4"
           >
-            Sign In / Sign Up
+            Sign In
           </Button>
         ) : (
           <>

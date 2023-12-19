@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "./globals.css";
-import Navbar from "./components/ui/nav/Navbar";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/providers/SessionProvider";
 import { authOptions } from "./api/auth/[...nextauth]/route";
@@ -28,12 +27,7 @@ export default async function RootLayout({
         {/* <NextTopLoader color="#D2DE32" showSpinner={false} /> */}
         <SessionProvider session={session}>
           <FirebaseAuthProvider>
-            <SubscriptionProvider>
-              <header className=" bg-primary-foreground">
-                <Navbar />
-              </header>
-              {children}
-            </SubscriptionProvider>
+            <SubscriptionProvider>{children}</SubscriptionProvider>
           </FirebaseAuthProvider>
         </SessionProvider>
       </body>

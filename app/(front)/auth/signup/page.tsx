@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   email: string;
@@ -27,6 +28,9 @@ type Inputs = {
 };
 
 export default function Signup() {
+  const [modalOpen, setModalOpen] = useState(false);
+  const router = useRouter();
+
   const schema = yup
     .object({
       email: yup.string().email().required(),
@@ -53,8 +57,6 @@ export default function Signup() {
     reValidateMode: "onChange",
   });
 
-  console.log(errors);
-
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -74,8 +76,6 @@ export default function Signup() {
     }
     return userCredential;
   };
-
-  const [modalOpen, setModalOpen] = useState(isSubmitSuccessful);
 
   useEffect(() => {
     setModalOpen(isSubmitSuccessful);
@@ -187,7 +187,7 @@ export default function Signup() {
           <DialogHeader>
             <DialogTitle>Verify email has been sent</DialogTitle>
             <DialogDescription>
-              You will soon get an email to verify your email.
+              You will soon get a verification email.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
@@ -195,6 +195,7 @@ export default function Signup() {
               onClick={() => {
                 setModalOpen(false);
                 reset();
+                router.push(ROUTES.signin);
               }}
               type="button"
               variant="secondary"

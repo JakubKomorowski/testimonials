@@ -10,8 +10,18 @@ import { useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./ManageAccountButton";
 import { auth } from "../firebase";
 import { doc, getDoc, getDocs } from "firebase/firestore";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { Spinner } from "@nextui-org/react";
 
 const ExampleDashboardComp = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const [users, loading, error] = useCollection(query(collection(db, "users")));
   const { data: session } = useSession();
   const pathname = usePathname();
@@ -25,9 +35,14 @@ const ExampleDashboardComp = () => {
     });
   }
 
-  // useEffect(() => {
-  //   NProgress.done();
-  // }, [pathname, searchParams]);
+  console.log(loading);
+
+  useEffect(() => {
+    setModalOpen(false);
+    if (!auth.currentUser?.emailVerified) {
+      setModalOpen(true);
+    }
+  }, [auth.currentUser?.emailVerified]);
 
   console.log(auth.currentUser);
 
@@ -62,17 +77,41 @@ const ExampleDashboardComp = () => {
   };
   // console.log(auth.currentUser);
   return (
-    <div>
-      <button
-        onClick={() => {
-          createCheckoutSession();
-        }}
-      >
-        {loadingState ? "loading" : "checkout"}
-      </button>
+    <>
+      {loading ? (
+        <div className=" w-full flex justify-center h-[calc(100vh-80px)]">
+          <Spinner color="primary" />
+        </div>
+      ) : (
+        <div>
+          {auth.currentUser?.emailVerified ? (
+            <>
+              <button
+                onClick={() => {
+                  createCheckoutSession();
+                }}
+              >
+                {loadingState ? "loading" : "checkout"}
+              </button>
 
-      <ManageAccountButton />
-    </div>
+              <ManageAccountButton />
+            </>
+          ) : (
+            <Dialog open={modalOpen}>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Please verify your email</DialogTitle>
+                  <DialogDescription>
+                    Your email is not verified.
+                  </DialogDescription>
+                </DialogHeader>
+                <DialogFooter className="sm:justify-start"></DialogFooter>
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
+      )}
+    </>
   );
 };
 

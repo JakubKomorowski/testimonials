@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import ExampleDashboardComp from "../components/ExampleDashboardComp";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import ExampleDashboardComp from "../../components/ExampleDashboardComp";
+import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { ROUTES } from "@/routes";
 
 const Dashboard = async () => {
@@ -13,7 +13,7 @@ const Dashboard = async () => {
   return (
     <div>
       <ExampleDashboardComp />
-      {session?.user.email}
+      {/* {session?.user.email} */}
     </div>
   );
 };

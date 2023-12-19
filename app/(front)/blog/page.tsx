@@ -13,7 +13,7 @@ const Blog = async () => {
   } as const;
 
   return (
-    <main>
+    <>
       <header className="bg-primary-foreground h-[280px] flex items-center justify-center ">
         <h1 className="text-white">Blog</h1>
       </header>
@@ -27,7 +27,6 @@ const Blog = async () => {
               "en-US",
               options
             );
-
             return (
               <div
                 key={post._id}
@@ -46,7 +45,7 @@ const Blog = async () => {
 
                     <Image
                       src={post.mainImage}
-                      alt={post.alt}
+                      alt={post?.alt}
                       width={0}
                       height={0}
                       sizes="100%"
@@ -69,7 +68,7 @@ const Blog = async () => {
           })}
         </div>
       </section>
-    </main>
+    </>
   );
 };
 

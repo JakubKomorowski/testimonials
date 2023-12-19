@@ -17,6 +17,7 @@ const Signin = () => {
   const [wrongPass, setWrongPass] = useState("");
   const router = useRouter();
   const { status } = useSession();
+
   console.log(status);
 
   const schema = yup

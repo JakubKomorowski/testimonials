@@ -11,7 +11,7 @@ export const getPosts = async (): Promise<Post[]> => {
           title,
           "slug": slug.current,
           "mainImage": mainImage.asset->url,
-          "alt": mainImage.asset->alt,
+          "alt": mainImage.alt,
           body,
           categories
       }`
@@ -26,7 +26,7 @@ export const getPost = async (slug: string): Promise<Post> => {
               title,
               "slug": slug.current,
               "mainImage": mainImage.asset->url,
-              "alt": mainImage.asset->alt,
+              "alt": mainImage.alt,
               body,
               categories,
               customTable,
