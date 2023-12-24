@@ -1,3 +1,4 @@
+import Footer from "../components/ui/nav/Footer";
 import Navbar from "../components/ui/nav/Navbar";
 
 export default async function FrontLayout({
@@ -11,7 +12,9 @@ export default async function FrontLayout({
         <Navbar />
       </header>
       <main className="grow">{children}</main>
-      <footer>footer</footer>
+      <footer>
+        <Footer />
+      </footer>
     </div>
   );
 }

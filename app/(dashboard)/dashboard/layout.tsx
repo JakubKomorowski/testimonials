@@ -1,13 +1,17 @@
+import ThemeButton from "@/app/components/ThemeButton";
+import ThemeChangeProvider from "@/app/components/providers/ThemeProvider";
+
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <>
-      {children}
-
-      <h1>halo</h1>
-    </>
+    <ThemeChangeProvider>
+      <>
+        <ThemeButton />
+        {children}
+      </>
+    </ThemeChangeProvider>
   );
 }

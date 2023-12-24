@@ -36,8 +36,8 @@ const Navbar = () => {
   ).toUpperCase();
 
   return (
-    <nav className="container text-white  py-4 px-4 md:px-16 flex justify-between items-center">
-      <Link className="flex gap-3 items-center" href={"/"}>
+    <nav className="container text-white py-4 md:px-16 flex justify-between items-center">
+      <Link className="flex gap-3 items-center" href={ROUTES.home}>
         <Image
           src="/logo.png"
           alt="logo"

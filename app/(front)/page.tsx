@@ -17,8 +17,8 @@ export default async function Home() {
 
   return (
     <main>
-      <header className="bg-primary-foreground lg:h-[800px] relative">
-        <div className="max-w-[400px] xs:max-w-[460px] sm:max-w-[560px] lg:max-w-[900px] mx-auto pt-[120px] sm:pt-[140px] container">
+      <header className="bg-primary-foreground lg:h-[750px] relative mb-0 lg:mb-56 pb-4 lg:pb-0">
+        <div className="max-w-[400px] xs:max-w-[460px] sm:max-w-[560px] lg:max-w-[900px] mx-auto pt-[120px] container">
           <div className="relative">
             <Image
               src="/handWriting.svg"
@@ -53,7 +53,7 @@ export default async function Home() {
           height={100}
           className="absolute right-0 top-[350px] hidden lg:block"
         />
-        <div className="container gap-2 lg:gap-0 lg:left-1/2 lg:translate-x-[-50%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1240px] mt-20 lg:mt-0">
+        <div className="container lg:gap-0 lg:left-1/2 lg:translate-x-[-50%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1240px] mt-20 lg:mt-0">
           <Circle
             icon="collect"
             text="lorem ipsum lorem ipsum lorem ipsum lorem"

@@ -11,7 +11,7 @@ const Dashboard = async () => {
     redirect(ROUTES.signin);
   }
   return (
-    <div>
+    <div className="bg-white dark:bg-black">
       <ExampleDashboardComp />
       {/* {session?.user.email} */}
     </div>
