@@ -14,11 +14,11 @@ const Blog = async () => {
 
   return (
     <>
-      <header className="bg-primary-foreground h-[280px] flex items-center justify-center ">
+      <header className="bg-bg h-[280px] flex items-center justify-center ">
         <h1 className="text-white">Blog</h1>
       </header>
-      <section className=" mt-[100px]  max-w-[1250px] mx-auto px-4">
-        <div className="grid grid-cols-fluid gap-4">
+      <section className=" my-[100px]  max-w-[1250px] mx-auto px-4">
+        <div className="grid grid-cols-fluid gap-4 gap-y-8">
           {posts.map((post) => {
             const categoryObject = categories.find(
               (el) => el?._id === post?.categories?.[0]._ref
@@ -38,7 +38,7 @@ const Blog = async () => {
                 >
                   <div className="h-[180px] overflow-hidden object-cover relative rounded-xl">
                     {categoryObject?.title && (
-                      <div className="absolute z-20 top-3 right-3 bg-primary-foreground px-3 py-1 text-white text-sm rounded-[10px]">
+                      <div className="absolute z-20 top-3 right-3 bg-bg px-3 py-1 text-white text-sm rounded-[10px]">
                         {categoryObject?.title}
                       </div>
                     )}

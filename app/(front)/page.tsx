@@ -2,9 +2,10 @@ import { getPosts } from "@/sanity/utils";
 import { getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import Image from "next/image";
-import LinkButton from "../components/LinkButton";
+import LinkButton from "../components/ui/LinkButton";
 import Circle from "../components/ui/Circle";
 import { Metadata } from "next";
+import { ROUTES } from "@/routes";
 
 export const metadata: Metadata = {
   title: "Testi Crafter",
@@ -17,7 +18,7 @@ export default async function Home() {
 
   return (
     <main>
-      <header className="bg-primary-foreground lg:h-[750px] relative mb-0 lg:mb-56 pb-4 lg:pb-0">
+      <header className="bg-bg lg:h-[750px] relative mb-0 lg:mb-56 pb-12 lg:pb-0">
         <div className="max-w-[400px] xs:max-w-[460px] sm:max-w-[560px] lg:max-w-[900px] mx-auto pt-[120px] container">
           <div className="relative">
             <Image
@@ -35,7 +36,7 @@ export default async function Home() {
               Accelerate your business with those great looking testimonials
             </p>
             <div className="flex justify-center mt-10">
-              <LinkButton route={"signin"}>Start for free</LinkButton>
+              <LinkButton route={ROUTES.signin}>Start for free</LinkButton>
             </div>
           </div>
         </div>

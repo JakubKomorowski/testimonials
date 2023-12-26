@@ -39,7 +39,7 @@ const Post = async ({ params }: Props) => {
 
   return (
     <main>
-      <header className="bg-primary-foreground py-12 md:py-16 flex items-center justify-center ">
+      <header className="bg-bg py-12 md:py-16 flex items-center justify-center ">
         <div className="max-w-[1100px] flex-1 mx-4 md:mx-16">
           <div className="flex mb-6">
             <div className="border-white border rounded-tl-sm rounded-bl-sm px-3 py-1 w-fit text-white text-sm">

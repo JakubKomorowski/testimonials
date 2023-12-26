@@ -2,12 +2,7 @@
 import { MENU_LIST, ROUTES } from "@/routes";
 import NavItem from "./NavItem";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-  SheetClose,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -17,11 +12,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import Image from "next/image";
+import Logo from "../Logo";
+import { useState } from "react";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   let name = session?.user?.name as string;
   let mail = session?.user?.email as string;
@@ -37,21 +34,7 @@ const Navbar = () => {
 
   return (
     <nav className="container text-white py-4 md:px-16 flex justify-between items-center">
-      <Link className="flex gap-3 items-center" href={ROUTES.home}>
-        <Image
-          src="/logo.png"
-          alt="logo"
-          width={0}
-          height={0}
-          sizes="100%"
-          style={{
-            width: "30px",
-            height: "auto",
-            objectFit: "cover",
-          }}
-        />
-        <div className="font-bold text-lg">Testi Crafter</div>
-      </Link>
+      <Logo />
       <ul className="hidden md:flex gap-12 ">
         {MENU_LIST.map((menu) => {
           return (
@@ -68,19 +51,24 @@ const Navbar = () => {
       </ul>
       <div className="flex items-center gap-2 md:gap-3">
         {!session ? (
-          <Button
-            onClick={() => router.push(ROUTES.signin)}
-            className="font-medium  px-6  py-4"
-          >
-            Sign In
-          </Button>
+          <div className="w-[156px] flex justify-end">
+            <Button
+              onClick={() => router.push(ROUTES.signin)}
+              className="font-medium  px-6  py-4"
+            >
+              Sign In
+            </Button>
+          </div>
         ) : (
-          <>
+          <div className="w-[156px] flex justify-end">
             <DropdownMenu>
-              <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-primary-foreground font-medium rounded-full">
+              <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-bg font-medium rounded-full">
                 {formatedInitials || firstTwoChars}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
+                <DropdownMenuItem className="cursor-pointer">
+                  <Link href={ROUTES.dashboard}>Dashboard</Link>
+                </DropdownMenuItem>
                 <DropdownMenuItem className="cursor-pointer">
                   Profile
                 </DropdownMenuItem>
@@ -92,25 +80,31 @@ const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-          </>
+          </div>
         )}
 
-        <Sheet>
-          <SheetTrigger>
+        <Sheet open={open} onOpenChange={setOpen}>
+          <button
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
             <div className="flex flex-col gap-1 ml-2 px-1  md:hidden">
               <div className="w-3 h-0.5 bg-white"></div>
               <div className="w-6 h-0.5 bg-white"></div>
               <div className="w-3 h-0.5 bg-white ml-auto"></div>
             </div>
-          </SheetTrigger>
+          </button>
           <SheetContent>
-            <ul className="flex h-full justify-around flex-col">
+            <ul className="flex h-full gap-6 flex-col mt-8">
               {MENU_LIST.map((menu) => {
                 return (
-                  <li key={menu.text} className="w-full">
-                    <SheetClose asChild>
-                      <NavItem {...menu} />
-                    </SheetClose>
+                  <li
+                    key={menu.text}
+                    className="w-full py-4"
+                    onClick={() => setOpen(false)}
+                  >
+                    <NavItem {...menu} />
                   </li>
                 );
               })}

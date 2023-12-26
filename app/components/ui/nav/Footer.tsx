@@ -1,28 +1,13 @@
-import { FOOTER_MENU_LIST, ROUTES } from "@/routes";
-import Image from "next/image";
-import Link from "next/link";
+import { FOOTER_MENU_LIST } from "@/routes";
 import React from "react";
 import NavItem from "./NavItem";
+import Logo from "../Logo";
 
 const Footer = () => {
   return (
-    <div className=" text-white bg-primary-foreground mt-4">
+    <div className=" text-white bg-bg mt-4">
       <div className="container gap-8 md:px-16 py-8 flex flex-col md:flex-row items-center justify-between">
-        <Link className="flex gap-3 items-center " href={ROUTES.home}>
-          <Image
-            src="/logo.png"
-            alt="logo"
-            width={0}
-            height={0}
-            sizes="100%"
-            style={{
-              width: "30px",
-              height: "auto",
-              objectFit: "cover",
-            }}
-          />
-          <div className="font-bold text-lg">Testi Crafter</div>
-        </Link>
+        <Logo />
         <nav>
           <ul className="flex flex-col md:flex-row gap-4 md:gap-8">
             {FOOTER_MENU_LIST.map((menu) => {

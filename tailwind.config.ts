@@ -27,6 +27,8 @@ module.exports = {
         fluid: "repeat(auto-fit, minmax(270px, 1fr))",
       },
       colors: {
+        bg: "hsl(var(--bg))",
+
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -34,7 +36,7 @@ module.exports = {
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          foreground: "hsl(var(--bg))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

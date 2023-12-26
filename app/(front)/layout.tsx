@@ -8,7 +8,7 @@ export default async function FrontLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <header className="bg-primary-foreground">
+      <header className="bg-bg">
         <Navbar />
       </header>
       <main className="grow">{children}</main>

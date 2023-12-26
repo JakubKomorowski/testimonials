@@ -69,6 +69,29 @@ export const components = (post: Post) => {
       // Ex. 2: rendering custom list items
       checkmarks: ({ children }) => <li>✅ {children}</li>,
     },
+    marks: {
+      // Ex. 1: custom renderer for the em / italics decorator
+      em: ({ children }) => (
+        <em className="text-gray-600 font-semibold">{children}</em>
+      ),
+
+      // Ex. 2: rendering a custom `link` annotation
+      link: ({ value, children }) => {
+        const target = (value?.href || "").startsWith("http")
+          ? "_blank"
+          : undefined;
+        return (
+          <a
+            href={value?.href}
+            target={target}
+            rel={target === "_blank" ? "noindex nofollow" : ""}
+            className="underline"
+          >
+            {children}
+          </a>
+        );
+      },
+    },
   };
   return components;
 };

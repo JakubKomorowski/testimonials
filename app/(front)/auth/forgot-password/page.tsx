@@ -1,6 +1,5 @@
 "use client";
 import { sendPasswordResetEmail } from "firebase/auth";
-import { auth } from "../../firebase";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -15,6 +14,9 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { auth } from "@/app/firebase";
 
 type Inputs = {
   email: string;
@@ -26,6 +28,10 @@ export default function ForgotPassword() {
       email: yup.string().email().required(),
     })
     .required();
+
+  const { status } = useSession();
+
+  if (status === "authenticated") redirect(ROUTES.dashboard);
 
   const {
     register,
@@ -91,7 +97,7 @@ export default function ForgotPassword() {
             <div>
               <button
                 type="submit"
-                className="cursor-pointer flex w-full justify-center rounded-md bg-primary-foreground px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
               >
                 Send reset pasword email
               </button>

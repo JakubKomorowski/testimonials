@@ -12,7 +12,7 @@ const Table = ({ children, post }: Props) => {
       <table className="border-collapse  w-full ">
         <caption className="text-xl  pb-4 text-left">{children}</caption>
         <thead className="">
-          <tr className="bg-primary-foreground text-white rounded-sm">
+          <tr className="bg-bg text-white rounded-sm">
             {post.customTable.rows[0].cells.map((el: string, i: number) => (
               <th
                 key={i}
@@ -30,7 +30,7 @@ const Table = ({ children, post }: Props) => {
               <tr
                 key={row._key}
                 className="
-              last-of-type:border-solid last-of-type:border-b-2 last-of-type:border-primary-foreground"
+              last-of-type:border-solid last-of-type:border-b-2 last-of-type:border-bg"
               >
                 {row.cells.map((cell: string, i: number) => (
                   <td

@@ -4,7 +4,7 @@ import React from "react";
 const PrivacyPolicy = () => {
   return (
     <main>
-      <header className="bg-primary-foreground py-12 md:py-16 flex items-center justify-center mb-16">
+      <header className="bg-bg py-12 md:py-16 flex items-center justify-center mb-16">
         <div className="max-w-[1100px] flex-1 mx-4 md:mx-16">
           <div className="flex mb-6"></div>
           <h1 className="text-white leading-[1.15]">Privacy Policy</h1>
@@ -35,7 +35,7 @@ const PrivacyPolicy = () => {
             Termify
           </Link>
         </p>
-        .<h2 className="py-4">Definitions and key terms</h2>
+        .<h2 className="pt-6 pb-4">Definitions and key terms</h2>
         To help explain things as clearly as possible in this Privacy Policy,
         every time any of these terms are referenced, are strictly defined as:
         <ul className="py-4">
@@ -102,7 +102,7 @@ const PrivacyPolicy = () => {
           </li>
         </ul>
         &nbsp;
-        <h2 className="py-4">What Information Do We Collect?</h2>
+        <h2 className="pt-6 pb-4">What Information Do We Collect?</h2>
         We collect information from you when you visit our website, register on
         our site, place an order, subscribe to our newsletter, respond to a
         survey or fill out a form.
@@ -122,7 +122,7 @@ const PrivacyPolicy = () => {
             camera permissions for this website.
           </li>
         </ul>
-        <h2 className="py-4">How Do We Use The Information We Collect?</h2>
+        <h2 className="pt-6 pb-4">How Do We Use The Information We Collect?</h2>
         Any of the information we collect from you may be used in one of the
         following ways:
         <ul className="py-4">
@@ -146,7 +146,7 @@ const PrivacyPolicy = () => {
           <li className="list-disc ml-10 py-1">To send periodic emails</li>
         </ul>
         &nbsp;
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           When does Testi crafter use end user information from third parties?
         </h2>
         Testi crafter will collect End User Data necessary to provide the Testi
@@ -156,7 +156,7 @@ const PrivacyPolicy = () => {
         available information from the social media websites you have indicated.
         You can control how much of your information social media websites make
         public by visiting these websites and changing your privacy settings.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           When does Testi crafter use customer information from third parties?
         </h2>
         We receive some information from the third parties when you contact us.
@@ -167,7 +167,7 @@ const PrivacyPolicy = () => {
         available on social media websites. You can control how much of your
         information social media websites make public by visiting these websites
         and changing your privacy settings.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Do we share the information we collect with third parties?
         </h2>
         We may share the information that we collect, both personal and
@@ -202,13 +202,13 @@ const PrivacyPolicy = () => {
         person, to prevent or stop any illegal, unethical, or legally actionable
         activity, or to otherwise comply with applicable court orders, laws,
         rules and regulations.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Where and when is information collected from customers and end users?
         </h2>
         Testi crafter will collect personal information that you submit to us.
         We may also receive personal information about you from third parties as
         described above.
-        <h2 className="py-4">How Do We Use Your Email Address?</h2>
+        <h2 className="pt-6 pb-4">How Do We Use Your Email Address?</h2>
         By submitting your email address on this website, you agree to receive
         emails from us. You can cancel your participation in any of these email
         lists at any time by clicking on the opt-out link or other unsubscribe
@@ -226,7 +226,7 @@ const PrivacyPolicy = () => {
         any of the purposes stated in this Policy. Note: If at any time you
         would like to unsubscribe from receiving future emails, we include
         detailed unsubscribe instructions at the bottom of each email.
-        <h2 className="py-4">How Long Do We Keep Your Information?</h2>
+        <h2 className="pt-6 pb-4">How Long Do We Keep Your Information?</h2>
         We keep your information only so long as we need it to provide Testi
         crafter to you and fulfill the purposes described in this policy. This
         is also the case for anyone that we share your information with and who
@@ -234,7 +234,7 @@ const PrivacyPolicy = () => {
         information and there is no need for us to keep it to comply with our
         legal or regulatory obligations, we’ll either remove it from our systems
         or depersonalize it so that we can't identify you.
-        <h2 className="py-4">How Do We Protect Your Information?</h2>
+        <h2 className="pt-6 pb-4">How Do We Protect Your Information?</h2>
         We implement a variety of security measures to maintain the safety of
         your personal information when you place an order or enter, submit, or
         access your personal information. We offer the use of a secure server.
@@ -249,7 +249,7 @@ const PrivacyPolicy = () => {
         information on the Service may not be accessed, disclosed, altered, or
         destroyed by a breach of any of our physical, technical, or managerial
         safeguards.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Could my information be transferred to other countries?
         </h2>
         Testi crafter is incorporated in Polska. Information collected via our
@@ -261,7 +261,7 @@ const PrivacyPolicy = () => {
         of such data. To the fullest extent allowed by applicable law, by using
         any of the above, you voluntarily consent to the trans-border transfer
         and hosting of such information.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Is the information collected through the Testi crafter Service secure?
         </h2>
         We take precautions to protect the security of your information. We have
@@ -275,7 +275,7 @@ const PrivacyPolicy = () => {
         non-disclaimable duty to protect your personal information, you agree
         that intentional misconduct will be the standards used to measure our
         compliance with that duty.
-        <h2 className="py-4">Can I update or correct my information?</h2>
+        <h2 className="pt-6 pb-4">Can I update or correct my information?</h2>
         The rights you have to request updates or corrections to the information
         Testi crafter collects depend on your relationship with Testi crafter.
         Personnel may update or correct their information as detailed in our
@@ -307,7 +307,7 @@ const PrivacyPolicy = () => {
         and wish to update, delete, or receive any information we have about
         you, you may do so by contacting the organization of which you are a
         customer.
-        <h2 className="py-4">Personnel</h2>
+        <h2 className="pt-6 pb-4">Personnel</h2>
         If you are a Testi crafter worker or applicant, we collect information
         you voluntarily provide to us. We use the information collected for
         Human Resources purposes in order to administer benefits to workers and
@@ -319,7 +319,7 @@ const PrivacyPolicy = () => {
         information that we maintain, or information that we have provided to
         third parties in accordance with this Privacy Policy prior to such
         update, correction, change or deletion.
-        <h2 className="py-4">Sale of Business</h2>
+        <h2 className="pt-6 pb-4">Sale of Business</h2>
         We reserve the right to transfer information to a third party in the
         event of a sale, merger or other transfer of all or substantially all of
         the assets of Testi crafter or any of its Corporate Affiliates (as
@@ -329,7 +329,7 @@ const PrivacyPolicy = () => {
         a petition in bankruptcy, reorganization or similar proceeding, provided
         that the third party agrees to adhere to the terms of this Privacy
         Policy.
-        <h2 className="py-4">Affiliates</h2>
+        <h2 className="pt-6 pb-4">Affiliates</h2>
         We may disclose information (including personal information) about you
         to our Corporate Affiliates. For purposes of this Privacy Policy,
         "Corporate Affiliate" means any person or entity which directly or
@@ -338,7 +338,7 @@ const PrivacyPolicy = () => {
         relating to you that we provide to our Corporate Affiliates will be
         treated by those Corporate Affiliates in accordance with the terms of
         this Privacy Policy.
-        <h2 className="py-4">Governing Law</h2>
+        <h2 className="pt-6 pb-4">Governing Law</h2>
         This Privacy Policy is governed by the laws of Polska without regard to
         its conflict of laws provision. You consent to the exclusive
         jurisdiction of the courts in connection with any action or dispute
@@ -355,13 +355,13 @@ const PrivacyPolicy = () => {
         to this Privacy Policy that do not significantly affect the use or
         disclosure of your personal information will mean that you accept those
         changes.
-        <h2 className="py-4">Your Consent</h2>
+        <h2 className="pt-6 pb-4">Your Consent</h2>
         We've updated our Privacy Policy to provide you with complete
         transparency into what is being set when you visit our site and how it's
         being used. By using our website, registering an account, or making a
         purchase, you hereby consent to our Privacy Policy and agree to its
         terms.
-        <h2 className="py-4">Links to Other Websites</h2>
+        <h2 className="pt-6 pb-4">Links to Other Websites</h2>
         This Privacy Policy applies only to the Services. The Services may
         contain links to other websites not operated or controlled by Testi
         crafter. We are not responsible for the content, accuracy or opinions
@@ -372,7 +372,7 @@ const PrivacyPolicy = () => {
         any other website, including those that have a link on our platform, is
         subject to that website’s own rules and policies. Such third parties may
         use their own cookies or other methods to collect information about you.
-        <h2 className="py-4">Advertising</h2>
+        <h2 className="pt-6 pb-4">Advertising</h2>
         This website may contain third party advertisements and links to third
         party sites. Testi crafter does not make any representation as to the
         accuracy or suitability of any of the information contained in those
@@ -387,7 +387,7 @@ const PrivacyPolicy = () => {
         crafter takes no responsibility for the content of any of the ads,
         promises made, or the quality/reliability of the products or services
         offered in all advertisements.
-        <h2 className="py-4">Cookies for Advertising</h2>
+        <h2 className="pt-6 pb-4">Cookies for Advertising</h2>
         These cookies collect information over time about your online activity
         on the website and other online services to make online advertisements
         more relevant and effective to you. This is known as interest-based
@@ -396,7 +396,7 @@ const PrivacyPolicy = () => {
         displayed for advertisers. Without cookies, it’s really hard for an
         advertiser to reach its audience, or to know how many ads were shown and
         how many clicks they received.
-        <h2 className="py-4">Cookies</h2>
+        <h2 className="pt-6 pb-4">Cookies</h2>
         Testi crafter uses "Cookies" to identify the areas of our website that
         you have visited. A Cookie is a small piece of data stored on your
         computer or mobile device by your web browser. We use Cookies to enhance
@@ -408,7 +408,7 @@ const PrivacyPolicy = () => {
         set to disable the use of Cookies. However, if you disable Cookies, you
         may not be able to access functionality on our website correctly or at
         all. We never place Personally Identifiable Information in Cookies.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Blocking and disabling cookies and similar technologies
         </h2>
         Wherever you're located you may also set your browser to block cookies
@@ -421,17 +421,17 @@ const PrivacyPolicy = () => {
         Disabling a cookie or category of cookie does not delete the cookie from
         your browser, you will need to do this yourself from within your
         browser, you should visit your browser's help menu for more information.
-        <h2 className="py-4">Remarketing Services</h2>
+        <h2 className="pt-6 pb-4">Remarketing Services</h2>
         We use remarketing services. What Is Remarketing? In digital marketing,
         remarketing (or retargeting) is the practice of serving ads across the
         internet to people who have already visited your website. It allows your
         company to seem like they're “following” people around the internet by
         serving ads on the websites and platforms they use most.
-        <h2 className="py-4">Payment Details</h2>
+        <h2 className="pt-6 pb-4">Payment Details</h2>
         In respect to any credit card or other payment processing details you
         have provided us, we commit that this confidential information will be
         stored in the most secure manner possible.
-        <h2 className="py-4">Kids' Privacy</h2>
+        <h2 className="pt-6 pb-4">Kids' Privacy</h2>
         We do not address anyone under the age of 13. We do not knowingly
         collect personally identifiable information from anyone under the age of
         13. If You are a parent or guardian and You are aware that Your child
@@ -439,7 +439,7 @@ const PrivacyPolicy = () => {
         aware that We have collected Personal Data from anyone under the age of
         13 without verification of parental consent, We take steps to remove
         that information from Our servers.
-        <h2 className="py-4">Changes To Our Privacy Policy</h2>
+        <h2 className="pt-6 pb-4">Changes To Our Privacy Policy</h2>
         We may change our Service and policies, and we may need to make changes
         to this Privacy Policy so that they accurately reflect our Service and
         policies. Unless otherwise required by law, we will notify you (for
@@ -448,7 +448,7 @@ const PrivacyPolicy = () => {
         effect. Then, if you continue to use the Service, you will be bound by
         the updated Privacy Policy. If you do not want to agree to this or any
         updated Privacy Policy, you can delete your account.
-        <h2 className="py-4">Third-Party Services</h2>
+        <h2 className="pt-6 pb-4">Third-Party Services</h2>
         We may display, include or make available third-party content (including
         data, information, applications and other products services) or provide
         links to third-party websites or services ("Third- Party Services"). You
@@ -461,7 +461,7 @@ const PrivacyPolicy = () => {
         thereto are provided solely as a convenience to you and you access and
         use them entirely at your own risk and subject to such third parties'
         terms and conditions.
-        <h2 className="py-4">Tracking Technologies</h2>
+        <h2 className="pt-6 pb-4">Tracking Technologies</h2>
         <ul className="py-4">
           <li className="list-disc ml-10 py-1">
             We use Cookies to enhance the performance and functionality of our
@@ -488,7 +488,7 @@ const PrivacyPolicy = () => {
             or mobile device by your web browser.
           </li>
         </ul>
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Information about General Data Protection Regulation (GDPR)
         </h2>
         We may be collecting and using information from you if you are from the
@@ -496,7 +496,7 @@ const PrivacyPolicy = () => {
         we are going to explain exactly how and why is this data collected, and
         how we maintain this data under protection from being replicated or used
         in the wrong way.
-        <h2 className="py-4">What is GDPR?</h2>
+        <h2 className="pt-6 pb-4">What is GDPR?</h2>
         GDPR is an EU-wide privacy and data protection law that regulates how EU
         residents' data is protected by companies and enhances the control the
         EU residents have, over their personal data. The GDPR is relevant to any
@@ -504,7 +504,7 @@ const PrivacyPolicy = () => {
         residents. Our customers’ data is important irrespective of where they
         are located, which is why we have implemented GDPR controls as our
         baseline standard for all our operations worldwide.
-        <h2 className="py-4">What is personal data?</h2>
+        <h2 className="pt-6 pb-4">What is personal data?</h2>
         Any data that relates to an identifiable or identified individual. GDPR
         covers a broad spectrum of information that could be used on its own, or
         in combination with other pieces of information, to identify a person.
@@ -535,7 +535,7 @@ const PrivacyPolicy = () => {
             organization.
           </li>
         </ul>
-        <h2 className="py-4">Why is GDPR important?</h2>
+        <h2 className="pt-6 pb-4">Why is GDPR important?</h2>
         GDPR adds some new requirements regarding how companies should protect
         individuals' personal data that they collect and process. It also raises
         the stakes for compliance by increasing enforcement and imposing greater
@@ -543,7 +543,7 @@ const PrivacyPolicy = () => {
         At Testi crafter we strongly believe that your data privacy is very
         important and we already have solid security and privacy practices in
         place that go beyond the requirements of this new regulation.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           Individual Data Subject's Rights - Data Access, Portability and
           Deletion
         </h2>
@@ -559,7 +559,7 @@ const PrivacyPolicy = () => {
         service from the start and have always given you access to your data and
         your customers data. Our customer support team is here for you to answer
         any questions you might have about working with the API.
-        <h2 className="py-4">California Residents</h2>
+        <h2 className="pt-6 pb-4">California Residents</h2>
         The California Consumer Privacy Act (CCPA) requires us to disclose
         categories of Personal Information we collect and how we use it, the
         categories of sources from whom we collect Personal Information, and the
@@ -594,7 +594,7 @@ const PrivacyPolicy = () => {
         like to exercise any of these rights, please contact us. We do not sell
         the Personal Information of our users. For more information about these
         rights, please contact us.
-        <h2 className="py-4">
+        <h2 className="pt-6 pb-4">
           California Online Privacy Protection Act (CalOPPA)
         </h2>
         CalOPPA requires us to disclose categories of Personal Information we
@@ -629,7 +629,7 @@ const PrivacyPolicy = () => {
         like to exercise any of these rights, please contact us. We do not sell
         the Personal Information of our users. For more information about these
         rights, please contact us.
-        <h2 className="py-4">Contact Us</h2>
+        <h2 className="pt-6 pb-4">Contact Us</h2>
         Don't hesitate to contact us if you have any questions.
         <ul>
           <li className="list-disc ml-10 py-1"></li>

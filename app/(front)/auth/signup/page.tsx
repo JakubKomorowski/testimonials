@@ -4,7 +4,6 @@ import {
   sendEmailVerification,
 } from "firebase/auth";
 import { redirect } from "next/navigation";
-import { auth } from "../../firebase";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -20,6 +19,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { auth } from "@/app/firebase";
+import { useSession } from "next-auth/react";
 
 type Inputs = {
   email: string;
@@ -30,6 +31,10 @@ type Inputs = {
 export default function Signup() {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+
+  const { status } = useSession();
+
+  if (status === "authenticated") redirect(ROUTES.dashboard);
 
   const schema = yup
     .object({
@@ -174,7 +179,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                className="cursor-pointer flex w-full justify-center rounded-md bg-primary-foreground px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
               >
                 Sign Up
               </button>
