@@ -9,6 +9,7 @@ import * as yup from "yup";
 import { ROUTES } from "@/routes";
 import { redirect } from "next/navigation";
 import { Spinner } from "@nextui-org/react";
+import Divider from "@/app/components/ui/Divider";
 
 type Inputs = {
   email: string;
@@ -154,12 +155,7 @@ const Signin = () => {
                 </Link>
               </p>
             </form>
-            <div className="relative flex py-8 items-center">
-              <div className="flex-grow border-t border-gray-400"></div>
-              <span className="flex-shrink mx-4 text-gray-400">or</span>
-              <div className="flex-grow border-t border-gray-400"></div>
-            </div>
-
+            <Divider>or</Divider>
             <button
               onClick={() =>
                 signIn("google", {

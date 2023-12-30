@@ -22,7 +22,7 @@ const Circle = ({ text, title, icon, iconAlt }: Props) => {
         </div>
 
         <h4 className=" font-semibold ">{title}</h4>
-        <p className="text-center text-sm">{text}</p>
+        <p className="text-center text-sm text-grey-600">{text}</p>
       </div>
     </div>
   );

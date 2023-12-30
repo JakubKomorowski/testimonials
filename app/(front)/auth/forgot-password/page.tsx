@@ -46,8 +46,6 @@ export default function ForgotPassword() {
     sendPasswordResetEmail(auth, data.email);
   };
 
-  console.log(errors);
-
   const [modalOpen, setModalOpen] = useState(isSubmitSuccessful);
 
   useEffect(() => {

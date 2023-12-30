@@ -107,7 +107,7 @@ const PrivacyPolicy = () => {
         our site, place an order, subscribe to our newsletter, respond to a
         survey or fill out a form.
         <ul className="py-4">
-          <li className="list-disc ml-10 py-1">Name / Username</li>
+          <li className="list-disc ml-10 py-1">Name / name</li>
           <li className="list-disc ml-10 py-1">Email Addresses</li>
           <li className="list-disc ml-10 py-1">Billing Addresses</li>
           <li className="list-disc ml-10 py-1">Debit/credit card numbers</li>
