@@ -14,18 +14,15 @@ const ImageComponent = ({ value }: any) => {
     value
   ) as unknown as IImageProps;
   return (
-    <div className="mx-[-30px] md:mx-[-40px] my-10 max-w-[780px] md:h-[500px] h-[300px] relative">
+    <div className="mx-[-30px] md:mx-[-40px] my-10 max-w-[780px]  relative">
       <Image
         src={imageProps.src}
         alt={value.alt || " "}
         loading="lazy"
-        fill={true}
-        sizes="100%"
-        style={{
-          borderRadius: "10px",
-          objectFit: "cover",
-          height: "100%",
-        }}
+        width={0}
+        height={0}
+        sizes="100vw"
+        style={{ width: "100%", height: "auto" }}
       />
     </div>
   );

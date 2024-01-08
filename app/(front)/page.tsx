@@ -14,6 +14,7 @@ import Divider from "../components/ui/Divider";
 
 import { Button } from "@/components/ui/button";
 import AddEmailButton from "../components/ui/AddEmailButton";
+import SpeachBubble from "../components/ui/testimonialCards/SpeachBubble";
 
 export const metadata: Metadata = {
   title: "Testi Crafter",
@@ -191,6 +192,16 @@ export default async function Home() {
       </div>
       <section className="flex container justify-center px-28">
         <CarouselComponent />
+      </section>
+      <div className="container md:px-16 my-12">
+        <Divider>
+          <div className="bg-gray-300 w-4 h-4 rounded-full flex justify-center items-center">
+            <div className="bg-white w-2 h-2 rounded-full"></div>
+          </div>
+        </Divider>
+      </div>
+      <section className="container  px-28">
+        <SpeachBubble />
       </section>
     </main>
   );

@@ -15,10 +15,10 @@ export const ROUTES = {
 export const FOOTER_MENU_LIST = [
   { text: "Privacy policy", href: ROUTES.privacyPolicy },
   { text: "Terms & Conditions", href: ROUTES.termsAndConditions },
-  { text: "Contact", href: ROUTES.contact },
 ];
 
 export const MENU_LIST = [
-  { text: "Pricing", href: "/pricing" },
+  // { text: "Pricing", href: "/pricing" },
+  { text: "Contact", href: ROUTES.contact },
   { text: "Blog", href: "/blog" },
 ];

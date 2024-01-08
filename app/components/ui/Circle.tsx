@@ -9,7 +9,7 @@ interface Props {
 
 const Circle = ({ text, title, icon, iconAlt }: Props) => {
   return (
-    <div className="rounded-full  shadow-[0px_4px_4px_0px_#00000040] w-[260px] h-[260px] xl:w-[280px] xl:h-[280px] bg-white flex flex-col justify-center items-center">
+    <div className="rounded-full shadow-[0px_4px_50px_0px_#00000040]  w-[260px] h-[260px] xl:w-[280px] xl:h-[280px] bg-white flex flex-col justify-center items-center">
       <div className="flex flex-col gap-3 lg:gap-4 items-center h-[180px] lg:h-[200px] w-[80%]">
         <div className="h-12 w-12  mb-1">
           <Image

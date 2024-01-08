@@ -10,7 +10,7 @@ const DefaultCard: FC<DefaultCard> = ({ image, alt, text, name, rating }) => {
         <AvatarImage src={image} alt={alt} className="object-cover" />
         <AvatarFallback>AG</AvatarFallback>
       </Avatar>
-      <RatingComponent rating={rating} />
+      <RatingComponent rating={rating} size={25} />
       <p className="text-center mt-5 text-gray-600">{text}</p>
       <p className="font-bold mt-8">-{name}</p>
     </div>

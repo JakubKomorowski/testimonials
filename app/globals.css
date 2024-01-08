@@ -64,3 +64,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .thumb-slider {
+    max-width: 300px;
+    padding-bottom: 50px !important;
+    }
+  .thumb-slider .swiper-wrapper {
+    align-items: start;
+    height: 100px
+    }
+  .thumb-slider .swiper-slide {
+        margin: 10px;
+    }
+  .thumb-slider .swiper-slide-auto {
+        width: 80px;
+        font-size: 0rem;
+        margin-top: 5px;
+        transition: all .2s;
+    }
+  .thumb-slider .swiper-slide-active{
+        width: 90px;
+        font-size: 1rem;
+        margin-top: 0px;
+        transition: all .2s;
+    }
+    .main-slider .swiper-wrapper {
+      align-items: center;
+    }
+    .main-slider .swiper-slide {
+      color: rgb(70, 70, 70);
+    }
+}

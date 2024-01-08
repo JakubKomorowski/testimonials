@@ -5,9 +5,10 @@ import { FC } from "react";
 
 interface Props {
   rating: number;
+  size: number;
 }
 
-const RatingComponent: FC<Props> = ({ rating }) => {
+const RatingComponent: FC<Props> = ({ rating, size }) => {
   return (
     <Rating
       readonly
@@ -17,8 +18,8 @@ const RatingComponent: FC<Props> = ({ rating }) => {
       fillStyle={{ display: "-webkit-inline-box" }}
       allowFraction
       transition
-      emptyIcon={<FaStar size={25} />}
-      fillIcon={<FaStar size={25} />}
+      emptyIcon={<FaStar size={size} />}
+      fillIcon={<FaStar size={size} />}
     />
   );
 };
