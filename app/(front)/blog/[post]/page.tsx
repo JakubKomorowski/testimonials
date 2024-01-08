@@ -98,11 +98,11 @@ const Post = async ({ params }: Props) => {
   );
 };
 
-export async function generateStaticParams() {
-  const posts = await getPosts();
-  return posts.map((post) => ({
-    postSlug: post.slug,
-  }));
-}
+// export async function generateStaticParams() {
+//   const posts = await getPosts();
+//   return posts.map((post) => ({
+//     postSlug: post.slug,
+//   }));
+// }
 
 export default Post;
