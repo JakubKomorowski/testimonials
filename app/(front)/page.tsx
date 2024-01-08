@@ -1,6 +1,6 @@
 import { getPosts } from "@/sanity/utils";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+
 import Image from "next/image";
 import LinkButton from "../components/ui/LinkButton";
 import Circle from "../components/ui/Circle";
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import AddEmailButton from "../components/ui/AddEmailButton";
 import SpeachBubble from "../components/ui/testimonialCards/SpeachBubble";
 import PostCard from "../components/ui/PostCard";
+import { authOptions } from "../api/auth/[...nextauth]/auth";
 
 export const metadata: Metadata = {
   title: "Trust Catcher",
@@ -206,8 +207,8 @@ export default async function Home() {
       <section className="container md:px-16 mt-20">
         <h2 className="text-6xl">Recent Posts</h2>
         <div className="flex  flex-wrap justify-center sm:justify-start gap-12 my-12">
-          {fourPosts.map((post) => {
-            return <PostCard post={post} />;
+          {fourPosts.map((post, i) => {
+            return <PostCard key={i} post={post} />;
           })}
         </div>
       </section>

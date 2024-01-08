@@ -12,8 +12,8 @@ const Blog = async () => {
       </header>
       <section className=" my-[100px]  max-w-[1250px] mx-auto px-4">
         <div className="grid grid-cols-fluid gap-4 gap-y-8">
-          {posts.map((post) => {
-            return <PostCard post={post} />;
+          {posts.map((post, i) => {
+            return <PostCard key={i} post={post} />;
           })}
         </div>
       </section>

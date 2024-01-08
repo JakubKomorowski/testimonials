@@ -47,8 +47,8 @@ export const components = (post: Post) => {
         </blockquote>
       ),
       //rendering custom styles
-      customTable: ({ children }) => <Table post={post} children={children} />,
-      highlightBox: ({ children }) => <Box children={children} />,
+      customTable: ({ children }) => <Table post={post}>{children}</Table>,
+      highlightBox: ({ children }) => <Box>{children}</Box>,
     },
     list: {
       // Ex. 1: customizing common list types

@@ -48,3 +48,18 @@ export const getCategories = async (): Promise<Category[]> => {
       }`
   );
 };
+
+export const getPage = async (slug: string): Promise<Post> => {
+  return client.fetch(
+    groq`*[_type == "page" && slug.current == $slug][0]{
+              _id,
+              _createdAt,
+              title,
+              "slug": slug.current,
+              body,
+              metaTitle,
+              metaDescription
+     } `,
+    { slug }
+  );
+};

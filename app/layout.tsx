@@ -3,10 +3,11 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/providers/SessionProvider";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+
 import NextTopLoader from "nextjs-toploader";
 import FirebaseAuthProvider from "./components/providers/FirebaseAuthProvider";
 import SubscriptionProvider from "./components/providers/SubscriptionProvider";
+import { authOptions } from "./api/auth/[...nextauth]/auth";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
