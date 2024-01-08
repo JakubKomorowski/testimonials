@@ -18,7 +18,7 @@ const Logo = () => {
           objectFit: "cover",
         }}
       />
-      <div className="font-bold text-lg">Testi Crafter</div>
+      <div className="font-bold text-lg">Trust Catcher</div>
     </Link>
   );
 };

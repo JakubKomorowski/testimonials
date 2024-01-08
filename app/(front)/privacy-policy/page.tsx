@@ -14,15 +14,15 @@ const PrivacyPolicy = () => {
         <p className="py-2">Updated at 2023-12-23 </p>
         <p className="py-2">
           {" "}
-          Testi crafter (“we,” “our,” or “us”) is committed to protecting your
+          Trust catcher (“we,” “our,” or “us”) is committed to protecting your
           privacy. This Privacy Policy explains how your personal information is
-          collected, used, and disclosed by Testi crafter.
+          collected, used, and disclosed by Trust catcher.
         </p>
         <p className="py-2">
           {" "}
           This Privacy Policy applies to our website, and its associated
           subdomains (collectively, our “Service”) alongside our application,
-          Testi crafter. By accessing or using our Service, you signify that you
+          Trust catcher. By accessing or using our Service, you signify that you
           have read, understood, and agree to our collection, storage, use, and
           disclosure of your personal information as described in this Privacy
           Policy and our Terms of Service. This Privacy Policy was created with 
@@ -52,17 +52,17 @@ const PrivacyPolicy = () => {
             Policy.
           </li>
           <li className="list-disc ml-10 py-1">
-            Country: where Testi crafter or the owners/founders of Testi crafter
+            Country: where Trust catcher or the owners/founders of Trust catcher
             are based, in this case is Polska
           </li>
           <li className="list-disc ml-10 py-1">
             Customer: refers to the company, organization or person that signs
-            up to use the Testi crafter Service to manage the relationships with
+            up to use the Trust catcher Service to manage the relationships with
             your consumers or service users.
           </li>
           <li className="list-disc ml-10 py-1">
             Device: any internet connected device such as a phone, tablet,
-            computer or any other device that can be used to visit Testi crafter
+            computer or any other device that can be used to visit Trust catcher
             and use the services.
           </li>
           <li className="list-disc ml-10 py-1">
@@ -84,7 +84,7 @@ const PrivacyPolicy = () => {
             identifiability of a natural person.
           </li>
           <li className="list-disc ml-10 py-1">
-            Service: refers to the service provided by Testi crafter as
+            Service: refers to the service provided by Trust catcher as
             described in the relative terms (if available) and on this platform.
           </li>
           <li className="list-disc ml-10 py-1">
@@ -93,11 +93,11 @@ const PrivacyPolicy = () => {
             content or whose products or services we think may interest you.
           </li>
           <li className="list-disc ml-10 py-1">
-            Website: Testi crafter's site, which can be accessed via this URL:
-            https://testicrafter.com
+            Website: Trust catcher's site, which can be accessed via this URL:
+            https://trustcatcher.com
           </li>
           <li className="list-disc ml-10 py-1">
-            You: a person or entity that is registered with Testi crafter to use
+            You: a person or entity that is registered with Trust catcher to use
             the Services.
           </li>
         </ul>
@@ -147,9 +147,9 @@ const PrivacyPolicy = () => {
         </ul>
         &nbsp;
         <h2 className="pt-6 pb-4">
-          When does Testi crafter use end user information from third parties?
+          When does Trust catcher use end user information from third parties?
         </h2>
-        Testi crafter will collect End User Data necessary to provide the Testi
+        Trust catcher will collect End User Data necessary to provide the Testi
         crafter services to our customers. End users may voluntarily provide us
         with information they have made available on social media websites. If
         you provide us with any such information, we may collect publicly
@@ -157,11 +157,11 @@ const PrivacyPolicy = () => {
         You can control how much of your information social media websites make
         public by visiting these websites and changing your privacy settings.
         <h2 className="pt-6 pb-4">
-          When does Testi crafter use customer information from third parties?
+          When does Trust catcher use customer information from third parties?
         </h2>
         We receive some information from the third parties when you contact us.
         For example, when you submit your email address to us to show interest
-        in becoming a Testi crafter customer, we receive information from a
+        in becoming a Trust catcher customer, we receive information from a
         third party that provides automated fraud detection services to Testi
         crafter. We also occasionally collect information that is made publicly
         available on social media websites. You can control how much of your
@@ -205,7 +205,7 @@ const PrivacyPolicy = () => {
         <h2 className="pt-6 pb-4">
           Where and when is information collected from customers and end users?
         </h2>
-        Testi crafter will collect personal information that you submit to us.
+        Trust catcher will collect personal information that you submit to us.
         We may also receive personal information about you from third parties as
         described above.
         <h2 className="pt-6 pb-4">How Do We Use Your Email Address?</h2>
@@ -245,14 +245,14 @@ const PrivacyPolicy = () => {
         information confidential. After a transaction, your private information
         (credit cards, social security numbers, financials, etc.) is never kept
         on file. We cannot, however, ensure or warrant the absolute security of
-        any information you transmit to Testi crafter or guarantee that your
+        any information you transmit to Trust catcher or guarantee that your
         information on the Service may not be accessed, disclosed, altered, or
         destroyed by a breach of any of our physical, technical, or managerial
         safeguards.
         <h2 className="pt-6 pb-4">
           Could my information be transferred to other countries?
         </h2>
-        Testi crafter is incorporated in Polska. Information collected via our
+        Trust catcher is incorporated in Polska. Information collected via our
         website, through direct interactions with you, or from use of our help
         services may be transferred from time to time to our offices or
         personnel, or to third parties, located throughout the world, and may be
@@ -262,7 +262,7 @@ const PrivacyPolicy = () => {
         any of the above, you voluntarily consent to the trans-border transfer
         and hosting of such information.
         <h2 className="pt-6 pb-4">
-          Is the information collected through the Testi crafter Service secure?
+          Is the information collected through the Trust catcher Service secure?
         </h2>
         We take precautions to protect the security of your information. We have
         physical, electronic, and managerial procedures to help safeguard,
@@ -277,7 +277,7 @@ const PrivacyPolicy = () => {
         compliance with that duty.
         <h2 className="pt-6 pb-4">Can I update or correct my information?</h2>
         The rights you have to request updates or corrections to the information
-        Testi crafter collects depend on your relationship with Testi crafter.
+        Trust catcher collects depend on your relationship with Trust catcher.
         Personnel may update or correct their information as detailed in our
         internal company employment policies. Customers have the right to
         request the restriction of certain uses and disclosures of personally
@@ -308,7 +308,7 @@ const PrivacyPolicy = () => {
         you, you may do so by contacting the organization of which you are a
         customer.
         <h2 className="pt-6 pb-4">Personnel</h2>
-        If you are a Testi crafter worker or applicant, we collect information
+        If you are a Trust catcher worker or applicant, we collect information
         you voluntarily provide to us. We use the information collected for
         Human Resources purposes in order to administer benefits to workers and
         screen applicants. You may contact us in order to (1) update or correct
@@ -322,8 +322,8 @@ const PrivacyPolicy = () => {
         <h2 className="pt-6 pb-4">Sale of Business</h2>
         We reserve the right to transfer information to a third party in the
         event of a sale, merger or other transfer of all or substantially all of
-        the assets of Testi crafter or any of its Corporate Affiliates (as
-        defined herein), or that portion of Testi crafter or any of its
+        the assets of Trust catcher or any of its Corporate Affiliates (as
+        defined herein), or that portion of Trust catcher or any of its
         Corporate Affiliates to which the Service relates, or in the event that
         we discontinue our business or file a petition or have filed against us
         a petition in bankruptcy, reorganization or similar proceeding, provided
@@ -334,7 +334,7 @@ const PrivacyPolicy = () => {
         to our Corporate Affiliates. For purposes of this Privacy Policy,
         "Corporate Affiliate" means any person or entity which directly or
         indirectly controls, is controlled by or is under common control with
-        Testi crafter, whether by ownership or otherwise. Any information
+        Trust catcher, whether by ownership or otherwise. Any information
         relating to you that we provide to our Corporate Affiliates will be
         treated by those Corporate Affiliates in accordance with the terms of
         this Privacy Policy.
@@ -374,7 +374,7 @@ const PrivacyPolicy = () => {
         use their own cookies or other methods to collect information about you.
         <h2 className="pt-6 pb-4">Advertising</h2>
         This website may contain third party advertisements and links to third
-        party sites. Testi crafter does not make any representation as to the
+        party sites. Trust catcher does not make any representation as to the
         accuracy or suitability of any of the information contained in those
         advertisements or sites and does not accept any responsibility or
         liability for the conduct or content of those advertisements and sites
@@ -383,7 +383,7 @@ const PrivacyPolicy = () => {
         work hard to make sure that ads are safe, unobtrusive, and as relevant
         as possible. Third party advertisements and links to other sites where
         goods or services are advertised are not endorsements or recommendations
-        by Testi crafter of the third party sites, goods or services. Testi
+        by Trust catcher of the third party sites, goods or services. Testi
         crafter takes no responsibility for the content of any of the ads,
         promises made, or the quality/reliability of the products or services
         offered in all advertisements.
@@ -397,7 +397,7 @@ const PrivacyPolicy = () => {
         advertiser to reach its audience, or to know how many ads were shown and
         how many clicks they received.
         <h2 className="pt-6 pb-4">Cookies</h2>
-        Testi crafter uses "Cookies" to identify the areas of our website that
+        Trust catcher uses "Cookies" to identify the areas of our website that
         you have visited. A Cookie is a small piece of data stored on your
         computer or mobile device by your web browser. We use Cookies to enhance
         the performance and functionality of our website but are non-essential
@@ -452,10 +452,10 @@ const PrivacyPolicy = () => {
         We may display, include or make available third-party content (including
         data, information, applications and other products services) or provide
         links to third-party websites or services ("Third- Party Services"). You
-        acknowledge and agree that Testi crafter shall not be responsible for
+        acknowledge and agree that Trust catcher shall not be responsible for
         any Third-Party Services, including their accuracy, completeness,
         timeliness, validity, copyright compliance, legality, decency, quality
-        or any other aspect thereof. Testi crafter does not assume and shall not
+        or any other aspect thereof. Trust catcher does not assume and shall not
         have any liability or responsibility to you or any other person or
         entity for any Third-Party Services. Third-Party Services and links
         thereto are provided solely as a convenience to you and you access and
@@ -540,7 +540,7 @@ const PrivacyPolicy = () => {
         individuals' personal data that they collect and process. It also raises
         the stakes for compliance by increasing enforcement and imposing greater
         fines for breach. Beyond these facts it's simply the right thing to do.
-        At Testi crafter we strongly believe that your data privacy is very
+        At Trust catcher we strongly believe that your data privacy is very
         important and we already have solid security and privacy practices in
         place that go beyond the requirements of this new regulation.
         <h2 className="pt-6 pb-4">
@@ -548,7 +548,7 @@ const PrivacyPolicy = () => {
           Deletion
         </h2>
         We are committed to helping our customers meet the data subject rights
-        requirements of GDPR. Testi crafter processes or stores all personal
+        requirements of GDPR. Trust catcher processes or stores all personal
         data in fully vetted, DPA compliant vendors. We do store all
         conversation and personal data for up to 6 years unless your account is
         deleted. In which case, we dispose of all data in accordance with our

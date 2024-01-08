@@ -11,19 +11,20 @@ import DefaultCard from "../components/ui/testimonialCards/DefaultCard";
 import QuoteCard from "../components/ui/testimonialCards/QuoteCard";
 import { CarouselComponent } from "../components/ui/testimonialCards/CaruselComponent";
 import Divider from "../components/ui/Divider";
-
 import { Button } from "@/components/ui/button";
 import AddEmailButton from "../components/ui/AddEmailButton";
 import SpeachBubble from "../components/ui/testimonialCards/SpeachBubble";
+import PostCard from "../components/ui/PostCard";
 
 export const metadata: Metadata = {
-  title: "Testi Crafter",
+  title: "Trust Catcher",
   description: "Collect, customize and publish testimonials",
 };
 
 export default async function Home() {
   const posts = await getPosts();
   const session = await getServerSession(authOptions);
+  const fourPosts = posts.slice(0, 4);
 
   return (
     <main>
@@ -102,7 +103,6 @@ export default async function Home() {
             iconAlt="publish icon"
           />
         </div>
-        {/* {session?.data?.user.email} */}
       </header>
       <section className="flex flex-col items-center lg:flex-row sm:items-start container gap-20 md:px-16 pt-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-20 lg:w-1/2">
@@ -200,8 +200,16 @@ export default async function Home() {
           </div>
         </Divider>
       </div>
-      <section className="container  px-28">
+      <section className="container px-28">
         <SpeachBubble />
+      </section>
+      <section className="container md:px-16 mt-20">
+        <h2 className="text-6xl">Recent Posts</h2>
+        <div className="flex  flex-wrap justify-center sm:justify-start gap-12 my-12">
+          {fourPosts.map((post) => {
+            return <PostCard post={post} />;
+          })}
+        </div>
       </section>
     </main>
   );

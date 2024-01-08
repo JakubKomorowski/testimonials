@@ -22,7 +22,7 @@ export const generateMetadata = async ({
   const slug = params.post;
   const post = await getPost(slug);
   return {
-    title: post.metaTitle ?? `${post.title} - Testi Crafter`,
+    title: post.metaTitle ?? `${post.title} - Trust Catcher`,
     description: post.metaDescription ?? "",
   };
 };
