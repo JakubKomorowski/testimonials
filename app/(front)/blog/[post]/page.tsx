@@ -1,6 +1,6 @@
 import TableOfContents from "@/app/components/TableOfContents";
 import { convertDateFormat, parseOutline } from "@/lib/utils";
-import { getCategories, getPost } from "@/sanity/utils";
+import { getCategories, getPost, getPosts } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import Image from "next/image";
 import {
@@ -97,5 +97,12 @@ const Post = async ({ params }: Props) => {
     </main>
   );
 };
+
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    postSlug: post.slug,
+  }));
+}
 
 export default Post;
