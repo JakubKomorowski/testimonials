@@ -191,7 +191,7 @@ export default async function Home() {
           </div>
         </Divider>
       </div>
-      <section className="flex container justify-center px-28">
+      <section className="flex container justify-center px-8 md:px-28">
         <CarouselComponent />
       </section>
       <div className="container md:px-16 my-12">
@@ -201,7 +201,7 @@ export default async function Home() {
           </div>
         </Divider>
       </div>
-      <section className="container px-28">
+      <section className="container md:px-28">
         <SpeachBubble />
       </section>
       <section className="container md:px-16 mt-20">

@@ -14,7 +14,8 @@ export const getPosts = async (): Promise<Post[]> => {
           "alt": mainImage.alt,
           body,
           categories
-      }`
+      }`,
+    { next: { revalidate: 3600 } }
   );
 };
 
@@ -45,7 +46,8 @@ export const getCategories = async (): Promise<Category[]> => {
           _id,
           title,
           description
-      }`
+      }`,
+    { next: { revalidate: 43200 } }
   );
 };
 

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { components } from "@/app/components/PortableTextComponents";
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: { post: string };
@@ -21,6 +22,11 @@ export const generateMetadata = async ({
 }: Props): Promise<Metadata> => {
   const slug = params.post;
   const post = await getPost(slug);
+  if (!post?.title) {
+    return {
+      title: "Page not found",
+    };
+  }
   return {
     title: post.metaTitle ?? `${post.title} - Trust Catcher`,
     description: post.metaDescription ?? "",
@@ -30,10 +36,14 @@ export const generateMetadata = async ({
 const Post = async ({ params }: Props) => {
   const slug = params.post;
   const post = await getPost(slug);
+
+  if (!post?.title) notFound();
   const categories = await getCategories();
+
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
   );
+
   const createdDate = convertDateFormat(post._createdAt);
   const outline = parseOutline(post.headings);
 
@@ -98,11 +108,11 @@ const Post = async ({ params }: Props) => {
   );
 };
 
-// export async function generateStaticParams() {
-//   const posts = await getPosts();
-//   return posts.map((post) => ({
-//     postSlug: post.slug,
-//   }));
-// }
+export async function generateStaticParams() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    post: `${post.slug}`,
+  }));
+}
 
 export default Post;

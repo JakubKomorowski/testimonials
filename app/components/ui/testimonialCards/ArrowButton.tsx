@@ -13,7 +13,7 @@ const ArrowButton = ({ onClick, orientation, disabled }: Props) => {
     <Button
       variant="ghost"
       size="icon"
-      className=" h-12 w-12 rounded-full"
+      className=" h-12 w-12 rounded-full hidden md:flex"
       disabled={disabled}
       onClick={onClick}
     >
