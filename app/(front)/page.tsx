@@ -73,7 +73,7 @@ export default async function Home() {
         <div className="container lg:gap-0 lg:left-1/2 lg:translate-x-[-50%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1160px] mt-20 lg:mt-0">
           <Circle
             icon="collect"
-            text="lorem ipsum lorem ipsum lorem ipsum lorem"
+            text="Gather customer feedback quickly and easily."
             title="Collect"
             iconAlt="collect icon"
           />
@@ -86,7 +86,7 @@ export default async function Home() {
           />
           <Circle
             icon="customize"
-            text="lorem ipsum lorem ipsum lorem ipsum lorem"
+            text="Edit testimonials to match your brand's style."
             title="Customize"
             iconAlt="customize icon"
           />
@@ -99,7 +99,7 @@ export default async function Home() {
           />
           <Circle
             icon="publish"
-            text="lorem ipsum lorem ipsum lorem ipsum lorem"
+            text="Display refined testimonials on your site effortlessly."
             title="Publish"
             iconAlt="publish icon"
           />
