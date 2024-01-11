@@ -13,7 +13,8 @@ export const getPosts = async (): Promise<Post[]> => {
           "mainImage": mainImage.asset->url,
           "alt": mainImage.alt,
           body,
-          categories
+          categories,
+          publishedAt
       }`,
     { next: { revalidate: 3600 } }
   );
@@ -34,7 +35,8 @@ export const getPost = async (slug: string): Promise<Post> => {
               showImage,
               "headings": body[length(style) == 2 && string::startsWith(style, "h")],
               metaTitle,
-              metaDescription
+              metaDescription,
+              publishedAt
      } `,
     { slug }
   );

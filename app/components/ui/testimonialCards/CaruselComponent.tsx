@@ -19,7 +19,10 @@ export function CarouselComponent() {
     >
       <CarouselContent>
         {data.map((el, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 ">
+          <CarouselItem
+            key={index}
+            className="basis-5/6 md:basis-1/2 lg:basis-1/3 "
+          >
             <div className="p-2">
               <QuoteCard
                 image={el.image}

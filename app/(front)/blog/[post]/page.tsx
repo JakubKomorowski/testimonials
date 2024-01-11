@@ -28,8 +28,16 @@ export const generateMetadata = async ({
     };
   }
   return {
-    title: post.metaTitle ?? `${post.title} - Trust Catcher`,
+    title:
+      `${post.metaTitle} - Trust Catcher` ?? `${post.title} - Trust Catcher`,
     description: post.metaDescription ?? "",
+    openGraph: {
+      images: [
+        {
+          url: post.mainImage,
+        },
+      ],
+    },
   };
 };
 
@@ -37,10 +45,10 @@ const Post = async ({ params }: Props) => {
   const slug = params.post;
   const post = await getPost(slug);
 
-  console.log(post.slug);
-
   if (!post?.title) notFound();
   const categories = await getCategories();
+
+  console.log(post.publishedAt);
 
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
