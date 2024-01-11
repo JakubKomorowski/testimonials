@@ -22,6 +22,8 @@ const Signin = () => {
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
 
+  redirect(ROUTES.home);
+
   if (status === "authenticated") redirect(ROUTES.dashboard);
 
   const schema = yup

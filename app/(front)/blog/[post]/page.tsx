@@ -37,6 +37,8 @@ const Post = async ({ params }: Props) => {
   const slug = params.post;
   const post = await getPost(slug);
 
+  console.log(post.slug);
+
   if (!post?.title) notFound();
   const categories = await getCategories();
 

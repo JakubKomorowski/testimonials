@@ -5,7 +5,7 @@ export const ROUTES = {
   pricing: "/pricing",
   blog: "/blog",
   signin: "/auth/signin",
-  signup: "/auth/signin",
+  signup: "/auth/signup",
   verifyRequest: "/auth/verify-request",
   privacyPolicy: "/privacy-policy",
   termsAndConditions: "/terms-and-conditions",
