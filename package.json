@@ -51,6 +51,7 @@
     "react-simple-star-rating": "^5.1.7",
     "resend": "^2.1.0",
     "sanity": "^3.19.1",
+    "sharp": "^0.33.2",
     "stripe": "^14.7.0",
     "styled-components": "^6.1.0",
     "swiper": "^11.0.5",

@@ -1,6 +1,5 @@
 import { getPosts } from "@/sanity/utils";
 import { getServerSession } from "next-auth";
-
 import Image from "next/image";
 import LinkButton from "../components/ui/LinkButton";
 import Circle from "../components/ui/Circle";
@@ -16,14 +15,24 @@ import AddEmailButton from "../components/ui/AddEmailButton";
 import SpeachBubble from "../components/ui/testimonialCards/SpeachBubble";
 import PostCard from "../components/ui/PostCard";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
+import { Post } from "@/types/Post";
+import { sanityFetch } from "@/sanity/lib/client";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("http://localhost:3000"),
   title: "Trust Catcher",
   description: "Collect, customize and publish testimonials",
+  openGraph: {
+    images: "/logo.png",
+  },
 };
 
 export default async function Home() {
-  const posts = await getPosts();
+  // const posts = await getPosts();
+  const posts: Post[] = await sanityFetch({
+    query: getPosts,
+    tags: ["post"],
+  });
   const session = await getServerSession(authOptions);
   const fourPosts = posts.slice(0, 4);
 

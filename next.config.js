@@ -4,7 +4,6 @@ const nextConfig = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ["cdn.sanity.io", "js.stripe.com"],
     remotePatterns: [
       {
         protocol: "https",

@@ -3,26 +3,24 @@ import { client } from "./lib/client";
 import { Post } from "@/types/Post";
 import { Category } from "@/types/Category";
 
-export const getPosts = async (): Promise<Post[]> => {
-  return client.fetch(
-    groq`*[_type == "post"]{
-          _id,
-          _createdAt,
-          title,
-          "slug": slug.current,
-          "mainImage": mainImage.asset->url,
-          "alt": mainImage.alt,
-          body,
-          categories,
-          publishedAt
-      }`,
-    { next: { revalidate: 3600 } }
-  );
-};
+// export const getPosts = async (): Promise<Post[]> => {
+//   return client.fetch(
+//     groq`*[_type == "post"]{
+//           _id,
+//           _createdAt,
+//           title,
+//           "slug": slug.current,
+//           "mainImage": mainImage.asset->url,
+//           "alt": mainImage.alt,
+//           body,
+//           categories,
+//           publishedAt
+//       }`,
+//     { next: { revalidate: 3600 } }
+//   );
+// };
 
-export const getPost = async (slug: string): Promise<Post> => {
-  return client.fetch(
-    groq`*[_type == "post" && slug.current == $slug][0]{
+export const getPost = groq`*[_type == "post" && slug.current == $slug][0]{
               _id,
               _createdAt,
               title,
@@ -37,11 +35,19 @@ export const getPost = async (slug: string): Promise<Post> => {
               metaTitle,
               metaDescription,
               publishedAt
-     } `,
-    { slug },
-    { next: { revalidate: 40 } }
-  );
-};
+     } `;
+
+export const getPosts = groq`*[_type == "post"]{
+          _id,
+          _createdAt,
+          title,
+          "slug": slug.current,
+          "mainImage": mainImage.asset->url,
+          "alt": mainImage.alt,
+          body,
+          categories,
+          publishedAt
+      }`;
 
 export const getCategories = async (): Promise<Category[]> => {
   return client.fetch(

@@ -12,22 +12,30 @@ import {
 import { components } from "@/app/components/PortableTextComponents";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { Post } from "@/types/Post";
+import { sanityFetch } from "@/sanity/lib/client";
 
 type Props = {
   params: { post: string };
 };
 
+export const dynamicParams = true;
 export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
   const slug = params.post;
-  const post = await getPost(slug);
+  const post: Post = await sanityFetch({
+    query: getPost,
+    tags: ["post"],
+    qParams: { slug: slug }, // add slug from next-js params
+  });
   if (!post?.title) {
     return {
       title: "Page not found",
     };
   }
   return {
+    metadataBase: new URL("http://localhost:3000"),
     title: post.metaTitle
       ? `${post.metaTitle} - Trust Catcher`
       : `${post.title} - Trust Catcher`,
@@ -44,11 +52,14 @@ export const generateMetadata = async ({
 
 const Post = async ({ params }: Props) => {
   const slug = params.post;
-  const post = await getPost(slug);
+  const post: Post = await sanityFetch({
+    query: getPost,
+    tags: ["post"],
+    qParams: { slug: slug }, // add slug from next-js params
+  });
 
   if (!post?.title) notFound();
   const categories = await getCategories();
-
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
   );
@@ -118,7 +129,10 @@ const Post = async ({ params }: Props) => {
 };
 
 export async function generateStaticParams() {
-  const posts = await getPosts();
+  const posts: Post[] = await sanityFetch({
+    query: getPosts,
+    tags: ["post"],
+  });
   return posts.map((post) => ({
     post: `${post.slug}`,
   }));

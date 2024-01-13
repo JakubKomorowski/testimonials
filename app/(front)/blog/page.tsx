@@ -1,9 +1,15 @@
 import PostCard from "@/app/components/ui/PostCard";
+import { sanityFetch } from "@/sanity/lib/client";
 import { getPosts } from "@/sanity/utils";
+import { Post } from "@/types/Post";
 import React from "react";
 
+export const dynamicParams = true;
 const Blog = async () => {
-  const posts = await getPosts();
+  const posts: Post[] = await sanityFetch({
+    query: getPosts,
+    tags: ["post"],
+  });
 
   return (
     <>
