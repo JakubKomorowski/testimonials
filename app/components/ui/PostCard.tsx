@@ -1,4 +1,6 @@
+import { sanityFetch } from "@/sanity/lib/client";
 import { getCategories } from "@/sanity/utils";
+import { Category } from "@/types/Category";
 import { Post } from "@/types/Post";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,7 +11,10 @@ interface Props {
 }
 
 const PostCard = async ({ post }: Props) => {
-  const categories = await getCategories();
+  const categories: Category[] = await sanityFetch({
+    query: getCategories,
+    tags: ["post"],
+  });
   const options = {
     year: "numeric",
     month: "short",

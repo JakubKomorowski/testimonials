@@ -4,8 +4,9 @@ import { convertToSlug } from "@/lib/utils";
 import Table from "./ui/sanity/PortableTextTable";
 import Box from "./ui/sanity/PortableTextBox";
 import { Post } from "@/types/Post";
+import { Page } from "@/types/Page";
 
-export const components = (post: Post) => {
+export const components = (post: Post | Page) => {
   const components: PortableTextComponents = {
     types: {
       image: ImageComponent,
@@ -52,7 +53,9 @@ export const components = (post: Post) => {
         </blockquote>
       ),
       //rendering custom styles
-      customTable: ({ children }) => <Table post={post}>{children}</Table>,
+      customTable: ({ children }) => (
+        <Table post={post as Post}>{children}</Table>
+      ),
       highlightBox: ({ children }) => <Box>{children}</Box>,
     },
     list: {

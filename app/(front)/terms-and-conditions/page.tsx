@@ -2,9 +2,15 @@ import { getPage } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import React from "react";
 import { components } from "@/app/components/PortableTextComponents";
+import { Page } from "@/types/Page";
+import { sanityFetch } from "@/sanity/lib/client";
 
 const TermaAndConditions = async () => {
-  const page = await getPage("terms-and-conditions");
+  const page: Page = await sanityFetch({
+    query: getPage,
+    tags: ["page"],
+    qParams: { slug: "terms-and-conditions" },
+  });
   return (
     <main>
       <header className="bg-bg py-12 md:py-16 flex items-center justify-center mb-16">

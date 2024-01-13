@@ -2,9 +2,15 @@ import { getPage } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import React from "react";
 import { components } from "@/app/components/PortableTextComponents";
+import { sanityFetch } from "@/sanity/lib/client";
+import { Page } from "@/types/Page";
 
 const PrivacyPolicy = async () => {
-  const page = await getPage("privacy-policy");
+  const page: Page = await sanityFetch({
+    query: getPage,
+    tags: ["page"],
+    qParams: { slug: "privacy-policy" },
+  });
   return (
     <main>
       <header className="bg-bg py-12 md:py-16 flex items-center justify-center mb-16">

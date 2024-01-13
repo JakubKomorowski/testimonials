@@ -14,6 +14,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Post } from "@/types/Post";
 import { sanityFetch } from "@/sanity/lib/client";
+import { Category } from "@/types/Category";
 
 type Props = {
   params: { post: string };
@@ -35,7 +36,7 @@ export const generateMetadata = async ({
     };
   }
   return {
-    metadataBase: new URL("http://localhost:3000"),
+    metadataBase: new URL("https://www.trustcatcher.com/"),
     title: post.metaTitle
       ? `${post.metaTitle} - Trust Catcher`
       : `${post.title} - Trust Catcher`,
@@ -55,11 +56,14 @@ const Post = async ({ params }: Props) => {
   const post: Post = await sanityFetch({
     query: getPost,
     tags: ["post"],
-    qParams: { slug: slug }, // add slug from next-js params
+    qParams: { slug: slug },
   });
 
   if (!post?.title) notFound();
-  const categories = await getCategories();
+  const categories: Category[] = await sanityFetch({
+    query: getCategories,
+    tags: ["post"],
+  });
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
   );
