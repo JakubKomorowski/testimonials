@@ -48,8 +48,6 @@ const Post = async ({ params }: Props) => {
   if (!post?.title) notFound();
   const categories = await getCategories();
 
-  console.log(post.publishedAt);
-
   const categoryObject = categories.find(
     (el) => el?._id === post?.categories?.[0]._ref
   );
@@ -90,7 +88,7 @@ const Post = async ({ params }: Props) => {
         )}
 
         <div className="flex flex-col xl:flex-row items-center xl:items-start xl:justify-center xl:gap-16 container md:mt-20 mt-12  ">
-          <Accordion
+          {/* <Accordion
             type="single"
             collapsible
             className=" xl:hidden min-w-[300px]"
@@ -101,7 +99,7 @@ const Post = async ({ params }: Props) => {
                 <TableOfContents outline={outline} />
               </AccordionContent>
             </AccordionItem>
-          </Accordion>
+          </Accordion> */}
           <div
             id="toc_container"
             className="border border-gray-300 p-2 rounded-lg h-fit flex-shrink-0 hidden xl:block "

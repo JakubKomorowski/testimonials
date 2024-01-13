@@ -9,6 +9,11 @@ export const components = (post: Post) => {
   const components: PortableTextComponents = {
     types: {
       image: ImageComponent,
+      youtube: (props) => (
+        <div className="mx-[-30px] md:mx-[-40px] my-10 max-w-[780px]  relative aspect-video">
+          <iframe width="100%" height="100%" src={props.value.url}></iframe>
+        </div>
+      ),
     },
     block: {
       //customizing common block types

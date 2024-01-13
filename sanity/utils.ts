@@ -49,7 +49,7 @@ export const getCategories = async (): Promise<Category[]> => {
           title,
           description
       }`,
-    { next: { revalidate: 43200 } }
+    { next: { revalidate: 3600 } }
   );
 };
 
