@@ -38,7 +38,8 @@ export const getPost = async (slug: string): Promise<Post> => {
               metaDescription,
               publishedAt
      } `,
-    { slug }
+    { slug },
+    { next: { revalidate: 40 } }
   );
 };
 

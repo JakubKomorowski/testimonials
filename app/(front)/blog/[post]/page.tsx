@@ -28,8 +28,9 @@ export const generateMetadata = async ({
     };
   }
   return {
-    title:
-      `${post.metaTitle} - Trust Catcher` ?? `${post.title} - Trust Catcher`,
+    title: post.metaTitle
+      ? `${post.metaTitle} - Trust Catcher`
+      : `${post.title} - Trust Catcher`,
     description: post.metaDescription ?? "",
     openGraph: {
       images: [
