@@ -30,7 +30,7 @@ export default defineType({
         { title: "H3", value: "h3" },
         { title: "H4", value: "h4" },
         { title: "Quote", value: "blockquote" },
-        { title: "Custom Table", value: "customTable" },
+        // { title: "Custom Table", value: "customTable" },
         { title: "Highlight Box", value: "highlightBox" },
       ],
       lists: [{ title: "Bullet", value: "bullet" }],
@@ -76,6 +76,9 @@ export default defineType({
     }),
     defineArrayMember({
       type: "youtube",
+    }),
+    defineArrayMember({
+      type: "table",
     }),
   ],
 });

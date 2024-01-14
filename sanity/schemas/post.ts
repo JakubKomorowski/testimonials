@@ -56,11 +56,11 @@ export default defineType({
       title: "Body",
       type: "blockContent",
     }),
-    defineField({
-      name: "customTable",
-      title: "Table",
-      type: "table",
-    }),
+    // defineField({
+    //   name: "customTable",
+    //   title: "Table",
+    //   type: "table",
+    // }),
     defineField({
       name: "showImage",
       title: "Show featured image",

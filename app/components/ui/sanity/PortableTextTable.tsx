@@ -1,19 +1,24 @@
-import { Post } from "@/types/Post";
-import { ReactNode } from "react";
-
-interface Props {
-  children: ReactNode;
-  post: Post;
+interface Rows {
+  _type: string;
+  _key: string;
+  cells: string[];
 }
 
-const Table = ({ children, post }: Props) => {
+interface Props {
+  value: {
+    _type: string;
+    _key: string;
+    rows: Rows[];
+  };
+}
+
+const Table = ({ value }: Props) => {
   return (
     <div className=" overflow-x-auto mx-[-30px] md:mx-[-40px]">
       <table className="border-collapse  w-full ">
-        <caption className="text-xl  pb-4 text-left">{children}</caption>
         <thead className="">
           <tr className="bg-bg text-white rounded-sm">
-            {post.customTable.rows[0].cells.map((el: string, i: number) => (
+            {value.rows[0].cells.map((el: string, i: number) => (
               <th
                 key={i}
                 className="px-4 py-3  text-left last-of-type:rounded-tr-lg first-of-type:rounded-tl-lg"
@@ -24,7 +29,7 @@ const Table = ({ children, post }: Props) => {
           </tr>
         </thead>
         <tbody className="[&>*:nth-child(even)]:bg-gray-100">
-          {post.customTable.rows.map((row: any, i: number) => {
+          {value.rows.map((row: any, i: number) => {
             if (i === 0) return;
             return (
               <tr
@@ -36,7 +41,7 @@ const Table = ({ children, post }: Props) => {
                   <td
                     key={i}
                     className="px-4 py-3 "
-                    data-cell={post.customTable.rows[0].cells[i]}
+                    data-cell={value.rows[0].cells[i]}
                   >
                     {cell}
                   </td>

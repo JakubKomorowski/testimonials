@@ -15,6 +15,7 @@ export const components = (post: Post | Page) => {
           <iframe width="100%" height="100%" src={props.value.url}></iframe>
         </div>
       ),
+      table: (props) => <Table value={props.value} />,
     },
     block: {
       //customizing common block types
@@ -53,9 +54,6 @@ export const components = (post: Post | Page) => {
         </blockquote>
       ),
       //rendering custom styles
-      customTable: ({ children }) => (
-        <Table post={post as Post}>{children}</Table>
-      ),
       highlightBox: ({ children }) => <Box>{children}</Box>,
     },
     list: {
