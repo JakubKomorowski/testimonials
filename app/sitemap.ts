@@ -20,7 +20,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `https://www.trustcatcher.com/`,
     },
     {
-      url: `https://www.trustcatcher.com/${ROUTES.contact}/`,
+      url: `https://www.trustcatcher.com${ROUTES.contact}/`,
     },
     ...postEntries,
   ];
