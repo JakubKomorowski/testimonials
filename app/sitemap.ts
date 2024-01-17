@@ -4,6 +4,8 @@ import { getPosts } from "@/sanity/utils";
 import { Post } from "@/types/Post";
 import { MetadataRoute } from "next";
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts: Post[] = await sanityFetch({
     query: getPosts,
