@@ -3,8 +3,6 @@ import { Montserrat } from "next/font/google";
 import "./globals.css";
 import { getServerSession } from "next-auth";
 import SessionProvider from "./components/providers/SessionProvider";
-
-import NextTopLoader from "nextjs-toploader";
 import FirebaseAuthProvider from "./components/providers/FirebaseAuthProvider";
 import SubscriptionProvider from "./components/providers/SubscriptionProvider";
 import { authOptions } from "./api/auth/[...nextauth]/auth";
@@ -25,7 +23,6 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        {/* <NextTopLoader color="#D2DE32" showSpinner={false} /> */}
         <SessionProvider session={session}>
           <FirebaseAuthProvider>
             <SubscriptionProvider>{children}</SubscriptionProvider>

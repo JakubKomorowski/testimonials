@@ -4,7 +4,6 @@ import { useCollection } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import * as NProgress from "nprogress";
 import { useSession } from "next-auth/react";
 import { useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./ManageAccountButton";
@@ -34,8 +33,6 @@ const ExampleDashboardComp = () => {
       console.log(snapshot);
     });
   }
-
-  console.log(loading);
 
   useEffect(() => {
     setModalOpen(false);
