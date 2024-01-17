@@ -34,7 +34,13 @@ export default async function Home() {
     tags: ["post"],
   });
   const session = await getServerSession(authOptions);
-  const fourPosts = posts.slice(0, 4);
+  const fourPosts = posts
+    .sort(function (a, b) {
+      return (
+        new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime()
+      );
+    })
+    .slice(0, 4);
 
   return (
     <main>
