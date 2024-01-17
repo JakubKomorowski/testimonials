@@ -22,7 +22,7 @@ const Signin = () => {
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
 
-  redirect(ROUTES.home);
+  // redirect(ROUTES.home);
 
   if (status === "authenticated") redirect(ROUTES.dashboard);
 

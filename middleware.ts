@@ -5,8 +5,8 @@ export default withAuth;
 export const config = {
   matcher: [
     "/dashboard",
-    "/auth/forgot-password",
-    "/auth/signup",
-    "/auth/verify-request",
+    // "/auth/forgot-password",
+    // "/auth/signup",
+    // "/auth/verify-request",
   ],
 };
