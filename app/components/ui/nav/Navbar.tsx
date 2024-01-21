@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,23 +14,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Logo from "../Logo";
 import { useState } from "react";
+import { firstTwoLetters } from "@/lib/utils";
 
 const Navbar = () => {
   const { data: session } = useSession();
   const router = useRouter();
   const [open, setOpen] = useState(false);
-
+  const currentRoute = usePathname();
   let name = session?.user?.name as string;
   let mail = session?.user?.email as string;
-  const firstTwoChars = mail?.slice(0, 2).toUpperCase();
-  let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
-  let initials;
-  if (name) {
-    initials = [...name.matchAll(rgx)] || [];
-  }
-  const formatedInitials = (
-    (initials?.shift()?.[1] || "") + (initials?.pop()?.[1] || "")
-  ).toUpperCase();
+  const activeStyle = " before:w-full before:black before:left-[0px]";
 
   return (
     <nav className="container text-white py-4 md:px-16 flex justify-between items-center">
@@ -40,9 +33,11 @@ const Navbar = () => {
           return (
             <li
               key={menu.text}
-              className=" cursor-pointer relative transition-all w-min-content before:left-[50%]
+              className={`cursor-pointer relative transition-all w-min-content before:left-[50%]
             before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300
-            hover:before:w-full hover:before:left-0 hover:before:black"
+            hover:before:w-full hover:before:left-0 hover:before:black ${
+              currentRoute === menu.href ? activeStyle : ""
+            }`}
             >
               <NavItem {...menu} />
             </li>
@@ -64,7 +59,7 @@ const Navbar = () => {
           <div className="w-[156px] flex justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-bg font-medium rounded-full">
-                {formatedInitials || firstTwoChars}
+                {firstTwoLetters(name, mail)}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
                 <DropdownMenuItem className="cursor-pointer">
