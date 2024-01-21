@@ -23,7 +23,6 @@ const Navbar = () => {
   const currentRoute = usePathname();
   let name = session?.user?.name as string;
   let mail = session?.user?.email as string;
-  const activeStyle = " before:w-full before:black before:left-[0px]";
 
   return (
     <nav className="container text-white py-4 md:px-16 flex justify-between items-center">
@@ -33,11 +32,11 @@ const Navbar = () => {
           return (
             <li
               key={menu.text}
-              className={`cursor-pointer relative transition-all w-min-content before:left-[50%]
-            before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300
-            hover:before:w-full hover:before:left-0 hover:before:black ${
-              currentRoute === menu.href ? activeStyle : ""
-            }`}
+              className={` ${
+                currentRoute === menu.href
+                  ? "cursor-pointer relative transition-all w-min-content before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300 hover:before:w-full hover:before:left-0 hover:before:black before:w-full before:black before:left-[0px]"
+                  : "cursor-pointer relative transition-all w-min-content before:left-[50%] before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300 hover:before:w-full hover:before:left-0 hover:before:black"
+              }`}
             >
               <NavItem {...menu} />
             </li>

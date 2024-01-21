@@ -72,7 +72,6 @@ const ExampleDashboardComp = () => {
       }
     });
   };
-  // console.log(auth.currentUser);
   return (
     <>
       {loading ? (
