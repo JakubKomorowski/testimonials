@@ -2,7 +2,17 @@ import PostCard from "@/app/components/ui/PostCard";
 import { sanityFetch } from "@/sanity/lib/client";
 import { getPosts } from "@/sanity/utils";
 import { Post } from "@/types/Post";
+import { Metadata } from "next";
 import React from "react";
+
+export const metadata: Metadata = {
+  metadataBase: new URL("http://localhost:3000"),
+  title: "Trust Catcher - Blog",
+  description: "Collect, customize and publish testimonials",
+  openGraph: {
+    images: "/logo.png",
+  },
+};
 
 export const dynamicParams = true;
 const Blog = async () => {

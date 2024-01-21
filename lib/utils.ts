@@ -53,3 +53,16 @@ export const convertDateFormat = (date: Date) => {
 
 export const classNames = (...classes: string[]) =>
   classes.filter(Boolean).join(" ");
+
+export const firstTwoLetters = (name: string, mail: string) => {
+  const firstTwoChars = mail?.slice(0, 2).toUpperCase();
+  let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
+  let initials;
+  if (name) {
+    initials = [...name.matchAll(rgx)] || [];
+  }
+  const formatedInitials = (
+    (initials?.shift()?.[1] || "") + (initials?.pop()?.[1] || "")
+  ).toUpperCase();
+  return formatedInitials || firstTwoChars;
+};
