@@ -32,13 +32,11 @@ const Navbar = () => {
           return (
             <li
               key={menu.text}
-              className={`cursor-pointer relative transition-all w-min-content before:left-[50%]
-            before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300
-            hover:before:w-full hover:before:left-0 hover:before:black ${
-              currentRoute === menu.href
-                ? "before:w-full before:black before:left-[0px]"
-                : ""
-            }`}
+              className={` ${
+                currentRoute === menu.href
+                  ? "cursor-pointer relative transition-all w-min-content before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300 hover:before:w-full hover:before:left-0 hover:before:black before:w-full before:black before:left-[0px]"
+                  : "cursor-pointer relative transition-all w-min-content before:left-[50%] before:w-0 before:h-px before:absolute before:bottom-0  before:bg-white before:transition-all before:duration-300 hover:before:w-full hover:before:left-0 hover:before:black"
+              }`}
             >
               <NavItem {...menu} />
             </li>
