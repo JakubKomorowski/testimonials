@@ -21,6 +21,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/app/firebase";
 import { useSession } from "next-auth/react";
+import { Session, User } from "next-auth";
+import { Input } from "@nextui-org/react";
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
 
 type Inputs = {
   email: string;
@@ -31,14 +35,21 @@ type Inputs = {
 export default function Signup() {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+  const [isVisible, setIsVisible] = useState(false);
+  const [isVisibleConfirmPassword, setIsVisibleConfirmPassword] =
+    useState(false);
 
+  const { data: session } = useSession();
   const { status } = useSession();
 
   if (status === "authenticated") redirect(ROUTES.dashboard);
+  const toggleVisibility = () => setIsVisible(!isVisible);
+  const toggleVisibilityConfirmPassword = () =>
+    setIsVisibleConfirmPassword(!isVisibleConfirmPassword);
 
   const schema = yup
     .object({
-      email: yup.string().email().required(),
+      email: yup.string().email().required("Email is required"),
       password: yup
         .string()
         .required("Password is required")
@@ -55,11 +66,9 @@ export default function Signup() {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isLoading },
   } = useForm<Inputs>({
     resolver: yupResolver(schema),
-    mode: "onTouched",
-    reValidateMode: "onChange",
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -76,15 +85,13 @@ export default function Signup() {
         alert(errorMessage);
       }
     });
+
     if (userCredential) {
       await sendEmailVerification(userCredential.user);
+      setModalOpen(isSubmitSuccessful);
     }
     return userCredential;
   };
-
-  useEffect(() => {
-    setModalOpen(isSubmitSuccessful);
-  }, [isSubmitSuccessful]);
 
   return (
     <>
@@ -106,20 +113,16 @@ export default function Signup() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <div className="space-y-6">
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
               <div className="mt-2">
-                <input
+                <Input
                   id="email"
                   type="email"
+                  label="Email"
                   autoComplete="email"
-                  placeholder="johnsmith@gmail.com"
+                  variant="bordered"
+                  radius="sm"
+                  isInvalid={!!errors.email}
                   {...register("email", { required: true })}
-                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
                 />
               </div>
               <p className="text-sm text-red-600 pt-1">
@@ -128,23 +131,31 @@ export default function Signup() {
             </div>
 
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Password
-                </label>
-              </div>
               <div className="mt-2">
-                <input
+                <Input
                   id="password"
-                  type="password"
+                  type={isVisible ? "text" : "password"}
+                  label="Password"
                   autoComplete="current-password"
+                  radius="sm"
+                  isInvalid={!!errors.password}
                   {...register("password", {
                     required: true,
                   })}
-                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
+                  variant="bordered"
+                  endContent={
+                    <button
+                      className="focus:outline-none "
+                      type="button"
+                      onClick={toggleVisibility}
+                    >
+                      {isVisible ? (
+                        <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+                      ) : (
+                        <FaRegEye className="h-full text-2xl text-default-400 pointer-events-none" />
+                      )}
+                    </button>
+                  }
                 />
               </div>
               <p className="text-sm text-red-600 pt-1">
@@ -152,23 +163,31 @@ export default function Signup() {
               </p>
             </div>
             <div>
-              <div className="flex items-center justify-between">
-                <label
-                  htmlFor="password"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Confirm password
-                </label>
-              </div>
               <div className="mt-2">
-                <input
+                <Input
                   id="confirmPassword"
-                  type="password"
+                  type={isVisibleConfirmPassword ? "text" : "password"}
                   autoComplete="current-password"
+                  label="Confirm password"
+                  radius="sm"
+                  isInvalid={!!errors.confirmPassword}
                   {...register("confirmPassword", {
                     required: true,
                   })}
-                  className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
+                  variant="bordered"
+                  endContent={
+                    <button
+                      className="focus:outline-none "
+                      type="button"
+                      onClick={toggleVisibilityConfirmPassword}
+                    >
+                      {isVisibleConfirmPassword ? (
+                        <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+                      ) : (
+                        <FaRegEye className="h-full text-2xl text-default-400 pointer-events-none" />
+                      )}
+                    </button>
+                  }
                 />
               </div>
               <p className="text-sm text-red-600 pt-1">
@@ -179,7 +198,7 @@ export default function Signup() {
             <div>
               <button
                 type="submit"
-                className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
               >
                 Sign Up
               </button>

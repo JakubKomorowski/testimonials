@@ -1,6 +1,5 @@
 "use client";
-
-import { signInWithCustomToken } from "firebase/auth";
+import { signInWithCustomToken, updateEmail } from "firebase/auth";
 import { Session } from "next-auth";
 import { useSession } from "next-auth/react";
 import { useEffect } from "react";

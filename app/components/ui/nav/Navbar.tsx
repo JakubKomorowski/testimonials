@@ -25,7 +25,7 @@ const Navbar = () => {
   let mail = session?.user?.email as string;
 
   return (
-    <nav className="container text-white py-4 md:px-16 flex justify-between items-center">
+    <nav className="container text-white py-4 flex justify-between items-center">
       <Logo />
       <ul className="hidden md:flex gap-12 ">
         {MENU_LIST.map((menu) => {
@@ -61,9 +61,11 @@ const Navbar = () => {
                 {firstTwoLetters(name, mail)}
               </DropdownMenuTrigger>
               <DropdownMenuContent>
-                <DropdownMenuItem className="cursor-pointer">
-                  <Link href={ROUTES.dashboard}>Dashboard</Link>
-                </DropdownMenuItem>
+                <Link href={ROUTES.dashboard}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    Dashboard
+                  </DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem className="cursor-pointer">
                   Profile
                 </DropdownMenuItem>

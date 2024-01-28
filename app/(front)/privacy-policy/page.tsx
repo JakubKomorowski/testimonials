@@ -19,7 +19,7 @@ const PrivacyPolicy = async () => {
           <h1 className="text-white leading-[1.15]">{page.title}</h1>
         </div>
       </header>
-      <article className="container md:px-16">
+      <article className="container">
         <PortableText value={page.body} components={components(page)} />
       </article>
     </main>

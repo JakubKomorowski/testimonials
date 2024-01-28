@@ -1,4 +1,5 @@
 "use client";
+import { auth } from "@/app/firebase";
 import { subscriptionRef } from "@/lib/converters/Subscription";
 import { useSubscriptionStore } from "@/store/store";
 import { onSnapshot } from "firebase/firestore";
@@ -28,7 +29,7 @@ const SubscriptionProvider = ({ children }: { children: React.ReactNode }) => {
         console.log("Error getting document:", error);
       }
     );
-  }, [session, setSubscription]);
+  }, [session, setSubscription, auth]);
 
   return <>{children}</>;
 };

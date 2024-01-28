@@ -6,7 +6,7 @@ import Logo from "../Logo";
 const Footer = () => {
   return (
     <div className=" text-white bg-bg mt-4">
-      <div className="container gap-8 md:px-16 py-8 flex flex-col md:flex-row items-center justify-between">
+      <div className="container gap-8 py-8 flex flex-col md:flex-row items-center justify-between">
         <Logo />
         <nav>
           <ul className="flex flex-col md:flex-row gap-4 md:gap-8">

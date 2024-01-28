@@ -8,8 +8,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { ROUTES } from "@/routes";
 import { redirect } from "next/navigation";
-import { Spinner } from "@nextui-org/react";
+import { Input, Spinner } from "@nextui-org/react";
 import Divider from "@/app/components/ui/Divider";
+import { FaRegEye } from "react-icons/fa6";
+import { FaRegEyeSlash } from "react-icons/fa6";
 
 type Inputs = {
   email: string;
@@ -21,6 +23,8 @@ const Signin = () => {
   const router = useRouter();
   const { status } = useSession();
   const [loading, setLoading] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const toggleVisibility = () => setIsVisible(!isVisible);
 
   // redirect(ROUTES.home);
 
@@ -28,7 +32,7 @@ const Signin = () => {
 
   const schema = yup
     .object({
-      email: yup.string().email().required(),
+      email: yup.string().email().required("Email is required"),
       password: yup
         .string()
         .required("Password is required")
@@ -54,7 +58,7 @@ const Signin = () => {
       redirect: false,
     }).then((res) => {
       if (res?.ok) {
-        router.push(ROUTES.dashboard);
+        // router.push(ROUTES.dashboard);
         setLoading(false);
       } else {
         console.log(res?.error);
@@ -82,20 +86,16 @@ const Signin = () => {
           <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
             <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-6 text-gray-900"
-                >
-                  Email address
-                </label>
                 <div className="mt-2">
-                  <input
+                  <Input
                     id="email"
                     type="email"
                     autoComplete="email"
-                    placeholder="johnsmith@gmail.com"
+                    label="Email"
+                    radius="sm"
+                    variant="bordered"
+                    isInvalid={!!errors.email}
                     {...register("email", { required: true })}
-                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
                   />
                 </div>
                 <p className="text-sm text-red-600 pt-1">
@@ -105,12 +105,6 @@ const Signin = () => {
 
               <div>
                 <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium leading-6 text-gray-900"
-                  >
-                    Password
-                  </label>
                   <div className="text-sm">
                     <Link
                       href="forgot-password"
@@ -121,14 +115,30 @@ const Signin = () => {
                   </div>
                 </div>
                 <div className="mt-2">
-                  <input
+                  <Input
                     id="password"
-                    type="password"
                     autoComplete="current-password"
+                    label="Password"
+                    type={isVisible ? "text" : "password"}
+                    variant="bordered"
+                    radius="sm"
+                    isInvalid={!!errors.password}
                     {...register("password", {
                       required: true,
                     })}
-                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
+                    endContent={
+                      <button
+                        className="focus:outline-none "
+                        type="button"
+                        onClick={toggleVisibility}
+                      >
+                        {isVisible ? (
+                          <FaRegEyeSlash className="text-2xl text-default-400 pointer-events-none" />
+                        ) : (
+                          <FaRegEye className="h-full text-2xl text-default-400 pointer-events-none" />
+                        )}
+                      </button>
+                    }
                   />
                 </div>
                 <p className="text-sm text-red-600 pt-1">
@@ -142,7 +152,7 @@ const Signin = () => {
               <div>
                 <button
                   type="submit"
-                  className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                  className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
                 >
                   Sign in
                 </button>
@@ -165,7 +175,7 @@ const Signin = () => {
                   callbackUrl: ROUTES.dashboard,
                 })
               }
-              className="px-3 py-1.5 text-sm font-semibold leading-6 border flex w-full justify-center  gap-8 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150"
+              className="px-3 py-2.5 text-sm font-semibold leading-6 border flex w-full justify-center  gap-8 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150"
             >
               <img
                 className="w-6 h-6"

@@ -62,20 +62,24 @@ export const authOptions: NextAuthOptions = {
       if (session?.user) {
         if (token.sub) {
           session.user.id = token.sub;
+          // session.user.isNewUser = token.isNewUser;
           const firebaseToken = await adminAuth.createCustomToken(token.sub);
           session.firebaseToken = firebaseToken;
-          if (session?.user?.image?.includes("google")) {
-            adminAuth.updateUser(token.sub, { email: session.user.email });
-            adminAuth.updateUser(token.sub, { emailVerified: true });
-          }
+          // if (!token.isNewUser) {
+          //   await adminAuth.updateUser(token.sub, {
+          //     email: session.user.email!,
+          //     emailVerified: true,
+          //   });
+          // }
         }
       }
       return session;
     },
-    jwt: async ({ user, token }) => {
+    jwt: async ({ user, token, isNewUser }) => {
       if (user) {
         token.sub = user.id;
         token.email = user.email;
+        // token.isNewUser = isNewUser;
       }
       return token;
     },

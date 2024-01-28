@@ -19,7 +19,7 @@ const DashboardTopbar = () => {
     <div className="p-3 px-6  border-gray-300 border-b h-fit flex justify-end col-span-3">
       <div className="w-[156px] flex justify-end ">
         <DropdownMenu>
-          <DropdownMenuTrigger className="bg-primary text-lg h-10 w-10 flex items-center justify-center text-bg font-medium rounded-full">
+          <DropdownMenuTrigger className=" outline-none bg-primary  text-lg h-10 w-10 flex items-center justify-center text-bg font-medium rounded-full">
             {firstTwoLetters(name, mail)}
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-6">

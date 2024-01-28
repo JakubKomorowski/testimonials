@@ -45,7 +45,7 @@ export default async function Home() {
   return (
     <main>
       <header className="bg-bg lg:h-[750px] relative mb-0 lg:mb-56 pb-12 lg:pb-0">
-        <div className="max-w-[400px] xs:max-w-[460px] sm:max-w-[560px] lg:max-w-[900px] mx-auto pt-[120px] container">
+        <div className="max-w-[400px] xs:max-w-[460px] sm:max-w-[560px] lg:max-w-[900px] mx-auto pt-[120px] container md:px-4">
           <div className="relative">
             <Image
               src="/handWriting.svg"
@@ -120,7 +120,7 @@ export default async function Home() {
           />
         </div>
       </header>
-      <section className="flex flex-col items-center lg:flex-row sm:items-start container gap-20 md:px-16 pt-20">
+      <section className="flex flex-col items-center lg:flex-row sm:items-start container gap-20 pt-20">
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-10 gap-x-20 lg:w-1/2">
           <div className="max-w-[250px]">
             <p className="text-6xl font-bold pb-2">380%</p>
@@ -175,7 +175,7 @@ export default async function Home() {
           </ol>
         </div>
       </section>
-      <section className="container md:px-16 flex flex-wrap justify-around gap-10 mt-36">
+      <section className="container flex flex-wrap justify-around gap-10 mt-36">
         <DefaultCard
           image="/avatar1.jpg"
           alt="avatar"
@@ -199,7 +199,7 @@ export default async function Home() {
           rating={5}
         />
       </section>
-      <div className="container md:px-16 my-12">
+      <div className="container my-12">
         <Divider>
           <div className="bg-gray-300 w-4 h-4 rounded-full flex justify-center items-center">
             <div className="bg-white w-2 h-2 rounded-full"></div>
@@ -209,7 +209,7 @@ export default async function Home() {
       <section className="flex container justify-center px-8 md:px-28">
         <CarouselComponent />
       </section>
-      <div className="container md:px-16 my-12">
+      <div className="container my-12">
         <Divider>
           <div className="bg-gray-300 w-4 h-4 rounded-full flex justify-center items-center">
             <div className="bg-white w-2 h-2 rounded-full"></div>
@@ -219,7 +219,7 @@ export default async function Home() {
       <section className="container md:px-28">
         <SpeachBubble />
       </section>
-      <section className="container md:px-16 mt-20">
+      <section className="container mt-20">
         <h2 className="text-6xl">Recent Posts</h2>
         <div className="flex  flex-wrap justify-center sm:justify-start gap-12 my-12">
           {fourPosts.map((post, i) => {

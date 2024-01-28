@@ -13,9 +13,14 @@ module.exports = {
     container: {
       center: true,
       padding: {
-        DEFAULT: "16px",
+        DEFAULT: "1rem",
+        md: "4rem",
       },
       screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
         "2xl": "1400px",
       },
     },
@@ -28,15 +33,16 @@ module.exports = {
       },
       colors: {
         bg: "hsl(var(--bg))",
-
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--bg))",
+          hover: "hsl(var(--primary-hover))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

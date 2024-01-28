@@ -1,9 +1,15 @@
 "use client";
-import { addDoc, collection, onSnapshot, query } from "firebase/firestore";
-import { useCollection } from "react-firebase-hooks/firestore";
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  setDoc,
+} from "firebase/firestore";
+import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./ManageAccountButton";
@@ -18,30 +24,53 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Spinner } from "@nextui-org/react";
+import { Button } from "@/components/ui/button";
+import { nanoid } from "nanoid";
 
 const ExampleDashboardComp = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [users, loading, error] = useCollection(query(collection(db, "users")));
   const { data: session } = useSession();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [loadingState, setLoadingState] = useState(false);
   const subscription = useSubscriptionStore((state) => state.subscription);
-  if (auth.currentUser && auth.currentUser.emailVerified) {
-    const docRef = doc(db, "users", auth.currentUser.uid);
-    getDoc(docRef).then((snapshot) => {
-      console.log(snapshot);
+  const docRef = doc(db, "users", session?.user.id);
+
+  const formRef = doc(db, "forms", "iZxoSu3v3hO09IfNlrMe");
+
+  // getDoc(docRef).then((snapshot) => {
+  //   console.log(snapshot.data());
+  // });
+
+  const [formIds] = useDocument(doc(db, "forms", "iZxoSu3v3hO09IfNlrMe"));
+
+  const [value, loading, error] = useDocument(
+    auth.currentUser && doc(db, "users", auth.currentUser.uid)
+  );
+
+  const userForms = value?.data()?.forms;
+  const globalFormIds = formIds?.data()?.ids;
+
+  const handleAddFormId = (id: string) => {
+    setDoc(docRef, {
+      ...value?.data(),
+      forms: [...(userForms || ""), { id: id, name: "Pady" }],
     });
-  }
+    setDoc(formRef, {
+      ...formIds?.data(),
+      ids: [...(globalFormIds || ""), id],
+    });
+  };
 
   useEffect(() => {
     setModalOpen(false);
-    if (!auth.currentUser?.emailVerified) {
+    if (
+      !auth.currentUser?.emailVerified ||
+      !session?.user?.image?.includes("google")
+    ) {
       setModalOpen(true);
     }
   }, [auth.currentUser?.emailVerified]);
-
-  console.log(auth.currentUser);
 
   const createCheckoutSession = async () => {
     if (!session?.user.id) return;
@@ -74,13 +103,14 @@ const ExampleDashboardComp = () => {
   };
   return (
     <>
-      {loading ? (
+      {loading || !auth.currentUser ? (
         <div className=" w-full flex justify-center h-[calc(100vh-80px)]">
           <Spinner color="primary" />
         </div>
       ) : (
         <div>
-          {auth.currentUser?.emailVerified ? (
+          {auth.currentUser?.emailVerified ||
+          session?.user?.image?.includes("google") ? (
             <>
               <button
                 onClick={() => {
@@ -91,6 +121,9 @@ const ExampleDashboardComp = () => {
               </button>
 
               <ManageAccountButton />
+              <Button onClick={() => handleAddFormId(nanoid(10))}>
+                create form
+              </Button>
             </>
           ) : (
             <Dialog open={modalOpen}>
