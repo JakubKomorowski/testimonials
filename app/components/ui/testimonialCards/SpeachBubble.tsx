@@ -19,7 +19,7 @@ export default function SpeachBubble() {
   const [currSlide, setCurrSlide] = useState(0);
 
   useEffect(() => {
-    if (swiperState && thumbsSwiper) {
+    if (swiperState?.controller && thumbsSwiper?.controller) {
       swiperState.controller.control = thumbsSwiper;
       thumbsSwiper.controller.control = swiperState;
     }
@@ -53,7 +53,7 @@ export default function SpeachBubble() {
         <ArrowButton
           onClick={() => swiperRef.current?.slideNext()}
           orientation="next"
-          disabled={swiperState?.slides.length! - 1 === currSlide}
+          disabled={swiperState?.slides?.length! - 1 === currSlide}
         />
       </div>
 

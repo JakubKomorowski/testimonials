@@ -6,6 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { Button } from "@/components/ui/button";
 import { collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
+import FormWrapper from "@/app/components/ui/FormWrapper";
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
@@ -18,6 +19,11 @@ const Dashboard = async () => {
     <div className="bg-white dark:bg-black">
       <ExampleDashboardComp />
       {session?.user.email}
+      <div className="grid grid-cols-8 gap-4 p-7">
+        <div className="col-span-6">
+          <FormWrapper />
+        </div>
+      </div>
     </div>
   );
 };

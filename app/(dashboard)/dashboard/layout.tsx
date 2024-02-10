@@ -2,6 +2,7 @@ import ThemeButton from "@/app/components/ui/ThemeButton";
 import ThemeChangeProvider from "@/app/components/providers/ThemeProvider";
 import DashboardSidebar from "@/app/components/ui/nav/DashboardSidebar";
 import DashboardTopbar from "@/app/components/ui/nav/DashboardTopbar";
+import { Toaster } from "@/components/ui/sonner";
 
 export default async function DashboardLayout({
   children,
@@ -15,6 +16,7 @@ export default async function DashboardLayout({
         <DashboardTopbar />
         <div className="col-span-3 col-start-2 row-start-2">{children}</div>
       </div>
+      <Toaster />
     </ThemeChangeProvider>
   );
 }

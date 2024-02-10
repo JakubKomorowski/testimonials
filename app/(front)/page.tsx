@@ -28,7 +28,6 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  // const posts = await getPosts();
   const posts: Post[] = await sanityFetch({
     query: getPosts,
     tags: ["post"],

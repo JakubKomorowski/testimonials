@@ -10,6 +10,7 @@ export const ROUTES = {
   privacyPolicy: "/privacy-policy",
   termsAndConditions: "/terms-and-conditions",
   contact: "/contact",
+  form: "/form",
   forms: "/dashboard/forms",
   collectingWidgets: "/dashboard/collecting-widgets",
   socialMedia: "/dashboard/social-media",

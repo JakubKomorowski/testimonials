@@ -34,8 +34,8 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222 100% 95%;
  
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 229 11% 29%;
+    --muted: 210 33% 98%;
+    --muted-foreground: 215 49% 93%;
  
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -48,6 +48,9 @@
     --ring: 222.2 84% 4.9%;
  
     --radius: 0.5rem;
+    --container1: 210 33% 98%;
+    --container2: 215 41% 95%;
+    --container3: 215 49% 93%;
   }
  
   .dark {

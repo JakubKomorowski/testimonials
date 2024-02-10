@@ -38,6 +38,9 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        container1: "hsl(var(--container1))",
+        container2: "hsl(var(--container2))",
+        container3: "hsl(var(--container3))",
 
         primary: {
           DEFAULT: "hsl(var(--primary))",

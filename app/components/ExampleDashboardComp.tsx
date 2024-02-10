@@ -4,7 +4,9 @@ import {
   collection,
   onSnapshot,
   query,
+  serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
@@ -52,14 +54,28 @@ const ExampleDashboardComp = () => {
   const globalFormIds = formIds?.data()?.ids;
 
   const handleAddFormId = (id: string) => {
-    setDoc(docRef, {
-      ...value?.data(),
-      forms: [...(userForms || ""), { id: id, name: "Pady" }],
-    });
-    setDoc(formRef, {
-      ...formIds?.data(),
-      ids: [...(globalFormIds || ""), id],
-    });
+    setDoc(
+      docRef,
+      {
+        forms: [
+          ...(userForms || ""),
+          {
+            id: id,
+            title: "Title",
+            questions: ["what do you like", "would you recommend"],
+            createdAt: new Date(),
+          },
+        ],
+      },
+      { merge: true }
+    );
+    setDoc(
+      formRef,
+      {
+        ids: [...(globalFormIds || ""), id],
+      },
+      { merge: true }
+    );
   };
 
   useEffect(() => {
