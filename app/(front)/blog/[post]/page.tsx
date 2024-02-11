@@ -42,6 +42,22 @@ export const generateMetadata = async ({
       : `${post.title} - Trust Catcher`,
     description: post.metaDescription ?? "",
     openGraph: {
+      title: post.metaTitle
+        ? `${post.metaTitle} - Trust Catcher`
+        : `${post.title} - Trust Catcher`,
+      description: post.metaDescription ?? "",
+      images: [
+        {
+          url: post.mainImage,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.metaTitle
+        ? `${post.metaTitle} - Trust Catcher`
+        : `${post.title} - Trust Catcher`,
+      description: post.metaDescription ?? "",
       images: [
         {
           url: post.mainImage,
