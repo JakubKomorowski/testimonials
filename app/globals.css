@@ -51,6 +51,8 @@
     --container1: 210 33% 98%;
     --container2: 215 41% 95%;
     --container3: 215 49% 93%;
+    --button-light: 201 100% 95%;
+    --button-dark: 228 24% 12%;
   }
  
   .dark {

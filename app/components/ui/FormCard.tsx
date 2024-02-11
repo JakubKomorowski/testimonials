@@ -30,7 +30,7 @@ const FormWrapper = () => {
   );
   const forms = user?.data()?.forms;
   const slicedForms = forms
-    .sort(function (a: IForm, b: IForm) {
+    ?.sort(function (a: IForm, b: IForm) {
       return b.createdAt.seconds - a.createdAt.seconds;
     })
     .slice(0, 2);
@@ -64,8 +64,11 @@ const FormWrapper = () => {
             options
           );
           return (
-            <div className="px-3 pt-3 pb-5  rounded-lg bg-container2 flex-1">
-              <div key={el.id} className=" flex-1 flex">
+            <div
+              key={el.id}
+              className="px-3 pt-3 pb-5  rounded-lg bg-container2 flex-1"
+            >
+              <div className=" flex-1 flex">
                 <Image
                   src={`/Icons/form.svg`}
                   alt="form-icon"
@@ -81,13 +84,15 @@ const FormWrapper = () => {
                 <div className="flex gap-2 h-fit ml-auto">
                   <Tooltip content="Edit" color="foreground">
                     <div className="cursor-pointer flex-1 shrink-0">
-                      <Image
-                        src={`/Icons/edit.svg`}
-                        alt="form-icon"
-                        width={30}
-                        height={30}
-                        className="h-6 w-6 object-contain "
-                      />
+                      <Link href={`${ROUTES.forms}/${el.id}`}>
+                        <Image
+                          src={`/Icons/edit.svg`}
+                          alt="form-icon"
+                          width={30}
+                          height={30}
+                          className="h-6 w-6 object-contain "
+                        />
+                      </Link>
                     </div>
                   </Tooltip>
                   <Tooltip content="Delete" color="foreground">

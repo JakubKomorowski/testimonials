@@ -41,6 +41,8 @@ module.exports = {
         container1: "hsl(var(--container1))",
         container2: "hsl(var(--container2))",
         container3: "hsl(var(--container3))",
+        buttonLight: "hsl(var(--button-light))",
+        buttonDark: "hsl(var(--button-dark))",
 
         primary: {
           DEFAULT: "hsl(var(--primary))",
