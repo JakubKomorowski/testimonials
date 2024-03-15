@@ -10,6 +10,10 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { toast } from "sonner";
 import { Tooltip, Button } from "@nextui-org/react";
 
+interface Props {
+  firstTwo?: boolean;
+}
+
 interface IForm {
   id: string;
   title: string;
@@ -23,7 +27,7 @@ const options = {
   day: "numeric",
 } as const;
 
-const FormWrapper = () => {
+const FormCard = ({ firstTwo }: Props) => {
   const { data: session } = useSession();
   const [user, loading, error] = useDocument(
     doc(db, "users", session?.user.id)
@@ -42,6 +46,7 @@ const FormWrapper = () => {
       toast("Failed to copy!");
     }
   };
+  const formmatedForms = firstTwo ? slicedForms : forms;
   return (
     <section className="bg-muted  p-6 rounded-lg w-full ">
       <div className="flex justify-between">
@@ -57,8 +62,8 @@ const FormWrapper = () => {
           />
         </div>
       </div>
-      <div className="flex gap-6 flex-col 2xl:flex-row">
-        {slicedForms?.map((el: IForm) => {
+      <div className="flex gap-6 flex-col 2xl:flex-row flex-wrap ">
+        {formmatedForms?.map((el: IForm) => {
           const time = new Date(el.createdAt.seconds * 1000).toLocaleString(
             "en-US",
             options
@@ -66,7 +71,7 @@ const FormWrapper = () => {
           return (
             <div
               key={el.id}
-              className="px-3 pt-3 pb-5  rounded-lg bg-container2 flex-1"
+              className="px-3 pt-3 pb-5  rounded-lg bg-container2 flex-1 min-w-[400px]"
             >
               <div className=" flex-1 flex">
                 <Image
@@ -135,4 +140,4 @@ const FormWrapper = () => {
   );
 };
 
-export default FormWrapper;
+export default FormCard;

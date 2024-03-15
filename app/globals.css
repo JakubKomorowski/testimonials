@@ -53,6 +53,7 @@
     --container3: 215 49% 93%;
     --button-light: 201 100% 95%;
     --button-dark: 228 24% 12%;
+    --button-dark-hover: 228 24% 5%;
   }
  
   .dark {

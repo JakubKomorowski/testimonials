@@ -12,11 +12,11 @@ export default async function DashboardLayout({
   return (
     <ThemeChangeProvider>
       <div className="min-h-screen grid grid-cols-[300px,1fr,1fr,1fr] grid-rows-[65px,1fr,1fr,1fr]">
-        <Toaster />
         <DashboardSidebar />
         <DashboardTopbar />
         <div className="col-span-3 col-start-2 row-start-2">{children}</div>
       </div>
+      <Toaster />
     </ThemeChangeProvider>
   );
 }

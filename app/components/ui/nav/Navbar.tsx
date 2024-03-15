@@ -70,7 +70,10 @@ const Navbar = () => {
                   Profile
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  onClick={() => signOut()}
+                  onClick={() => {
+                    signOut();
+                    router.push("/");
+                  }}
                   className="cursor-pointer"
                 >
                   Sign Out

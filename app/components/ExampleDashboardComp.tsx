@@ -62,7 +62,42 @@ const ExampleDashboardComp = () => {
           {
             id: id,
             title: "Title",
-            questions: ["what do you like", "would you recommend"],
+            logo: "",
+            accentColor: "#D2DE32",
+            collectVideo: true,
+            collectText: true,
+            collectRating: true,
+            welcomeTitle: "Your opinion matters!",
+            welcomeMessage:
+              "Hey there! 👋 We hope you're loving our [product/service] as much as we loved creating it for you. If you've got a moment, we'd be thrilled to hear your thoughts.",
+            responseTitle: "We'd love to hear from you",
+            responseQuestions: ["what do you like", "would you recommend"],
+            customerTitle: "Almost finished",
+            customerDetails: [
+              {
+                name: "Email address",
+                enabled: true,
+                required: false,
+              },
+              {
+                name: "Photo",
+                enabled: true,
+                required: true,
+              },
+              {
+                name: "Your website",
+                enabled: true,
+                required: false,
+              },
+              {
+                name: "Social link",
+                enabled: true,
+                required: false,
+              },
+            ],
+            thankYouTitle: "Thank you",
+            thankYouText:
+              "Thank you for your trust in us and for taking the time to help us improve and grow.",
             createdAt: new Date(),
           },
         ],
