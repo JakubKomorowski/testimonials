@@ -1,18 +1,14 @@
 "use client";
 import { Tabs, Tab, Input } from "@nextui-org/react";
 import { useFormContext } from "react-hook-form";
-import { doc } from "firebase/firestore";
-import { auth, db } from "@/app/firebase";
-import { useSession } from "next-auth/react";
-import { useDocument } from "react-firebase-hooks/firestore";
 import Loading from "@/app/loading";
-import { IForm } from "@/app/(dashboard)/dashboard/forms/[formId]/page";
+import { Iform } from "@/types/Form";
 interface Props {
-  currentForm: IForm;
+  currentForm: Iform;
+  loading: boolean;
 }
 
-const FormBuilderSidebarRight = ({ currentForm }: Props) => {
-  const { data: session } = useSession();
+const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
   const { register } = useFormContext();
 
   // getDoc(docRef).then((snapshot) => {
@@ -23,10 +19,6 @@ const FormBuilderSidebarRight = ({ currentForm }: Props) => {
   // const [value, loading, error] = useDocument(
   //   auth.currentUser && doc(db, "users", auth.currentUser.uid)
   // );
-
-  const [value, loading, error] = useDocument(
-    doc(db, "users", session?.user.id)
-  );
 
   return (
     <aside className="p-4 row-start-2 row-span-3 border-l border-gray-300">
@@ -42,9 +34,10 @@ const FormBuilderSidebarRight = ({ currentForm }: Props) => {
                   type="text"
                   label="Form name"
                   placeholder={currentForm?.title || "Form name"}
+                  defaultValue={currentForm?.title || "Form name"}
                   variant="bordered"
                   labelPlacement="outside"
-                  {...register("formName")}
+                  {...register("title")}
                 />
               </div>
             </Tab>

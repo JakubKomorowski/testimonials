@@ -71,7 +71,16 @@ const ExampleDashboardComp = () => {
             welcomeMessage:
               "Hey there! 👋 We hope you're loving our [product/service] as much as we loved creating it for you. If you've got a moment, we'd be thrilled to hear your thoughts.",
             responseTitle: "We'd love to hear from you",
-            responseQuestions: ["what do you like", "would you recommend"],
+            responseQuestions: [
+              {
+                question: "how do you?",
+                id: nanoid(6),
+              },
+              {
+                question: "what do you?",
+                id: nanoid(6),
+              },
+            ],
             customerTitle: "Almost finished",
             customerDetails: [
               {

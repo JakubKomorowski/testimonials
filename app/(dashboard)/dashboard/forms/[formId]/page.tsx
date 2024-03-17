@@ -16,16 +16,10 @@ import {
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { Key, useState } from "react";
+import { Iform } from "@/types/Form";
 
 interface Props {
   params: { formId: string };
-}
-
-export interface IForm {
-  id: string;
-  title: string;
-  questions: string[];
-  createdAt: string;
 }
 
 const FormBuilder = ({ params }: Props) => {
@@ -40,37 +34,43 @@ const FormBuilder = ({ params }: Props) => {
 
   const userForms = value?.data()?.forms;
   const currentForm = userForms?.find(
-    (form: IForm) => form.id === params.formId
+    (form: Iform) => form.id === params.formId
   );
 
   const { toast } = useToast();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    const editedForms = await userForms?.map((form: IForm) => {
-      if (form.id === params.formId) {
-        return {
-          ...form,
-          title: data?.formName,
-        };
-      }
-      return form;
-    });
+  const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
+    console.log(data);
+    // const editedForms = await userForms?.map((form: Iform) => {
+    //   if (form.id === params.formId) {
+    //     return {
+    //       ...form,
+    //       title: data?.title,
+    //       // logo: data?.logo,
+    //       // accentColor: data?.accentColor,
+    //       welcomeMessage: data?.welcomeMessage,
+    //       welcomeTitle: data?.welcomeTitle,
+    //       customerDetails: data?.customerDetails,
+    //     };
+    //   }
+    //   return form;
+    // });
 
-    if (data.formName && editedForms) {
-      updateDoc(docRef, {
-        forms: [...editedForms],
-      });
-      toast({
-        title: "Your form name was updated",
-      });
-      return;
-    }
-    // toast error
-    toast({
-      title: "Something went wrong",
-    });
+    // if (editedForms) {
+    //   updateDoc(docRef, {
+    //     forms: [...editedForms],
+    //   });
+    //   toast({
+    //     title: "Your form name was updated",
+    //   });
+    //   return;
+    // }
+    // // toast error
+    // toast({
+    //   title: "Something went wrong",
+    // });
 
-    methods.reset();
+    // methods.reset();
   };
 
   return (
@@ -83,8 +83,12 @@ const FormBuilder = ({ params }: Props) => {
           <FormBuilderSidebar
             currentForm={currentForm}
             tabName={tabName as string}
+            loading={loading}
           />
-          <FormBuilderSidebarRight currentForm={currentForm} />
+          <FormBuilderSidebarRight
+            currentForm={currentForm}
+            loading={loading}
+          />
           <FormBuilderTopbar />
           <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
             <div className="mt-2">
@@ -100,11 +104,7 @@ const FormBuilder = ({ params }: Props) => {
                     <div className="rounded-full bg-slate-400 w-24 h-24 mt-[-48px]"></div>
                   </div>
                 </Tab>
-                <Tab key="Response page" title="Response page">
-                  <button onClick={() => setTabName("Response page")}>
-                    click
-                  </button>
-                </Tab>
+                <Tab key="Response page" title="Response page"></Tab>
                 <Tab
                   key="Customer details page"
                   title="Customer details page"

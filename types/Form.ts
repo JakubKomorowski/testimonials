@@ -9,16 +9,21 @@ export interface Iform {
   welcomeTitle: string;
   welcomeMessage: string;
   responseTitle: string;
-  responseQuestions: string[];
+  responseQuestions: IResponseQuestions[];
   customerTitle: string;
-  customerDetails: ICustomerDetails;
+  customerDetails: ICustomerDetails[];
   thankYouTitle: string;
   thankYouText: string;
   createdAt: string;
 }
 
-interface ICustomerDetails {
+export interface ICustomerDetails {
   name: string;
   enabled: boolean;
   required: boolean;
+}
+
+export interface IResponseQuestions {
+  question: string;
+  id: string;
 }
