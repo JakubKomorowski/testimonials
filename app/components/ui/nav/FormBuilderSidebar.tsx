@@ -6,58 +6,87 @@ import { ICustomerDetails, IResponseQuestions, Iform } from "@/types/Form";
 import Loading from "@/app/loading";
 import { Switch } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
+import { nanoid } from "nanoid";
+import { useFormCreationStore } from "@/store/store";
+import useFormPersist from "react-hook-form-persist";
 
 interface Props {
   currentForm: Iform;
   tabName: string;
   loading: boolean;
+  // selectedChecks: any;
+  // questions: IResponseQuestions[];
+  // setSelectedChecks: any;
+  // setQuestions: any;
 }
 
 const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
-  const { register, control, setValue } = useFormContext();
+  const { register, control, setValue, watch } = useFormContext();
   const [selectedChecks, setSelectedChecks] = useState<ICustomerDetails[]>([]);
   const [questions, setQuestions] = useState<IResponseQuestions[]>([]);
 
-  useEffect(() => {
-    setSelectedChecks(currentForm?.customerDetails);
-  }, [currentForm?.customerDetails]);
+  const welcomeTitle =
+    currentForm?.welcomeTitle &&
+    watch("welcomeTitle", currentForm?.welcomeTitle);
+
+  const responseQuestions: IResponseQuestions[] =
+    currentForm?.responseQuestions &&
+    watch("responseQuestions", currentForm?.responseQuestions);
+
+  const customerDetails: ICustomerDetails[] =
+    currentForm?.customerDetails &&
+    watch("customerDetails", currentForm?.customerDetails);
 
   useEffect(() => {
-    setQuestions(currentForm?.responseQuestions);
-  }, [currentForm?.responseQuestions]);
+    setValue("responseQuestions", currentForm?.responseQuestions);
+    setValue("customerDetails", currentForm?.customerDetails);
+  }, [loading]);
 
-  const handleQuestions = (
+  // useEffect(() => {
+  //   setSelectedChecks(currentForm?.customerDetails);
+  // }, [currentForm?.customerDetails]);
+
+  const handleEditQuestion = (
     e: ChangeEvent<HTMLInputElement>,
     q: IResponseQuestions
   ) => {
-    const changedQuestions = questions.map((item) => {
+    const changedQuestions = responseQuestions?.map((item) => {
       if (item.id === q.id) {
         item.question = e.target.value;
       }
       return item;
     });
-    setQuestions([...changedQuestions]);
-    setValue("responseQuestions", questions);
+    setValue("responseQuestions", [...changedQuestions]);
   };
 
-  console.log(questions);
+  const handleAddQuestion = () =>
+    setValue("responseQuestions", [
+      ...responseQuestions,
+      { id: nanoid(6), question: "" },
+    ]);
+
+  const handleDeleteQuestion = (id: string) =>
+    setValue(
+      "responseQuestions",
+      responseQuestions?.filter((item) => item.id !== id)
+    );
 
   const handleSwitch = (name: string) => {
-    const switched = selectedChecks?.map((el: ICustomerDetails) => {
+    const switched = customerDetails?.map((el: ICustomerDetails) => {
       if (el.name === name) {
         return {
           ...el,
           enabled: !el.enabled,
-          required: el.enabled === true ? !el.required : false,
+          required: el.enabled === false ? false : !el.required,
         };
       }
       return el;
     });
-    setSelectedChecks([...switched]);
+    setValue("customerDetails", [...switched]);
   };
 
   const handleSelect = (name: string) => {
-    const selected = selectedChecks?.map((el: ICustomerDetails) => {
+    const selected = customerDetails?.map((el: ICustomerDetails) => {
       if (el.name === name) {
         return {
           ...el,
@@ -66,12 +95,8 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
       }
       return el;
     });
-    setSelectedChecks([...selected]);
+    setValue("customerDetails", [...selected]);
   };
-
-  useEffect(() => {
-    setValue("customerDetails", selectedChecks);
-  }, [selectedChecks, setValue]);
 
   return (
     <aside className=" p-4  px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">
@@ -89,30 +114,30 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
       {loading ? (
         <Loading />
       ) : tabName === "Welcome page" ? (
-        <>
-          <div className="mt-8 flex flex-col gap-4">
-            <Input
-              radius="md"
-              type="text"
-              label="Welcome page title"
-              defaultValue={currentForm?.welcomeTitle}
-              variant="bordered"
-              labelPlacement="outside"
-              {...register("welcomeTitle")}
-            />
-            <Textarea
-              radius="md"
-              type="text"
-              label="Welcome page title"
-              defaultValue={currentForm?.welcomeMessage}
-              variant="bordered"
-              labelPlacement="outside"
-              {...register("welcomeMessage")}
-            />
-          </div>
-        </>
+        <div className="mt-8 flex flex-col gap-4" key={1}>
+          <Input
+            radius="md"
+            type="text"
+            label="Welcome page title"
+            // defaultValue={currentForm?.welcomeTitle}
+            // defaultValue={welcomeTitle}
+            value={welcomeTitle}
+            variant="bordered"
+            labelPlacement="outside"
+            {...register("welcomeTitle")}
+          />
+          <Textarea
+            radius="md"
+            type="text"
+            label="Welcome page title"
+            defaultValue={currentForm?.welcomeMessage}
+            variant="bordered"
+            labelPlacement="outside"
+            {...register("welcomeMessage")}
+          />
+        </div>
       ) : tabName === "Response page" ? (
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-8 flex flex-col gap-4" key={2}>
           <Input
             radius="md"
             type="text"
@@ -122,7 +147,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
             labelPlacement="outside"
             {...register("responseTitle")}
           />
-          {currentForm?.responseQuestions.map((el: IResponseQuestions, i) => {
+          {responseQuestions?.map((el: IResponseQuestions, i) => {
             return (
               <div key={el.id}>
                 <Controller
@@ -134,10 +159,26 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
                       type="text"
                       label={`Question ${i + 1}`}
                       defaultValue={el.question}
-                      onChange={(e) => handleQuestions(e, el)}
+                      onChange={(e) => handleEditQuestion(e, el)}
                       value={el.question}
                       variant="bordered"
                       labelPlacement="outside"
+                      endContent={
+                        <Tooltip content="Remove question">
+                          <button
+                            className="focus:outline-none"
+                            type="button"
+                            onClick={() => handleDeleteQuestion(el.id)}
+                          >
+                            <Image
+                              src="/Icons/trash.svg"
+                              alt="arrow-right"
+                              width={22}
+                              height={22}
+                            />
+                          </button>
+                        </Tooltip>
+                      }
                     />
                   )}
                 />
@@ -150,6 +191,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
               color="default"
               aria-label="Add question"
               className="ml-auto"
+              onClick={() => handleAddQuestion()}
             >
               <Image
                 src="/Icons/plus.svg"
@@ -161,19 +203,18 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           </Tooltip>
         </div>
       ) : tabName === "Customer details page" ? (
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="flex mt-8  flex-col gap-4" key={3}>
           <Input
             radius="md"
             type="text"
             label="Customer details page title"
-            // defaultValue={currentForm?.customerTitle}
+            defaultValue={currentForm?.customerTitle}
             variant="bordered"
             labelPlacement="outside"
-            defaultValue={"co jest"}
             {...register("customerTitle")}
           />
           {currentForm?.customerDetails.map(({ name }) => {
-            const isChecked = selectedChecks.find(
+            const isChecked = customerDetails.find(
               (item: ICustomerDetails) => name === item.name
             );
             return (
@@ -215,12 +256,12 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           })}
         </div>
       ) : (
-        <div className="mt-8 flex flex-col gap-4">
+        <div className="mt-8 flex flex-col gap-4" key={4}>
           <Input
             radius="md"
             type="text"
             label="Thank you page title"
-            defaultValue={currentForm?.thankYouTitle || "Welcome title"}
+            defaultValue={currentForm?.thankYouTitle || "Than you title"}
             variant="bordered"
             labelPlacement="outside"
             {...register("thankYouTitle")}

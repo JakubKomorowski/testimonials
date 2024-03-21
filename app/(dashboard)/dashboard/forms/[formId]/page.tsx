@@ -15,8 +15,9 @@ import {
   FieldValues,
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { Key, useState } from "react";
-import { Iform } from "@/types/Form";
+import { Key, useEffect, useMemo, useState } from "react";
+import { ICustomerDetails, IResponseQuestions, Iform } from "@/types/Form";
+import { useFormCreationStore } from "@/store/store";
 
 interface Props {
   params: { formId: string };
@@ -27,6 +28,16 @@ const FormBuilder = ({ params }: Props) => {
   const methods = useForm();
   const docRef = doc(db, "users", session?.user.id);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
+
+  useEffect(() => {
+    const subscription = methods.watch((value, { name, type }) =>
+      console.log(value, name, type)
+    );
+    return () => subscription.unsubscribe();
+  }, [methods.watch]);
+
+  // console.log(form);
+  // const setForm = useFormCreationStore((state) => state.setForm);
 
   const [value, loading, error] = useDocument(
     doc(db, "users", session?.user.id)
@@ -84,6 +95,10 @@ const FormBuilder = ({ params }: Props) => {
             currentForm={currentForm}
             tabName={tabName as string}
             loading={loading}
+            // selectedChecks={selectedChecks}
+            // questions={questions}
+            // setSelectedChecks={setSelectedChecks}
+            // setQuestions={setQuestions}
           />
           <FormBuilderSidebarRight
             currentForm={currentForm}
