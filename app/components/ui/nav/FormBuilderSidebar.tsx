@@ -1,50 +1,77 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import Image from "next/image";
-import { Button, Input, Textarea, Tooltip } from "@nextui-org/react";
+import {
+  Button,
+  Input,
+  InputProps,
+  Textarea,
+  Tooltip,
+} from "@nextui-org/react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ICustomerDetails, IResponseQuestions, Iform } from "@/types/Form";
 import Loading from "@/app/loading";
 import { Switch } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { nanoid } from "nanoid";
-import { useFormCreationStore } from "@/store/store";
-import useFormPersist from "react-hook-form-persist";
 
 interface Props {
   currentForm: Iform;
   tabName: string;
   loading: boolean;
-  // selectedChecks: any;
-  // questions: IResponseQuestions[];
-  // setSelectedChecks: any;
-  // setQuestions: any;
 }
+
+export const inputConfig: InputProps = {
+  radius: "md",
+  type: "text",
+  variant: "bordered",
+  labelPlacement: "outside",
+};
 
 const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
   const { register, control, setValue, watch } = useFormContext();
-  const [selectedChecks, setSelectedChecks] = useState<ICustomerDetails[]>([]);
-  const [questions, setQuestions] = useState<IResponseQuestions[]>([]);
 
   const welcomeTitle =
     currentForm?.welcomeTitle &&
     watch("welcomeTitle", currentForm?.welcomeTitle);
 
+  const welcomeMessage =
+    currentForm?.welcomeMessage &&
+    watch("welcomeMessage", currentForm?.welcomeMessage);
+
+  const responseTitle =
+    currentForm?.responseTitle &&
+    watch("responseTitle", currentForm?.responseTitle);
+
   const responseQuestions: IResponseQuestions[] =
     currentForm?.responseQuestions &&
     watch("responseQuestions", currentForm?.responseQuestions);
+
+  const customerTitle =
+    currentForm?.customerTitle &&
+    watch("customerTitle", currentForm?.customerTitle);
 
   const customerDetails: ICustomerDetails[] =
     currentForm?.customerDetails &&
     watch("customerDetails", currentForm?.customerDetails);
 
-  useEffect(() => {
-    setValue("responseQuestions", currentForm?.responseQuestions);
-    setValue("customerDetails", currentForm?.customerDetails);
-  }, [loading]);
+  const thankYouTitle =
+    currentForm?.thankYouTitle &&
+    watch("thankYouTitle", currentForm?.thankYouTitle);
 
-  // useEffect(() => {
-  //   setSelectedChecks(currentForm?.customerDetails);
-  // }, [currentForm?.customerDetails]);
+  const thankYouText =
+    currentForm?.thankYouText &&
+    watch("thankYouText", currentForm?.thankYouText);
+
+  useEffect(() => {
+    setValue("welcomeTitle", currentForm?.welcomeTitle);
+    setValue("welcomeMessage", currentForm?.welcomeMessage);
+    setValue("responseTitle", currentForm?.responseTitle);
+    setValue("responseQuestions", currentForm?.responseQuestions);
+    setValue("customerTitle", currentForm?.customerTitle);
+    setValue("customerDetails", currentForm?.customerDetails);
+    setValue("thankYouTitle", currentForm?.thankYouTitle);
+    setValue("thankYouText", currentForm?.thankYouText);
+  }, [loading]);
 
   const handleEditQuestion = (
     e: ChangeEvent<HTMLInputElement>,
@@ -100,7 +127,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
 
   return (
     <aside className=" p-4  px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">
-      <div className="mb-12 flex gap-2 items-center">
+      <div className="mb-16 flex gap-2 items-center">
         <Image
           src={`/Icons/marker.svg`}
           alt="form-icon"
@@ -110,41 +137,30 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
         />
         <p className="text-2xl">Form Creation</p>
       </div>
-      <div className="mt-12 text-xl">{tabName}</div>
+      <div className="text-xl">{tabName}</div>
       {loading ? (
         <Loading />
       ) : tabName === "Welcome page" ? (
         <div className="mt-8 flex flex-col gap-4" key={1}>
           <Input
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Welcome page title"
-            // defaultValue={currentForm?.welcomeTitle}
-            // defaultValue={welcomeTitle}
             value={welcomeTitle}
-            variant="bordered"
-            labelPlacement="outside"
             {...register("welcomeTitle")}
           />
           <Textarea
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Welcome page title"
-            defaultValue={currentForm?.welcomeMessage}
-            variant="bordered"
-            labelPlacement="outside"
+            value={welcomeMessage}
             {...register("welcomeMessage")}
           />
         </div>
       ) : tabName === "Response page" ? (
         <div className="mt-8 flex flex-col gap-4" key={2}>
           <Input
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Response page title"
-            defaultValue={currentForm?.responseTitle}
-            variant="bordered"
-            labelPlacement="outside"
+            value={responseTitle}
             {...register("responseTitle")}
           />
           {responseQuestions?.map((el: IResponseQuestions, i) => {
@@ -155,14 +171,11 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
                   name="responseQuestions"
                   render={({ field }) => (
                     <Input
-                      radius="md"
-                      type="text"
+                      {...inputConfig}
                       label={`Question ${i + 1}`}
                       defaultValue={el.question}
                       onChange={(e) => handleEditQuestion(e, el)}
                       value={el.question}
-                      variant="bordered"
-                      labelPlacement="outside"
                       endContent={
                         <Tooltip content="Remove question">
                           <button
@@ -205,12 +218,9 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
       ) : tabName === "Customer details page" ? (
         <div className="flex mt-8  flex-col gap-4" key={3}>
           <Input
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Customer details page title"
-            defaultValue={currentForm?.customerTitle}
-            variant="bordered"
-            labelPlacement="outside"
+            value={customerTitle}
             {...register("customerTitle")}
           />
           {currentForm?.customerDetails.map(({ name }) => {
@@ -258,21 +268,15 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
       ) : (
         <div className="mt-8 flex flex-col gap-4" key={4}>
           <Input
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Thank you page title"
-            defaultValue={currentForm?.thankYouTitle || "Than you title"}
-            variant="bordered"
-            labelPlacement="outside"
+            value={thankYouTitle}
             {...register("thankYouTitle")}
           />
           <Textarea
-            radius="md"
-            type="text"
+            {...inputConfig}
             label="Thank you page text"
-            defaultValue={currentForm?.thankYouText}
-            variant="bordered"
-            labelPlacement="outside"
+            value={thankYouText}
             {...register("thankYouText")}
           />
         </div>

@@ -15,9 +15,8 @@ import {
   FieldValues,
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { Key, useEffect, useMemo, useState } from "react";
-import { ICustomerDetails, IResponseQuestions, Iform } from "@/types/Form";
-import { useFormCreationStore } from "@/store/store";
+import { Key, useState } from "react";
+import { Iform } from "@/types/Form";
 
 interface Props {
   params: { formId: string };
@@ -29,14 +28,6 @@ const FormBuilder = ({ params }: Props) => {
   const docRef = doc(db, "users", session?.user.id);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
 
-  useEffect(() => {
-    const subscription = methods.watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [methods.watch]);
-
-  // console.log(form);
   // const setForm = useFormCreationStore((state) => state.setForm);
 
   const [value, loading, error] = useDocument(
@@ -51,37 +42,35 @@ const FormBuilder = ({ params }: Props) => {
   const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
-    console.log(data);
-    // const editedForms = await userForms?.map((form: Iform) => {
-    //   if (form.id === params.formId) {
-    //     return {
-    //       ...form,
-    //       title: data?.title,
-    //       // logo: data?.logo,
-    //       // accentColor: data?.accentColor,
-    //       welcomeMessage: data?.welcomeMessage,
-    //       welcomeTitle: data?.welcomeTitle,
-    //       customerDetails: data?.customerDetails,
-    //     };
-    //   }
-    //   return form;
-    // });
+    // console.log(data);
 
-    // if (editedForms) {
-    //   updateDoc(docRef, {
-    //     forms: [...editedForms],
-    //   });
-    //   toast({
-    //     title: "Your form name was updated",
-    //   });
-    //   return;
-    // }
-    // // toast error
-    // toast({
-    //   title: "Something went wrong",
-    // });
+    const editedForms = await userForms?.map((form: Iform) => {
+      if (form.id === params.formId) {
+        return {
+          ...form,
+          // logo: data?.logo,
+          // accentColor: data?.accentColor,
+          ...data,
+        };
+      }
+      return form;
+    });
 
-    // methods.reset();
+    if (editedForms) {
+      updateDoc(docRef, {
+        forms: [...editedForms],
+      });
+      toast({
+        title: "Form successfully updated",
+      });
+      return;
+    }
+    // toast error
+    toast({
+      title: "Something went wrong",
+    });
+
+    methods.reset();
   };
 
   return (
@@ -95,10 +84,6 @@ const FormBuilder = ({ params }: Props) => {
             currentForm={currentForm}
             tabName={tabName as string}
             loading={loading}
-            // selectedChecks={selectedChecks}
-            // questions={questions}
-            // setSelectedChecks={setSelectedChecks}
-            // setQuestions={setQuestions}
           />
           <FormBuilderSidebarRight
             currentForm={currentForm}
