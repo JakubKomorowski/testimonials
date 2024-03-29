@@ -54,7 +54,6 @@ const Navbar = () => {
             </Button>
           </div>
         ) : (
-          // <div className="w-[156px] flex justify-end"></div>
           <div className="w-[156px] flex justify-end">
             <DropdownMenu>
               <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-bg font-medium rounded-full">
