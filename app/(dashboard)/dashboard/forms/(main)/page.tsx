@@ -1,5 +1,5 @@
 "use client";
-import FormCard from "@/app/components/ui/FormCard";
+import FormCard from "@/app/components/molecules/FormCard";
 import React from "react";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/routes";

@@ -1,8 +1,8 @@
 import { PortableTextComponents } from "@portabletext/react";
-import ImageComponent from "./ui/sanity/PortableTextImage";
+import ImageComponent from "./PortableTextImage";
 import { convertToSlug } from "@/lib/utils";
-import Table from "./ui/sanity/PortableTextTable";
-import Box from "./ui/sanity/PortableTextBox";
+import Table from "./PortableTextTable";
+import Box from "./PortableTextBox";
 import { Post } from "@/types/Post";
 import { Page } from "@/types/Page";
 

@@ -22,7 +22,12 @@ export const FOOTER_MENU_LIST = [
 ];
 
 export const MENU_LIST = [
-  // { text: "Pricing", href: "/pricing" },
+  { text: "Contact", href: ROUTES.contact },
+  { text: "Blog", href: ROUTES.blog },
+];
+
+export const MENU_LIST_MOBILE = [
+  { text: "Home", href: ROUTES.home },
   { text: "Contact", href: ROUTES.contact },
   { text: "Blog", href: ROUTES.blog },
 ];

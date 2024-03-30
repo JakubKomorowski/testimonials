@@ -10,7 +10,7 @@ const FormBuilderTopbar = () => {
       <div className="w-[156px] flex justify-end ">
         <div className="px-1">
           <Link href={ROUTES.forms}>
-            <Button className="w-full rounded-medium bg-buttonDark text-white hover:bg-buttonDarkHover">
+            <Button variant={"secondary"} className="w-full rounded-medium ">
               Cancel
             </Button>
           </Link>

@@ -196,12 +196,13 @@ export default function Signup() {
             </div>
 
             <div>
-              <button
+              <Button
+                variant={"secondary"}
                 type="submit"
-                className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                className=" w-full justify-center rounded-md  py-5 "
               >
                 Sign Up
-              </button>
+              </Button>
             </div>
           </div>
         </div>

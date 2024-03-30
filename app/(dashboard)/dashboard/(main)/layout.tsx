@@ -1,7 +1,7 @@
-import ThemeButton from "@/app/components/ui/ThemeButton";
+import ThemeButton from "@/app/components/atoms/ThemeButton";
 import ThemeChangeProvider from "@/app/components/providers/ThemeProvider";
-import DashboardSidebar from "@/app/components/ui/nav/DashboardSidebar";
-import DashboardTopbar from "@/app/components/ui/nav/DashboardTopbar";
+import DashboardSidebar from "@/app/components/organisms/DashboardSidebar";
+import DashboardTopbar from "@/app/components/organisms/DashboardTopbar";
 import { Toaster } from "@/components/ui/toaster";
 import ProgressBarProvider from "@/app/components/providers/ProgressBarProvider";
 

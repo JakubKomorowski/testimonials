@@ -1,7 +1,7 @@
 import { getPage } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
 import React from "react";
-import { components } from "@/app/components/PortableTextComponents";
+import { components } from "@/app/components/sanity/PortableTextComponents";
 import { sanityFetch } from "@/sanity/lib/client";
 import { Page } from "@/types/Page";
 

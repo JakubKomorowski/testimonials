@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import Input from "@/app/components/ui/Input";
+import { Input, Textarea } from "@nextui-org/react";
 import { PaperPlaneIcon } from "@radix-ui/react-icons";
 import { contactFormSchema } from "./schema";
 import { sendEmail } from "@/app/actions/sendEmail";
@@ -48,33 +48,38 @@ const Contact = () => {
           <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
             <Input
               label="Your name"
-              name="name"
               type="name"
               placeholder="John Smith"
+              radius="sm"
+              variant="bordered"
+              {...register("name", { required: true })}
             />
+            <p className="text-sm text-red-600 pt-1">
+              {errors.name?.message as string}
+            </p>
             <Input
               label="Your email"
-              name="email"
               type="email"
               placeholder="johnsmith@gmail.com"
+              radius="sm"
+              variant="bordered"
+              className="mt-4"
+              {...register("email", { required: true })}
             />
+            <p className="text-sm text-red-600 pt-1">
+              {errors.email?.message as string}
+            </p>
             <div className="w-full mt-4">
               <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium leading-4 text-gray-900"
-                >
-                  Your message
-                </label>
-                <div className="mt-2">
-                  <textarea
-                    id="message"
-                    autoComplete="message"
-                    placeholder="Message"
-                    {...register("message", { required: true })}
-                    className="block w-full rounded-md border-0 py-1.5 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:primary-foreground sm:text-sm sm:leading-6"
-                  />
-                </div>
+                <Textarea
+                  id="message"
+                  label="Your message"
+                  autoComplete="message"
+                  placeholder="Message"
+                  variant="bordered"
+                  {...register("message", { required: true })}
+                />
+
                 <p className="text-sm text-red-600 pt-1">
                   {errors.message?.message as string}
                 </p>

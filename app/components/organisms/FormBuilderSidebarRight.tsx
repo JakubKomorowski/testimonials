@@ -32,43 +32,36 @@ const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
 
   return (
     <aside className="p-4 row-start-2 row-span-3 border-l border-gray-300">
-      {loading ? (
-        <Loading />
-      ) : (
-        <>
-          <Tabs className="" radius="sm" aria-label="Options" fullWidth>
-            <Tab key="settings" title="Settings">
-              <div className="mt-12">
-                <Input
-                  {...inputConfig}
-                  label="Form name"
-                  value={title}
-                  {...register("title")}
+      <>
+        <Tabs className="" radius="sm" aria-label="Options" fullWidth>
+          <Tab key="settings" title="Settings">
+            <div className="mt-12">
+              <Input
+                {...inputConfig}
+                label="Form name"
+                value={title}
+                {...register("title")}
+              />
+            </div>
+          </Tab>
+          <Tab key="design" title="Design">
+            <div className="mt-5">
+              <p className="text-sm cursor-default">Accent color</p>
+              <div className="flex items-center gap-2 mt-1.5 border-solid border-2 border-gray-200 rounded-xl px-3 py-1">
+                <input
+                  id="accentColor"
+                  type="color"
+                  value={accentColor}
+                  {...register("accentColor")}
                 />
+                <label htmlFor="accentColor" className="text-sm cursor-pointer">
+                  {accentColor}
+                </label>
               </div>
-            </Tab>
-            <Tab key="design" title="Design">
-              <div className="mt-5">
-                <p className="text-sm cursor-default">Accent color</p>
-                <div className="flex items-center gap-2 mt-1.5 border-solid border-2 border-gray-200 rounded-xl px-3 py-1">
-                  <input
-                    id="accentColor"
-                    type="color"
-                    value={accentColor}
-                    {...register("accentColor")}
-                  />
-                  <label
-                    htmlFor="accentColor"
-                    className="text-sm cursor-pointer"
-                  >
-                    {accentColor}
-                  </label>
-                </div>
-              </div>
-            </Tab>
-          </Tabs>
-        </>
-      )}
+            </div>
+          </Tab>
+        </Tabs>
+      </>
     </aside>
   );
 };

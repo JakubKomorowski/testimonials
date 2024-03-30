@@ -1,4 +1,4 @@
-import PostCard from "@/app/components/ui/PostCard";
+import PostCard from "@/app/components/molecules/PostCard";
 import Loading from "@/app/loading";
 import { sanityFetch } from "@/sanity/lib/client";
 import { getPosts } from "@/sanity/utils";

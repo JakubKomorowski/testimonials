@@ -1,4 +1,4 @@
-import TableOfContents from "@/app/components/TableOfContents";
+import TableOfContents from "@/app/components/molecules/TableOfContents";
 import { convertDateFormat, parseOutline } from "@/lib/utils";
 import { getCategories, getPost, getPosts } from "@/sanity/utils";
 import { PortableText } from "@portabletext/react";
@@ -9,7 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import { components } from "@/app/components/PortableTextComponents";
+import { components } from "@/app/components/sanity/PortableTextComponents";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Post } from "@/types/Post";

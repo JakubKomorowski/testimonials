@@ -1,5 +1,5 @@
 import { FC } from "react";
-import RatingComponent from "./RatingComponent";
+import RatingComponent from "../atoms/RatingComponent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DefaultCard } from "@/types/TestimonialCard";
 

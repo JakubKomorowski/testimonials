@@ -9,9 +9,10 @@ import * as yup from "yup";
 import { ROUTES } from "@/routes";
 import { redirect } from "next/navigation";
 import { Input, Spinner } from "@nextui-org/react";
-import Divider from "@/app/components/ui/Divider";
+import Divider from "@/app/components/atoms/Divider";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { Button } from "@/components/ui/button";
 
 type Inputs = {
   email: string;
@@ -150,12 +151,13 @@ const Signin = () => {
               </div>
 
               <div>
-                <button
+                <Button
                   type="submit"
-                  className="cursor-pointer flex w-full justify-center rounded-md bg-bg px-3 py-2.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-muted-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:bg-muted-foreground transition duration-150"
+                  variant={"secondary"}
+                  className="w-full py-5"
                 >
                   Sign in
-                </button>
+                </Button>
               </div>
               <p className="mt-10 text-center text-sm text-gray-500">
                 Not a member?{" "}

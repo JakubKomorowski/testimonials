@@ -14,7 +14,7 @@ import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useSubscriptionStore } from "@/store/store";
-import ManageAccountButton from "./ManageAccountButton";
+import ManageAccountButton from "./atoms/ManageAccountButton";
 import { auth } from "../firebase";
 import { doc, getDoc, getDocs } from "firebase/firestore";
 import {

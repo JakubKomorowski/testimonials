@@ -1,8 +1,8 @@
 import { DefaultCard } from "@/types/TestimonialCard";
 import React, { FC } from "react";
-import RatingComponent from "./RatingComponent";
+import RatingComponent from "../atoms/RatingComponent";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import QuoteIcon from "./QuoteIcon";
+import QuoteIcon from "../atoms/QuoteIcon";
 
 const QuoteCard: FC<DefaultCard> = ({ image, alt, text, name, rating }) => {
   return (

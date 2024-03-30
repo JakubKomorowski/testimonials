@@ -1,7 +1,7 @@
 import { FOOTER_MENU_LIST } from "@/routes";
 import React from "react";
-import NavItem from "./NavItem";
-import Logo from "../Logo";
+import NavItem from "../atoms/NavItem";
+import Logo from "../atoms/Logo";
 
 const Footer = () => {
   return (

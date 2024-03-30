@@ -10,7 +10,7 @@ import "swiper/css/thumbs";
 import { Navigation, Controller } from "swiper/modules";
 import { data } from "@/app/exampleData";
 import SpeachBubbleCard from "./SpeachBubbleCard";
-import ArrowButton from "./ArrowButton";
+import ArrowButton from "../atoms/ArrowButton";
 
 export default function SpeachBubble() {
   const [thumbsSwiper, setThumbsSwiper] = useState<Swiper | null>(null);

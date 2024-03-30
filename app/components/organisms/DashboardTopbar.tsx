@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { firstTwoLetters } from "@/lib/utils";
 import { ROUTES } from "@/routes";
+import { Avatar } from "@nextui-org/react";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
@@ -19,8 +20,12 @@ const DashboardTopbar = () => {
     <div className="p-3 px-6  border-gray-300 border-b h-fit flex justify-end col-span-3">
       <div className="w-[156px] flex justify-end ">
         <DropdownMenu>
-          <DropdownMenuTrigger className=" outline-none bg-primary  text-lg h-10 w-10 flex items-center justify-center text-bg font-medium rounded-full">
-            {firstTwoLetters(name, mail)}
+          <DropdownMenuTrigger className=" outline-none bg-primary   flex items-center justify-center text-bg font-medium rounded-full">
+            <Avatar
+              name={firstTwoLetters(name, mail)}
+              as="button"
+              className="transition-transform text-md bg-primary"
+            />
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mr-6">
             <DropdownMenuItem className="cursor-pointer">

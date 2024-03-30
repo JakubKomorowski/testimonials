@@ -138,9 +138,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
         <p className="text-2xl">Form Creation</p>
       </div>
       <div className="text-xl">{tabName}</div>
-      {loading ? (
-        <Loading />
-      ) : tabName === "Welcome page" ? (
+      {tabName === "Welcome page" ? (
         <div className="mt-8 flex flex-col gap-4" key={1}>
           <Input
             {...inputConfig}
@@ -223,7 +221,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
             value={customerTitle}
             {...register("customerTitle")}
           />
-          {currentForm?.customerDetails.map(({ name }) => {
+          {currentForm?.customerDetails?.map(({ name }) => {
             const isChecked = customerDetails.find(
               (item: ICustomerDetails) => name === item.name
             );

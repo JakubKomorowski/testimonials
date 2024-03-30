@@ -6,7 +6,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { Button } from "@/components/ui/button";
 import { collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
-import FormCard from "@/app/components/ui/FormCard";
+import FormCard from "@/app/components/molecules/FormCard";
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);

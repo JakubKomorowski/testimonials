@@ -1,6 +1,6 @@
 import React from "react";
-import QuoteIcon from "./QuoteIcon";
-import RatingComponent from "./RatingComponent";
+import QuoteIcon from "../atoms/QuoteIcon";
+import RatingComponent from "../atoms/RatingComponent";
 
 interface Props {
   children: React.ReactNode;
