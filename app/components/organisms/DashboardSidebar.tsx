@@ -1,6 +1,6 @@
 import React from "react";
 import Logo from "../atoms/Logo";
-import DashboardSidebarLinkItem from "./DashboardSidebarLinkItem";
+import DashboardSidebarLinkItem from "../atoms/DashboardSidebarLinkItem";
 import {
   DASHBOARD_COLLECT_MENU_LIST,
   DASHBOARD_OVERVIEW_MENU_LIST,

@@ -31,103 +31,85 @@ const FormBuilder = ({ params }: Props) => {
     redirect(ROUTES.signin);
   }
   const methods = useForm();
-  const docRef = doc(db, "users", session?.user.id);
+  const docRef = doc(db, "users", session?.user.id, "forms", params.formId);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
 
-  // const setForm = useFormCreationStore((state) => state.setForm);
-
-  const [value, loading, error] = useDocument(
-    doc(db, "users", session?.user.id)
-  );
-
-  const userForms = value?.data()?.forms;
-  const currentForm = userForms?.find(
-    (form: Iform) => form.id === params.formId
+  const [form, formLoading, formError] = useDocument(
+    doc(db, "users", session?.user.id, "forms", params.formId)
   );
 
   const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
-    // console.log(data);
+    console.log(data);
 
-    const editedForms = await userForms?.map((form: Iform) => {
-      if (form.id === params.formId) {
-        return {
-          ...form,
-          // logo: data?.logo,
-          // accentColor: data?.accentColor,
+    try {
+      if (form) {
+        updateDoc(docRef, {
+          ...form?.data(),
           ...data,
-        };
+        });
+        toast({
+          title: "Form successfully updated",
+        });
+        return;
       }
-      return form;
-    });
-
-    if (editedForms) {
-      updateDoc(docRef, {
-        forms: [...editedForms],
-      });
+      // toast error
+    } catch (error) {
       toast({
-        title: "Form successfully updated",
+        title: "Something went wrong",
       });
-      return;
     }
-    // toast error
-    toast({
-      title: "Something went wrong",
-    });
-
     methods.reset();
   };
 
   return (
-    <>
-      <FormProvider {...methods}>
-        {loading ? (
-          <Loading />
-        ) : (
-          <form
-            onSubmit={methods.handleSubmit(onSubmit)}
-            className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]"
-          >
-            <>
-              <FormBuilderSidebar
-                currentForm={currentForm}
-                tabName={tabName as string}
-                loading={loading}
-              />
-              <FormBuilderSidebarRight
-                currentForm={currentForm}
-                loading={loading}
-              />
-              <FormBuilderTopbar />
-              <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
-                <div className="mt-2">
-                  <Tabs
-                    className=""
-                    variant="underlined"
-                    aria-label="Tabs variants"
-                    selectedKey={tabName as string}
-                    onSelectionChange={setTabName}
-                  >
-                    <Tab key="Welcome page" title="Welcome page">
-                      <div className="rounded-[30px]  w-[420px] h-[500px] mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex justify-center">
-                        <div className="rounded-full bg-slate-400 w-24 h-24 mt-[-48px]"></div>
-                      </div>
-                    </Tab>
-                    <Tab key="Response page" title="Response page"></Tab>
-                    <Tab
-                      key="Customer details page"
-                      title="Customer details page"
-                    ></Tab>
-                    <Tab key="Thank you page" title="Thank you page"></Tab>
-                  </Tabs>
-                </div>
+    <FormProvider {...methods}>
+      {formLoading ? (
+        <Loading />
+      ) : (
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]"
+        >
+          <>
+            <FormBuilderSidebar
+              currentForm={form?.data() as Iform}
+              tabName={tabName as string}
+              loading={formLoading}
+            />
+            <FormBuilderSidebarRight
+              currentForm={form?.data() as Iform}
+              loading={formLoading}
+            />
+            <FormBuilderTopbar />
+            <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
+              <div className="mt-2">
+                <Tabs
+                  className=""
+                  variant="underlined"
+                  aria-label="Tabs variants"
+                  selectedKey={tabName as string}
+                  onSelectionChange={setTabName}
+                >
+                  <Tab key="Welcome page" title="Welcome page">
+                    <div className="rounded-[30px]  w-[420px] h-[500px] mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex justify-center">
+                      <div className="rounded-full bg-slate-400 w-24 h-24 mt-[-48px]"></div>
+                    </div>
+                  </Tab>
+                  <Tab key="Response page" title="Response page"></Tab>
+                  <Tab
+                    key="Customer details page"
+                    title="Customer details page"
+                  ></Tab>
+                  <Tab key="Thank you page" title="Thank you page"></Tab>
+                </Tabs>
               </div>
-            </>
-          </form>
-        )}
-      </FormProvider>
-    </>
+            </div>
+          </>
+        </form>
+      )}
+    </FormProvider>
   );
 };
 

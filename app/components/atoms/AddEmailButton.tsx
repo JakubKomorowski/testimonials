@@ -63,7 +63,7 @@ const AddEmailButton = () => {
                 autoComplete="email"
                 placeholder="Enter your email"
                 {...register("email", { required: true })}
-                className="block w-full rounded-md focus-visible:outline-none border-0 focus:ring-0 py-2 px-4 text-gray-900  ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
+                className="block w-full rounded-lg focus-visible:outline-none border-0 focus:ring-0 py-2 px-4 text-gray-900  ring-gray-300 placeholder:text-gray-400  sm:text-sm sm:leading-6"
               />
             </div>
           </div>

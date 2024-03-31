@@ -1,12 +1,12 @@
 "use client";
 import { db } from "@/app/firebase";
 import { ROUTES } from "@/routes";
-import { doc } from "firebase/firestore";
+import { doc, collection, DocumentData } from "firebase/firestore";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useCollection } from "react-firebase-hooks/firestore";
 import { toast } from "sonner";
 import { Tooltip, Button } from "@nextui-org/react";
 
@@ -32,9 +32,16 @@ const FormCard = ({ firstTwo }: Props) => {
   const [user, loading, error] = useDocument(
     doc(db, "users", session?.user.id)
   );
+
+  const [value, loadingState, errorState] = useCollection(
+    collection(db, "users", session?.user.id, "forms")
+  );
+
+  const newForms = value?.docs.map((doc) => doc.data());
+  console.log(newForms);
   const forms = user?.data()?.forms;
-  const slicedForms = forms
-    ?.sort(function (a: IForm, b: IForm) {
+  const slicedForms = newForms
+    ?.sort(function (a: DocumentData, b: DocumentData) {
       return b.createdAt.seconds - a.createdAt.seconds;
     })
     .slice(0, 2);
@@ -46,7 +53,7 @@ const FormCard = ({ firstTwo }: Props) => {
       toast("Failed to copy!");
     }
   };
-  const formmatedForms = firstTwo ? slicedForms : forms;
+  const formmatedForms = firstTwo ? slicedForms : newForms;
   return (
     <section className="bg-muted  p-6 rounded-lg w-full ">
       <div className="flex justify-between">
@@ -63,7 +70,7 @@ const FormCard = ({ firstTwo }: Props) => {
         </div>
       </div>
       <div className="flex gap-6 flex-col 2xl:flex-row flex-wrap ">
-        {formmatedForms?.map((el: IForm) => {
+        {formmatedForms?.map((el: DocumentData) => {
           const time = new Date(el.createdAt.seconds * 1000).toLocaleString(
             "en-US",
             options

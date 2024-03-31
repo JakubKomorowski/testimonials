@@ -6,6 +6,7 @@ import SessionProvider from "./components/providers/SessionProvider";
 import FirebaseAuthProvider from "./components/providers/FirebaseAuthProvider";
 import SubscriptionProvider from "./components/providers/SubscriptionProvider";
 import { authOptions } from "./api/auth/[...nextauth]/auth";
+import FormProvider from "./components/providers/FormProvider";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -25,7 +26,9 @@ export default async function RootLayout({
       <body className={montserrat.className}>
         <SessionProvider session={session}>
           <FirebaseAuthProvider>
-            <SubscriptionProvider>{children}</SubscriptionProvider>
+            <FormProvider>
+              <SubscriptionProvider>{children}</SubscriptionProvider>
+            </FormProvider>
           </FirebaseAuthProvider>
         </SessionProvider>
       </body>

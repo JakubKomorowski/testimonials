@@ -37,6 +37,7 @@ const ExampleDashboardComp = () => {
   const [loadingState, setLoadingState] = useState(false);
   const subscription = useSubscriptionStore((state) => state.subscription);
   const docRef = doc(db, "users", session?.user.id);
+  const collectionRef = collection(db, "users", session?.user.id, "forms");
 
   const formRef = doc(db, "forms", "iZxoSu3v3hO09IfNlrMe");
 
@@ -53,70 +54,74 @@ const ExampleDashboardComp = () => {
   const userForms = value?.data()?.forms;
   const globalFormIds = formIds?.data()?.ids;
 
-  const handleAddFormId = (id: string) => {
+  console.log(collectionRef);
+
+  const handleAddFormId = async (id: string) => {
+    const doc = await addDoc(collectionRef, {
+      id: id,
+      title: "Title",
+      logo: {
+        name: "",
+        size: 0,
+        type: "",
+      },
+      accentColor: "#D2DE32",
+      collectVideo: true,
+      collectText: true,
+      collectRating: true,
+      welcomeTitle: "Your opinion matters!",
+      welcomeMessage:
+        "Hey there! 👋 We hope you're loving our [product/service] as much as we loved creating it for you. If you've got a moment, we'd be thrilled to hear your thoughts.",
+      responseTitle: "We'd love to hear from you",
+      responseQuestions: [
+        {
+          question: "how do you?",
+          id: nanoid(6),
+        },
+        {
+          question: "what do you?",
+          id: nanoid(6),
+        },
+      ],
+      customerTitle: "Almost finished",
+      customerDetails: [
+        {
+          name: "Email address",
+          enabled: true,
+          required: false,
+        },
+        {
+          name: "Photo",
+          enabled: true,
+          required: true,
+        },
+        {
+          name: "Your website",
+          enabled: true,
+          required: false,
+        },
+        {
+          name: "Social link",
+          enabled: true,
+          required: false,
+        },
+      ],
+      thankYouTitle: "Thank you",
+      thankYouText:
+        "Thank you for your trust in us and for taking the time to help us improve and grow.",
+      createdAt: new Date(),
+    });
     setDoc(
-      docRef,
+      formRef,
       {
-        forms: [
-          ...(userForms || ""),
-          {
-            id: id,
-            title: "Title",
-            logo: "",
-            accentColor: "#D2DE32",
-            collectVideo: true,
-            collectText: true,
-            collectRating: true,
-            welcomeTitle: "Your opinion matters!",
-            welcomeMessage:
-              "Hey there! 👋 We hope you're loving our [product/service] as much as we loved creating it for you. If you've got a moment, we'd be thrilled to hear your thoughts.",
-            responseTitle: "We'd love to hear from you",
-            responseQuestions: [
-              {
-                question: "how do you?",
-                id: nanoid(6),
-              },
-              {
-                question: "what do you?",
-                id: nanoid(6),
-              },
-            ],
-            customerTitle: "Almost finished",
-            customerDetails: [
-              {
-                name: "Email address",
-                enabled: true,
-                required: false,
-              },
-              {
-                name: "Photo",
-                enabled: true,
-                required: true,
-              },
-              {
-                name: "Your website",
-                enabled: true,
-                required: false,
-              },
-              {
-                name: "Social link",
-                enabled: true,
-                required: false,
-              },
-            ],
-            thankYouTitle: "Thank you",
-            thankYouText:
-              "Thank you for your trust in us and for taking the time to help us improve and grow.",
-            createdAt: new Date(),
-          },
-        ],
+        ids: [...(globalFormIds || ""), doc.id],
       },
       { merge: true }
     );
     setDoc(
-      formRef,
+      doc,
       {
-        ids: [...(globalFormIds || ""), id],
+        id: doc.id,
       },
       { merge: true }
     );

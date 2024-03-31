@@ -9,16 +9,16 @@ import {
 } from "@nextui-org/react";
 import { Controller, useFormContext } from "react-hook-form";
 import { ICustomerDetails, IResponseQuestions, Iform } from "@/types/Form";
-import Loading from "@/app/loading";
 import { Switch } from "@nextui-org/react";
 import { Checkbox } from "@nextui-org/react";
 import { nanoid } from "nanoid";
+import { DocumentData } from "firebase/firestore";
 
-interface Props {
-  currentForm: Iform;
+type Props = {
+  currentForm?: DocumentData & Iform;
   tabName: string;
   loading: boolean;
-}
+};
 
 export const inputConfig: InputProps = {
   radius: "md",
@@ -30,37 +30,17 @@ export const inputConfig: InputProps = {
 const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
   const { register, control, setValue, watch } = useFormContext();
 
-  const welcomeTitle =
-    currentForm?.welcomeTitle &&
-    watch("welcomeTitle", currentForm?.welcomeTitle);
-
-  const welcomeMessage =
-    currentForm?.welcomeMessage &&
-    watch("welcomeMessage", currentForm?.welcomeMessage);
-
-  const responseTitle =
-    currentForm?.responseTitle &&
-    watch("responseTitle", currentForm?.responseTitle);
-
-  const responseQuestions: IResponseQuestions[] =
-    currentForm?.responseQuestions &&
-    watch("responseQuestions", currentForm?.responseQuestions);
-
-  const customerTitle =
-    currentForm?.customerTitle &&
-    watch("customerTitle", currentForm?.customerTitle);
-
-  const customerDetails: ICustomerDetails[] =
-    currentForm?.customerDetails &&
-    watch("customerDetails", currentForm?.customerDetails);
-
-  const thankYouTitle =
-    currentForm?.thankYouTitle &&
-    watch("thankYouTitle", currentForm?.thankYouTitle);
-
-  const thankYouText =
-    currentForm?.thankYouText &&
-    watch("thankYouText", currentForm?.thankYouText);
+  const welcomeTitle = watch("welcomeTitle", currentForm?.welcomeTitle);
+  const welcomeMessage = watch("welcomeMessage", currentForm?.welcomeMessage);
+  const responseTitle = watch("responseTitle", currentForm?.responseTitle);
+  const responseQuestions: IResponseQuestions[] = watch("responseQuestions");
+  const customerTitle = watch("customerTitle", currentForm?.customerTitle);
+  const customerDetails: ICustomerDetails[] = watch(
+    "customerDetails",
+    currentForm?.customerDetails
+  );
+  const thankYouTitle = watch("thankYouTitle", currentForm?.thankYouTitle);
+  const thankYouText = watch("thankYouText", currentForm?.thankYouText);
 
   useEffect(() => {
     setValue("welcomeTitle", currentForm?.welcomeTitle);
@@ -143,13 +123,13 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           <Input
             {...inputConfig}
             label="Welcome page title"
-            value={welcomeTitle}
+            value={welcomeTitle || ""}
             {...register("welcomeTitle")}
           />
           <Textarea
             {...inputConfig}
             label="Welcome page title"
-            value={welcomeMessage}
+            value={welcomeMessage || ""}
             {...register("welcomeMessage")}
           />
         </div>
@@ -158,7 +138,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           <Input
             {...inputConfig}
             label="Response page title"
-            value={responseTitle}
+            value={responseTitle || ""}
             {...register("responseTitle")}
           />
           {responseQuestions?.map((el: IResponseQuestions, i) => {
@@ -218,7 +198,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           <Input
             {...inputConfig}
             label="Customer details page title"
-            value={customerTitle}
+            value={customerTitle || ""}
             {...register("customerTitle")}
           />
           {currentForm?.customerDetails?.map(({ name }) => {
@@ -268,13 +248,13 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
           <Input
             {...inputConfig}
             label="Thank you page title"
-            value={thankYouTitle}
+            value={thankYouTitle || ""}
             {...register("thankYouTitle")}
           />
           <Textarea
             {...inputConfig}
             label="Thank you page text"
-            value={thankYouText}
+            value={thankYouText || ""}
             {...register("thankYouText")}
           />
         </div>

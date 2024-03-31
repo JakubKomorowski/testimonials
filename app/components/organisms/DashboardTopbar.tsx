@@ -23,7 +23,7 @@ const DashboardTopbar = () => {
           <DropdownMenuTrigger className=" outline-none bg-primary   flex items-center justify-center text-bg font-medium rounded-full">
             <Avatar
               name={firstTwoLetters(name, mail)}
-              as="button"
+              // as="button"
               className="transition-transform text-md bg-primary"
             />
           </DropdownMenuTrigger>
