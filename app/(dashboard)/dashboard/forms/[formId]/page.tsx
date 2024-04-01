@@ -5,7 +5,7 @@ import FormBuilderTopbar from "@/app/components/organisms/FormBuilderTopbar";
 import { Tab, Tabs } from "@nextui-org/react";
 import { updateDoc } from "firebase/firestore";
 import { doc } from "firebase/firestore";
-import { db } from "@/app/firebase";
+import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { useDocument } from "react-firebase-hooks/firestore";
 import {
@@ -20,6 +20,7 @@ import { Iform } from "@/types/Form";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/routes";
 import Loading from "@/app/loading";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
   params: { formId: string };
@@ -31,36 +32,63 @@ const FormBuilder = ({ params }: Props) => {
     redirect(ROUTES.signin);
   }
   const methods = useForm();
+  const allFormFields = methods.watch() as Iform;
   const docRef = doc(db, "users", session?.user.id, "forms", params.formId);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
-
   const [form, formLoading, formError] = useDocument(
     doc(db, "users", session?.user.id, "forms", params.formId)
   );
-
   const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
-    console.log(data);
+    const file = {
+      name: data.logo.name,
+      size: data.logo.size,
+      type: data.logo.type,
+      lastModified: data.logo.lastModified,
+      preview: data.logo.preview,
+    };
+    const isImageChanged = form?.data()?.logo.name !== data.logo.name;
+    const imageRef = ref(
+      storage,
+      `users/${session?.user.id}/forms/${data.logo.name}`
+    );
 
     try {
       if (form) {
-        updateDoc(docRef, {
+        await updateDoc(docRef, {
           ...form?.data(),
           ...data,
+          logo: file,
         });
-        toast({
-          title: "Form successfully updated",
-        });
-        return;
+        if (!isImageChanged) {
+          toast({
+            title: "Form successfully updated",
+          });
+        }
       }
-      // toast error
     } catch (error) {
       toast({
         title: "Something went wrong",
       });
     }
-    methods.reset();
+    if (isImageChanged) {
+      uploadBytes(imageRef, data.logo).then(async (snapshot) => {
+        const url = await getDownloadURL(imageRef);
+        try {
+          await updateDoc(docRef, {
+            logo: { downloadUrl: url, ...file },
+          });
+          toast({
+            title: "Form successfully updated",
+          });
+        } catch (error) {
+          toast({
+            title: "Something went wrong",
+          });
+        }
+      });
+    }
   };
 
   return (
@@ -93,8 +121,9 @@ const FormBuilder = ({ params }: Props) => {
                   onSelectionChange={setTabName}
                 >
                   <Tab key="Welcome page" title="Welcome page">
-                    <div className="rounded-[30px]  w-[420px] h-[500px] mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex justify-center">
+                    <div className="rounded-[30px]  w-[420px] h-[500px] mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex  flex-col items-center">
                       <div className="rounded-full bg-slate-400 w-24 h-24 mt-[-48px]"></div>
+                      <p className="mt-12">{allFormFields.welcomeTitle}</p>
                     </div>
                   </Tab>
                   <Tab key="Response page" title="Response page"></Tab>

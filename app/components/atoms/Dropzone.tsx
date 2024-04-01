@@ -3,6 +3,7 @@ import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { Iform } from "@/types/Form";
 import { DocumentData } from "firebase/firestore";
+import Image from "next/image";
 
 interface Props {
   currentForm?: Iform & DocumentData;
@@ -14,39 +15,69 @@ const Dropzone = ({ currentForm }: Props) => {
     const fileWithPreview = Object.assign(acceptedFiles[0], {
       preview: URL.createObjectURL(acceptedFiles[0]),
     });
-    const file = {
-      name: acceptedFiles[0].name,
-      size: acceptedFiles[0].size,
-      type: acceptedFiles[0].type,
-    };
-    setValue("logo", file);
+    setValue("logo", fileWithPreview);
   }, []);
-  const { getRootProps, getInputProps, isDragActive, fileRejections } =
-    useDropzone({
-      onDrop,
-      accept: {
-        "image/png": [".png", ".jpg", ".jpeg"],
-      },
-      multiple: false,
-      maxSize: 5000000,
-    });
 
-  console.log(logo);
+  const {
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    fileRejections,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({
+    onDrop,
+    accept: {
+      "image/*": [".png", ".jpg", ".jpeg"],
+    },
+    multiple: false,
+    maxSize: 5000000,
+  });
+
+  const fileAcceptedClass =
+    "cursor-pointer border-dashed border-2 border-blue-200 bg-blue-50 rounded-xl px-3 mt-2 text-sm h-40 flex items-center justify-center";
+  const fileRejectedClass =
+    "cursor-pointer border-dashed border-2 border-red-200 bg-red-50 rounded-xl px-3 mt-2 text-sm h-40 flex items-center justify-center";
+  const fileDefaultClass =
+    "cursor-pointer border-dashed border-2 border-gray-200 bg-gray-50 rounded-xl px-3 mt-2 text-sm h-40 flex items-center justify-center";
 
   return (
     <>
       <p className="text-sm cursor-default">Your logo</p>
       <div
         {...getRootProps({
-          className:
-            "cursor-pointer border-dashed border-2 border-gray-200 bg-gray-50 rounded-xl px-3 mt-2 text-sm h-40 flex items-center justify-center",
+          className: isDragAccept
+            ? fileAcceptedClass
+            : isDragReject
+            ? fileRejectedClass
+            : fileDefaultClass,
         })}
       >
         <input {...getInputProps()} />
         {isDragActive ? (
-          <p>Drop the files here ...</p>
+          <div className="flex flex-col justify-center items-center gap-2">
+            <Image
+              src="/Icons/upload.svg"
+              alt="upload"
+              width={30}
+              height={30}
+              className="w-8"
+            />
+            <p className="text-center">Drop the image here ...</p>
+          </div>
         ) : (
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <div className="flex flex-col justify-center items-center gap-2">
+            <Image
+              src="/Icons/upload.svg"
+              alt="upload"
+              width={30}
+              height={30}
+              className="w-8"
+            />
+            <p className="text-center">
+              Drag 'n' drop, or click to select an image
+            </p>
+          </div>
         )}
       </div>
       <div className="w-full truncate mt-1">

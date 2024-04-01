@@ -29,17 +29,13 @@ const options = {
 
 const FormCard = ({ firstTwo }: Props) => {
   const { data: session } = useSession();
-  const [user, loading, error] = useDocument(
-    doc(db, "users", session?.user.id)
-  );
 
   const [value, loadingState, errorState] = useCollection(
     collection(db, "users", session?.user.id, "forms")
   );
 
   const newForms = value?.docs.map((doc) => doc.data());
-  console.log(newForms);
-  const forms = user?.data()?.forms;
+
   const slicedForms = newForms
     ?.sort(function (a: DocumentData, b: DocumentData) {
       return b.createdAt.seconds - a.createdAt.seconds;

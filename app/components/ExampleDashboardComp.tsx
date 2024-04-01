@@ -54,16 +54,16 @@ const ExampleDashboardComp = () => {
   const userForms = value?.data()?.forms;
   const globalFormIds = formIds?.data()?.ids;
 
-  console.log(collectionRef);
-
   const handleAddFormId = async (id: string) => {
     const doc = await addDoc(collectionRef, {
-      id: id,
+      id: "",
       title: "Title",
       logo: {
         name: "",
         size: 0,
         type: "",
+        lastModified: 0,
+        preview: "",
       },
       accentColor: "#D2DE32",
       collectVideo: true,
