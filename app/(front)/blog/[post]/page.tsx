@@ -12,7 +12,7 @@ import {
 import { components } from "@/app/components/sanity/PortableTextComponents";
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Post } from "@/types/Post";
+import { Post as PostType } from "@/types/Post";
 import { sanityFetch } from "@/sanity/lib/client";
 import { Category } from "@/types/Category";
 
@@ -25,7 +25,7 @@ export const generateMetadata = async ({
   params,
 }: Props): Promise<Metadata> => {
   const slug = params.post;
-  const post: Post = await sanityFetch({
+  const post: PostType = await sanityFetch({
     query: getPost,
     tags: ["post"],
     qParams: { slug: slug }, // add slug from next-js params
@@ -69,7 +69,7 @@ export const generateMetadata = async ({
 
 const Post = async ({ params }: Props) => {
   const slug = params.post;
-  const post: Post = await sanityFetch({
+  const post: PostType = await sanityFetch({
     query: getPost,
     tags: ["post"],
     qParams: { slug: slug },
@@ -149,7 +149,7 @@ const Post = async ({ params }: Props) => {
 };
 
 export async function generateStaticParams() {
-  const posts: Post[] = await sanityFetch({
+  const posts: PostType[] = await sanityFetch({
     query: getPosts,
     tags: ["post"],
   });

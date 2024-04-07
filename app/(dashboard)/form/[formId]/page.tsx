@@ -1,28 +1,22 @@
-"use client";
 import { db } from "@/app/firebase";
 import { Textarea } from "@nextui-org/react";
-import { doc, getDoc } from "firebase/firestore";
-import { useSession } from "next-auth/react";
-import React from "react";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: { formId: string };
 }
-
-interface IForm {
-  id: string;
-  title: string;
-  questions: string[];
-  createdAt: string;
+export async function generateStaticParams() {
+  const forms = await getDocs(collection(db, "forms"));
+  return forms.docs.map((form) => ({ formId: form.data()["id"] }));
 }
 
-const SingleForm = ({ params }: Props) => {
-  const { data: session } = useSession();
-  const [user] = useDocument(doc(db, "users", session?.user.id));
-  const form = user
-    ?.data()
-    ?.forms?.find((el: IForm) => el.id === params.formId) as IForm;
+const SingleForm = async ({ params }: Props) => {
+  const docRef = doc(db, "forms", params.formId);
+  const docSnap = await getDoc(docRef);
+  const form = docSnap.data();
+  if (!form) notFound();
+
   return (
     <div>
       <h2>{form?.title}</h2>

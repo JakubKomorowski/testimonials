@@ -1,7 +1,7 @@
 export interface Iform {
   id: string;
   title: string;
-  logo: string;
+  logo: ILogo;
   accentColor: string;
   collectVideo: boolean;
   collectText: boolean;
@@ -26,4 +26,16 @@ export interface ICustomerDetails {
 export interface IResponseQuestions {
   question: string;
   id: string;
+}
+
+export interface ILogo {
+  path: string;
+  preview: string;
+  lastModified: number;
+  lastModifiedDate: any;
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+  downloadUrl?: string;
 }

@@ -21,6 +21,7 @@ import { redirect } from "next/navigation";
 import { ROUTES } from "@/routes";
 import Loading from "@/app/loading";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import ClientForm from "@/app/components/molecules/ClientForm";
 
 interface Props {
   params: { formId: string };
@@ -33,10 +34,11 @@ const FormBuilder = ({ params }: Props) => {
   }
   const methods = useForm();
   const allFormFields = methods.watch() as Iform;
-  const docRef = doc(db, "users", session?.user.id, "forms", params.formId);
+  const docRef = doc(db, "forms", params.formId);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
+  const [formUpdating, setFormUpdating] = useState(false);
   const [form, formLoading, formError] = useDocument(
-    doc(db, "users", session?.user.id, "forms", params.formId)
+    doc(db, "forms", params.formId)
   );
   const { toast } = useToast();
 
@@ -47,48 +49,53 @@ const FormBuilder = ({ params }: Props) => {
       type: data.logo.type,
       lastModified: data.logo.lastModified,
       preview: data.logo.preview,
+      path: data.logo.path,
     };
     const isImageChanged = form?.data()?.logo.name !== data.logo.name;
-    const imageRef = ref(
-      storage,
-      `users/${session?.user.id}/forms/${data.logo.name}`
-    );
+    const imageRef = ref(storage, `forms/${params.formId}/${data.logo.name}`);
+    // if (!isImageChanged) {
+    //   setFormUpdating(true);
+    //   try {
+    //     if (form) {
+    //       await updateDoc(docRef, {
+    //         ...form?.data(),
+    //         ...data,
+    //       });
 
+    //       toast({
+    //         title: "Form successfully updated",
+    //       });
+    //       setFormUpdating(false);
+    //     }
+    //   } catch (error) {
+    //     toast({
+    //       title: "Something went wrong",
+    //     });
+    //   }
+    //   setFormUpdating(false);
+    // }
+
+    if (isImageChanged) {
+      setFormUpdating(true);
+      await uploadBytes(imageRef, data.logo);
+    }
+    setFormUpdating(true);
     try {
-      if (form) {
-        await updateDoc(docRef, {
-          ...form?.data(),
-          ...data,
-          logo: file,
-        });
-        if (!isImageChanged) {
-          toast({
-            title: "Form successfully updated",
-          });
-        }
-      }
+      const url = await getDownloadURL(imageRef);
+      await updateDoc(docRef, {
+        ...form?.data(),
+        ...data,
+        logo: { downloadUrl: url, ...file },
+      });
+      toast({
+        title: "Form successfully updated",
+      });
     } catch (error) {
       toast({
         title: "Something went wrong",
       });
     }
-    if (isImageChanged) {
-      uploadBytes(imageRef, data.logo).then(async (snapshot) => {
-        const url = await getDownloadURL(imageRef);
-        try {
-          await updateDoc(docRef, {
-            logo: { downloadUrl: url, ...file },
-          });
-          toast({
-            title: "Form successfully updated",
-          });
-        } catch (error) {
-          toast({
-            title: "Something went wrong",
-          });
-        }
-      });
-    }
+    setFormUpdating(false);
   };
 
   return (
@@ -110,7 +117,7 @@ const FormBuilder = ({ params }: Props) => {
               currentForm={form?.data() as Iform}
               loading={formLoading}
             />
-            <FormBuilderTopbar />
+            <FormBuilderTopbar loading={formUpdating} />
             <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
               <div className="mt-2">
                 <Tabs
@@ -121,10 +128,7 @@ const FormBuilder = ({ params }: Props) => {
                   onSelectionChange={setTabName}
                 >
                   <Tab key="Welcome page" title="Welcome page">
-                    <div className="rounded-[30px]  w-[420px] h-[500px] mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex  flex-col items-center">
-                      <div className="rounded-full bg-slate-400 w-24 h-24 mt-[-48px]"></div>
-                      <p className="mt-12">{allFormFields.welcomeTitle}</p>
-                    </div>
+                    <ClientForm allFormFields={allFormFields} />
                   </Tab>
                   <Tab key="Response page" title="Response page"></Tab>
                   <Tab

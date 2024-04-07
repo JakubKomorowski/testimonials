@@ -32,30 +32,15 @@ import { nanoid } from "nanoid";
 const ExampleDashboardComp = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { data: session } = useSession();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
   const [loadingState, setLoadingState] = useState(false);
-  const subscription = useSubscriptionStore((state) => state.subscription);
-  const docRef = doc(db, "users", session?.user.id);
-  const collectionRef = collection(db, "users", session?.user.id, "forms");
-
-  const formRef = doc(db, "forms", "iZxoSu3v3hO09IfNlrMe");
-
-  // getDoc(docRef).then((snapshot) => {
-  //   console.log(snapshot.data());
-  // });
-
-  const [formIds] = useDocument(doc(db, "forms", "iZxoSu3v3hO09IfNlrMe"));
-
+  const formRef = collection(db, "forms");
   const [value, loading, error] = useDocument(
     auth.currentUser && doc(db, "users", auth.currentUser.uid)
   );
 
-  const userForms = value?.data()?.forms;
-  const globalFormIds = formIds?.data()?.ids;
-
   const handleAddFormId = async (id: string) => {
-    const doc = await addDoc(collectionRef, {
+    const doc = await addDoc(formRef, {
+      userId: session?.user.id,
       id: "",
       title: "Title",
       logo: {
@@ -111,13 +96,6 @@ const ExampleDashboardComp = () => {
         "Thank you for your trust in us and for taking the time to help us improve and grow.",
       createdAt: new Date(),
     });
-    setDoc(
-      formRef,
-      {
-        ids: [...(globalFormIds || ""), doc.id],
-      },
-      { merge: true }
-    );
     setDoc(
       doc,
       {

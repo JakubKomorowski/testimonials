@@ -31,7 +31,7 @@ const FormCard = ({ firstTwo }: Props) => {
   const { data: session } = useSession();
 
   const [value, loadingState, errorState] = useCollection(
-    collection(db, "users", session?.user.id, "forms")
+    collection(db, "forms")
   );
 
   const newForms = value?.docs.map((doc) => doc.data());

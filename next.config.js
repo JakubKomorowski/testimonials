@@ -15,6 +15,11 @@ const nextConfig = {
         hostname: "js.stripe.com",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "firebasestorage.googleapis.com",
+        port: "",
+      },
     ],
   },
 };
