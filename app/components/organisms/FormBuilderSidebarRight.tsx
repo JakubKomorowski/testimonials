@@ -5,7 +5,7 @@ import { Iform } from "@/types/Form";
 import { inputConfig } from "./FormBuilderSidebar";
 import { useEffect } from "react";
 import { DropzoneField } from "../molecules/DropzoneField";
-import { DocumentData } from "firebase/firestore";
+import { DocumentData, getDoc } from "firebase/firestore";
 interface Props {
   currentForm?: DocumentData & Iform;
   loading: boolean;
@@ -13,11 +13,6 @@ interface Props {
 
 const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
   const { register, setValue, watch } = useFormContext();
-
-  // getDoc(docRef).then((snapshot) => {
-  //   let formSnap = snapshot.data()?.forms.find((form: IForm) => form.id === id);
-  //   setFormTitle(formSnap.title);
-  // });
 
   // const [value, loading, error] = useDocument(
   //   auth.currentUser && doc(db, "users", auth.currentUser.uid)
@@ -33,7 +28,7 @@ const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
   }, [loading]);
 
   return (
-    <aside className="p-4 row-start-2 row-span-3 border-l border-gray-300">
+    <aside className="p-4 col-start-5 row-start-2 row-span-3 border-l border-gray-300">
       <Tabs className="" radius="sm" aria-label="Options" fullWidth>
         <Tab key="settings" title="Settings">
           <div className="mt-12">

@@ -49,6 +49,8 @@ const ExampleDashboardComp = () => {
         type: "",
         lastModified: 0,
         preview: "",
+        path: "",
+        downloadUrl: "",
       },
       accentColor: "#D2DE32",
       collectVideo: true,

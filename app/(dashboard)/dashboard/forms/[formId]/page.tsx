@@ -7,7 +7,7 @@ import { updateDoc } from "firebase/firestore";
 import { doc } from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocument, useDocumentData } from "react-firebase-hooks/firestore";
 import {
   useForm,
   SubmitHandler,
@@ -21,7 +21,7 @@ import { redirect } from "next/navigation";
 import { ROUTES } from "@/routes";
 import Loading from "@/app/loading";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import ClientForm from "@/app/components/molecules/ClientForm";
+import ClientForm from "@/app/components/organisms/ClientForm";
 
 interface Props {
   params: { formId: string };
@@ -37,7 +37,7 @@ const FormBuilder = ({ params }: Props) => {
   const docRef = doc(db, "forms", params.formId);
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
   const [formUpdating, setFormUpdating] = useState(false);
-  const [form, formLoading, formError] = useDocument(
+  const [form, formLoading, formError] = useDocumentData(
     doc(db, "forms", params.formId)
   );
   const { toast } = useToast();
@@ -51,41 +51,20 @@ const FormBuilder = ({ params }: Props) => {
       preview: data.logo.preview,
       path: data.logo.path,
     };
-    const isImageChanged = form?.data()?.logo.name !== data.logo.name;
+    const isImageChanged = form?.logo.name !== data.logo.name;
     const imageRef = ref(storage, `forms/${params.formId}/${data.logo.name}`);
-    // if (!isImageChanged) {
-    //   setFormUpdating(true);
-    //   try {
-    //     if (form) {
-    //       await updateDoc(docRef, {
-    //         ...form?.data(),
-    //         ...data,
-    //       });
 
-    //       toast({
-    //         title: "Form successfully updated",
-    //       });
-    //       setFormUpdating(false);
-    //     }
-    //   } catch (error) {
-    //     toast({
-    //       title: "Something went wrong",
-    //     });
-    //   }
-    //   setFormUpdating(false);
-    // }
-
-    if (isImageChanged) {
-      setFormUpdating(true);
-      await uploadBytes(imageRef, data.logo);
-    }
-    setFormUpdating(true);
     try {
-      const url = await getDownloadURL(imageRef);
+      setFormUpdating(true);
+      if (isImageChanged && data.logo.name) {
+        setFormUpdating(true);
+        await uploadBytes(imageRef, data.logo);
+      }
+      const url = data.logo.name && (await getDownloadURL(imageRef));
       await updateDoc(docRef, {
-        ...form?.data(),
+        ...form,
         ...data,
-        logo: { downloadUrl: url, ...file },
+        logo: { downloadUrl: data.logo.path ? url : "", ...file },
       });
       toast({
         title: "Form successfully updated",
@@ -103,44 +82,54 @@ const FormBuilder = ({ params }: Props) => {
       {formLoading ? (
         <Loading />
       ) : (
-        <form
-          onSubmit={methods.handleSubmit(onSubmit)}
-          className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]"
-        >
-          <>
+        <div className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]">
+          <form
+            onSubmit={methods.handleSubmit(onSubmit)}
+            className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]"
+          >
             <FormBuilderSidebar
-              currentForm={form?.data() as Iform}
+              currentForm={form as Iform}
               tabName={tabName as string}
               loading={formLoading}
             />
             <FormBuilderSidebarRight
-              currentForm={form?.data() as Iform}
+              currentForm={form as Iform}
               loading={formLoading}
             />
             <FormBuilderTopbar loading={formUpdating} />
-            <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
-              <div className="mt-2">
-                <Tabs
-                  className=""
-                  variant="underlined"
-                  aria-label="Tabs variants"
-                  selectedKey={tabName as string}
-                  onSelectionChange={setTabName}
-                >
-                  <Tab key="Welcome page" title="Welcome page">
-                    <ClientForm allFormFields={allFormFields} />
-                  </Tab>
-                  <Tab key="Response page" title="Response page"></Tab>
-                  <Tab
-                    key="Customer details page"
-                    title="Customer details page"
-                  ></Tab>
-                  <Tab key="Thank you page" title="Thank you page"></Tab>
-                </Tabs>
-              </div>
+          </form>
+
+          <div className="col-span-3 col-start-2 row-start-2 flex justify-center">
+            <div className="mt-2">
+              <Tabs
+                className=""
+                variant="underlined"
+                aria-label="Tabs variants"
+                selectedKey={tabName as string}
+                onSelectionChange={setTabName}
+              >
+                <Tab key="welcome" title="Welcome page">
+                  <ClientForm
+                    allFormFields={allFormFields}
+                    view="welcome"
+                    selectedKey={tabName as string}
+                    isPreview={true}
+                  />
+                </Tab>
+                <Tab key="response" title="Response page">
+                  <ClientForm
+                    allFormFields={allFormFields}
+                    view="response"
+                    selectedKey={tabName as string}
+                    isPreview={true}
+                  />
+                </Tab>
+                <Tab key="customerDetails" title="Customer details page"></Tab>
+                <Tab key="thankYou" title="Thank you page"></Tab>
+              </Tabs>
             </div>
-          </>
-        </form>
+          </div>
+        </div>
       )}
     </FormProvider>
   );

@@ -4,6 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { Iform } from "@/types/Form";
 import { DocumentData } from "firebase/firestore";
 import Image from "next/image";
+import { Tooltip } from "@nextui-org/react";
 
 interface Props {
   currentForm?: Iform & DocumentData;
@@ -33,6 +34,18 @@ const Dropzone = ({ currentForm }: Props) => {
     multiple: false,
     maxSize: 5000000,
   });
+
+  const handleDeleteLogo = () => {
+    setValue("logo", {
+      path: "",
+      preview: "",
+      name: "",
+      downloadUrl: "",
+      size: 0,
+      type: "image/jpeg",
+      lastModified: currentForm?.logo.lastModified,
+    });
+  };
 
   const fileAcceptedClass =
     "cursor-pointer border-dashed border-2 border-blue-200 bg-blue-50 rounded-xl px-3 mt-2 text-sm h-40 flex items-center justify-center";
@@ -82,7 +95,26 @@ const Dropzone = ({ currentForm }: Props) => {
       </div>
       <div className="w-full truncate mt-1">
         {fileRejections?.length === 0 ? (
-          <p className="text-sm truncate">{logo?.name}</p>
+          logo?.name && (
+            <div className="flex p-2">
+              <p className="text-sm truncate">{logo.name}</p>
+              <Tooltip content="Delete" color="foreground">
+                <button
+                  onClick={handleDeleteLogo}
+                  className="focus:outline-none w-10"
+                  type="button"
+                >
+                  <Image
+                    src="/Icons/close.svg"
+                    width={20}
+                    height={20}
+                    alt="delete"
+                    className="cursor-pointer"
+                  />
+                </button>
+              </Tooltip>
+            </div>
+          )
         ) : (
           <p className="text-sm truncate">
             {" "}

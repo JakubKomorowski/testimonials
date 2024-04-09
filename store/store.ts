@@ -8,8 +8,8 @@ interface SubsctiptionState {
 }
 
 interface FormState {
-  form: Iform | null | undefined;
-  setForm: (form: Iform | null) => void;
+  formView: string;
+  setFormView: (formView: string) => void;
 }
 
 export const useSubscriptionStore = create<SubsctiptionState>((set) => ({
@@ -17,7 +17,7 @@ export const useSubscriptionStore = create<SubsctiptionState>((set) => ({
   setSubscription: (subscription: Subscription | null) => set({ subscription }),
 }));
 
-export const useFormCreationStore = create<FormState>((set) => ({
-  form: undefined,
-  setForm: (form: Iform | null) => set({ form }),
+export const useFormViewStore = create<FormState>((set) => ({
+  formView: "welcome",
+  setFormView: (formView: string) => set({ formView }),
 }));

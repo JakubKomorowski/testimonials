@@ -1,4 +1,6 @@
+import ClientForm from "@/app/components/organisms/ClientForm";
 import { db } from "@/app/firebase";
+import { Iform } from "@/types/Form";
 import { Textarea } from "@nextui-org/react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { notFound } from "next/navigation";
@@ -14,13 +16,17 @@ export async function generateStaticParams() {
 const SingleForm = async ({ params }: Props) => {
   const docRef = doc(db, "forms", params.formId);
   const docSnap = await getDoc(docRef);
-  const form = docSnap.data();
+  const form = docSnap?.data();
   if (!form) notFound();
+
+  const formattedForm = {
+    ...form,
+    createdAt: form.nanoseconds,
+  };
 
   return (
     <div>
-      <h2>{form?.title}</h2>
-      <Textarea placeholder="Enter your description" className="max-w-xs" />
+      <ClientForm allFormFields={formattedForm as Iform} />
     </div>
   );
 };

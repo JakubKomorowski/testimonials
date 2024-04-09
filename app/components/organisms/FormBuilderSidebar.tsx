@@ -105,6 +105,17 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
     setValue("customerDetails", [...selected]);
   };
 
+  const tabTtitle =
+    tabName === "welcome"
+      ? "Welcome page"
+      : tabName === "response"
+      ? "Response page"
+      : tabName === "customerDetails"
+      ? "Customer details page"
+      : tabName === "thankYou"
+      ? "Thank you page"
+      : "";
+
   return (
     <aside className=" p-4  px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">
       <div className="mb-16 flex gap-2 items-center">
@@ -117,8 +128,8 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
         />
         <p className="text-2xl">Form Creation</p>
       </div>
-      <div className="text-xl">{tabName}</div>
-      {tabName === "Welcome page" ? (
+      <div className="text-xl">{tabTtitle}</div>
+      {tabName === "welcome" ? (
         <div className="mt-8 flex flex-col gap-4" key={1}>
           <Input
             {...inputConfig}
@@ -133,7 +144,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
             {...register("welcomeMessage")}
           />
         </div>
-      ) : tabName === "Response page" ? (
+      ) : tabName === "response" ? (
         <div className="mt-8 flex flex-col gap-4" key={2}>
           <Input
             {...inputConfig}
@@ -193,7 +204,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
             </Button>
           </Tooltip>
         </div>
-      ) : tabName === "Customer details page" ? (
+      ) : tabName === "customerDetails" ? (
         <div className="flex mt-8  flex-col gap-4" key={3}>
           <Input
             {...inputConfig}
