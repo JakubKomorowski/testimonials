@@ -4,33 +4,60 @@ import { Iform } from "@/types/Form";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import WelcomeViewClientForm from "../molecules/WelcomeViewClientForm";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import ResponseViewClientForm from "../molecules/ResponseViewClientForm";
 import { useFormViewStore } from "@/store/store";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
 
 interface Props {
   allFormFields: Iform;
-  view?: "welcome" | "response";
+  view?: "welcome" | "response" | "customerDetails";
   selectedKey?: string;
   isPreview?: boolean;
 }
 
 interface Inputs {
   testimonial: string;
+  name: string;
+  email?: string;
+  website?: string;
+  socialLink?: string;
 }
 
 const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
-  console.log(allFormFields);
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const isEmailRequired = !!allFormFields.customerDetails.find(
+    (item) => item.name === "Email address" && item.required
+  );
+  const isWebsiteRequired = !!allFormFields.customerDetails.find(
+    (item) => item.name === "Your website" && item.required
+  );
+  const isSocialLinkRequired = !!allFormFields.customerDetails.find(
+    (item) => item.name === "Social link" && item.required
+  );
+  const testimonialFormSchema = yup
+    .object({
+      testimonial: yup.string().required("Please write a testimonial"),
+      name: yup.string().required(),
+      email: isEmailRequired
+        ? yup.string().email().required()
+        : yup.string().email(),
+      website: isWebsiteRequired
+        ? yup.string().url().required()
+        : yup.string().url(),
+      socialLink: isSocialLinkRequired ? yup.string().required() : yup.string(),
+    })
+    .required();
+
+  // console.log(allFormFields);
+  const methods = useForm<Inputs>({
+    resolver: yupResolver(testimonialFormSchema),
+  });
+
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   const setFormView = useFormViewStore((state) => state.setFormView);
   const formView = useFormViewStore((state) => state.formView);
-  console.log(formView);
   useEffect(() => {
     view && setFormView(view);
   }, [selectedKey]);
@@ -51,22 +78,31 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
           />
         </div>
       )}
-      <form>
-        {formView === "welcome" && (
-          <WelcomeViewClientForm
-            title={allFormFields.welcomeTitle}
-            message={allFormFields.welcomeMessage}
-            isPreview={isPreview}
-          />
-        )}
-        {formView === "response" && (
-          <ResponseViewClientForm
-            title={allFormFields.responseTitle}
-            questions={allFormFields.responseQuestions}
-            isPreview={isPreview}
-          />
-        )}
-      </form>
+      <FormProvider {...methods}>
+        <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
+          {formView === "welcome" && (
+            <WelcomeViewClientForm
+              title={allFormFields.welcomeTitle}
+              message={allFormFields.welcomeMessage}
+              isPreview={isPreview}
+            />
+          )}
+          {formView === "response" && (
+            <ResponseViewClientForm
+              title={allFormFields.responseTitle}
+              questions={allFormFields.responseQuestions}
+              isPreview={isPreview}
+            />
+          )}
+          {formView === "customerDetails" && (
+            <CustomerDetailsViewClientForm
+              title={allFormFields.customerTitle}
+              customerDetails={allFormFields.customerDetails}
+              isPreview={isPreview}
+            />
+          )}
+        </form>
+      </FormProvider>
     </div>
   );
 };

@@ -14,8 +14,8 @@ const WelcomeViewClientForm = ({ title, message, isPreview }: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
   return (
     <div className="flex  flex-col items-center">
-      <p className="mt-8 font-semibold text-xl">{title}</p>
-      <p className="mt-8 ">{message}</p>
+      {title && <p className="mt-8 font-semibold text-xl">{title}</p>}
+      {message && <p className="mt-8 ">{message}</p>}
       <Button
         variant={"default"}
         className="w-full rounded-medium mt-8 flex gap-2"

@@ -99,5 +99,16 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), nextui()],
+  plugins: [
+    require("tailwindcss-animate"),
+    nextui({
+      themes: {
+        light: {
+          colors: {
+            danger: "#18181B",
+          },
+        },
+      },
+    }),
+  ],
 };
