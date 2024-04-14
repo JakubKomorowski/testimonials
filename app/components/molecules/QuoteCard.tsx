@@ -8,7 +8,7 @@ const QuoteCard: FC<DefaultCard> = ({ image, alt, text, name, rating }) => {
   return (
     <div className="flex flex-col items-center  relative p-6 pb-8 border rounded-lg">
       <div className="flex justify-end w-full">
-        <RatingComponent rating={rating} size={25} />
+        <RatingComponent rating={rating} size={25} readonly={true} />
       </div>
       <div className="absolute left-6 top-10 ">
         <QuoteIcon className="text-blue-800 w-32 h-24" opacity={0.1} />

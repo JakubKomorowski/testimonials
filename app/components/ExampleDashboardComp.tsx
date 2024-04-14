@@ -73,22 +73,30 @@ const ExampleDashboardComp = () => {
       customerTitle: "Almost finished",
       customerDetails: [
         {
+          id: "email",
           name: "Email address",
+          placeholder: "johnsmith@email.com",
           enabled: true,
           required: false,
         },
         {
+          id: "photo",
           name: "Photo",
+          placeholder: "Your photo",
           enabled: true,
           required: true,
         },
         {
+          id: "website",
           name: "Your website",
+          placeholder: "https://www.example.com",
           enabled: true,
           required: false,
         },
         {
+          id: "socialLink",
           name: "Social link",
+          placeholder: "instagram.com/john_smith",
           enabled: true,
           required: false,
         },

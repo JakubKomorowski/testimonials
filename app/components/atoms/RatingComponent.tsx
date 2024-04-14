@@ -6,17 +6,25 @@ import { FC } from "react";
 interface Props {
   rating: number;
   size: number;
+  readonly?: boolean;
+  handleRating?: (rate: number) => void;
 }
 
-const RatingComponent: FC<Props> = ({ rating, size }) => {
+const RatingComponent: FC<Props> = ({
+  rating,
+  size,
+  readonly,
+  handleRating,
+}) => {
   return (
     <Rating
-      readonly
+      onClick={readonly ? () => {} : handleRating}
+      readonly={readonly}
       initialValue={rating}
       iconsCount={5}
       emptyStyle={{ display: "flex" }}
       fillStyle={{ display: "-webkit-inline-box" }}
-      allowFraction
+      allowFraction={readonly ? true : false}
       transition
       emptyIcon={<FaStar size={size} />}
       fillIcon={<FaStar size={size} />}

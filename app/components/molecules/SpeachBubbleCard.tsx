@@ -21,7 +21,7 @@ const SpeachBubbleCard = ({ children, rating }: Props) => {
           </div>
         </div>
         <div className="absolute right-12 bottom-7">
-          <RatingComponent rating={rating} size={15} />
+          <RatingComponent rating={rating} size={15} readonly={true} />
         </div>
       </div>
     </div>

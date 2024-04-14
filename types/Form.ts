@@ -18,7 +18,9 @@ export interface Iform {
 }
 
 export interface ICustomerDetails {
+  id: string;
   name: string;
+  placeholder: string;
   enabled: boolean;
   required: boolean;
 }

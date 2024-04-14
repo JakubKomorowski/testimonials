@@ -40,7 +40,11 @@ const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
             />
           </div>
           <div className="mt-4">
-            <DropzoneField name="logo" currentForm={currentForm} />
+            <DropzoneField
+              name="logo"
+              currentForm={currentForm}
+              label="Your logo"
+            />
           </div>
         </Tab>
         <Tab key="design" title="Design">

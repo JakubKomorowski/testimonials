@@ -1,22 +1,25 @@
 import { useDropzone } from "react-dropzone";
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
-import { Iform } from "@/types/Form";
+import { ICustomerDetails, Iform } from "@/types/Form";
 import { DocumentData } from "firebase/firestore";
 import Image from "next/image";
 import { Tooltip } from "@nextui-org/react";
 
 interface Props {
   currentForm?: Iform & DocumentData;
+  name: string;
+  label?: string;
+  isRequired?: boolean;
 }
-const Dropzone = ({ currentForm }: Props) => {
+const Dropzone = ({ currentForm, name, label, isRequired }: Props) => {
   const { setValue, watch } = useFormContext();
-  const logo = watch("logo", currentForm?.logo);
+  const image = watch(name, currentForm?.logo);
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const fileWithPreview = Object.assign(acceptedFiles[0], {
       preview: URL.createObjectURL(acceptedFiles[0]),
     });
-    setValue("logo", fileWithPreview);
+    setValue(name, fileWithPreview);
   }, []);
 
   const {
@@ -36,7 +39,7 @@ const Dropzone = ({ currentForm }: Props) => {
   });
 
   const handleDeleteLogo = () => {
-    setValue("logo", {
+    setValue(name, {
       path: "",
       preview: "",
       name: "",
@@ -56,7 +59,10 @@ const Dropzone = ({ currentForm }: Props) => {
 
   return (
     <>
-      <p className="text-sm cursor-default">Your logo</p>
+      <p className="text-sm cursor-default">
+        {label}
+        <span className="ml-[2px]">{isRequired && "*"}</span>
+      </p>
       <div
         {...getRootProps({
           className: isDragAccept
@@ -95,9 +101,9 @@ const Dropzone = ({ currentForm }: Props) => {
       </div>
       <div className="w-full truncate mt-1">
         {fileRejections?.length === 0 ? (
-          logo?.name && (
+          image?.name && (
             <div className="flex p-2">
-              <p className="text-sm truncate">{logo.name}</p>
+              <p className="text-sm truncate">{image.name}</p>
               <Tooltip content="Delete" color="foreground">
                 <button
                   onClick={handleDeleteLogo}

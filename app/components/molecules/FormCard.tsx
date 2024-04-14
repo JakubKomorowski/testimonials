@@ -13,14 +13,6 @@ import { Tooltip, Button } from "@nextui-org/react";
 interface Props {
   firstTwo?: boolean;
 }
-
-interface IForm {
-  id: string;
-  title: string;
-  questions: string[];
-  createdAt: any;
-}
-
 const options = {
   year: "numeric",
   month: "short",
