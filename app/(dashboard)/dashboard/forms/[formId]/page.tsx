@@ -132,7 +132,14 @@ const FormBuilder = ({ params }: Props) => {
                     isPreview={true}
                   />
                 </Tab>
-                <Tab key="thankYou" title="Thank you page"></Tab>
+                <Tab key="thankYou" title="Thank you page">
+                  <ClientForm
+                    allFormFields={allFormFields}
+                    view="thankYou"
+                    selectedKey={tabName as string}
+                    isPreview={true}
+                  />
+                </Tab>
               </Tabs>
             </div>
           </div>

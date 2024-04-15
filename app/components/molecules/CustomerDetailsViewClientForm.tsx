@@ -157,8 +157,8 @@ const CustomerDetailsViewClientForm = ({
         <Button
           variant={"default"}
           className="w-full rounded-medium mt-8 flex gap-2"
-          type="submit"
-          // onClick={() => (!isPreview ? setFormView("customerDetails") : null)}
+          type={isPreview ? "button" : "submit"}
+          onClick={() => (!isPreview ? setFormView("thankYou") : null)}
         >
           Submit
         </Button>

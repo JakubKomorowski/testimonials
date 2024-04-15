@@ -1,20 +1,25 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useFormViewStore } from "@/store/store";
-import { IResponseQuestions } from "@/types/Form";
+import { IRating, IResponseQuestions } from "@/types/Form";
 import { Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { Rating } from "react-simple-star-rating";
 import RatingComponent from "../atoms/RatingComponent";
 
 interface Props {
   title: string;
   questions: IResponseQuestions[];
   isPreview?: boolean;
+  rating: IRating;
 }
 
-const ResponseViewClientForm = ({ title, questions, isPreview }: Props) => {
+const ResponseViewClientForm = ({
+  title,
+  questions,
+  isPreview,
+  rating,
+}: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
   const [clickedNext, setClickedNext] = useState(false);
 
@@ -30,8 +35,6 @@ const ResponseViewClientForm = ({ title, questions, isPreview }: Props) => {
   const handleRating = (rate: number) => {
     setValue("rating", rate);
   };
-
-  console.log(ratingValue);
 
   return (
     <div className="flex flex-col w-full">
@@ -55,7 +58,7 @@ const ResponseViewClientForm = ({ title, questions, isPreview }: Props) => {
           size={25}
           handleRating={handleRating}
         />
-        {!isPreview && clickedNext && !ratingValue && (
+        {!isPreview && clickedNext && rating.required && (
           <p className="text-xs pt-1">Please rate us</p>
         )}
       </div>
@@ -80,7 +83,7 @@ const ResponseViewClientForm = ({ title, questions, isPreview }: Props) => {
         className="w-full rounded-medium mt-8 flex gap-2"
         type="button"
         onClick={() =>
-          !isPreview && testimonialValue
+          !isPreview && testimonialValue && !rating.required
             ? setFormView("customerDetails")
             : setClickedNext(true)
         }

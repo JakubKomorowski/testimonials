@@ -55,7 +55,10 @@ const ExampleDashboardComp = () => {
       accentColor: "#D2DE32",
       collectVideo: true,
       collectText: true,
-      collectRating: true,
+      rating: {
+        enabled: true,
+        required: true,
+      },
       welcomeTitle: "Your opinion matters!",
       welcomeMessage:
         "Hey there! 👋 We hope you're loving our [product/service] as much as we loved creating it for you. If you've got a moment, we'd be thrilled to hear your thoughts.",

@@ -35,6 +35,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
   const responseTitle = watch("responseTitle", currentForm?.responseTitle);
   const responseQuestions: IResponseQuestions[] = watch("responseQuestions");
   const customerTitle = watch("customerTitle", currentForm?.customerTitle);
+  const rating = watch("rating", currentForm?.rating);
   const customerDetails: ICustomerDetails[] = watch(
     "customerDetails",
     currentForm?.customerDetails
@@ -51,6 +52,7 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
     setValue("customerDetails", currentForm?.customerDetails);
     setValue("thankYouTitle", currentForm?.thankYouTitle);
     setValue("thankYouText", currentForm?.thankYouText);
+    setValue("rating", currentForm?.rating);
   }, [loading]);
 
   const handleEditQuestion = (
@@ -103,6 +105,23 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
       return el;
     });
     setValue("customerDetails", [...selected]);
+  };
+
+  const handleSwitchRating = () => {
+    const switched = {
+      ...rating,
+      enabled: !rating.enabled,
+      required: rating.enabled === false ? false : !rating.required,
+    };
+    setValue("rating", switched);
+  };
+
+  const handleSelectRating = () => {
+    const selected = {
+      ...rating,
+      required: !rating.required,
+    };
+    setValue("rating", selected);
   };
 
   const tabTtitle =
@@ -203,6 +222,40 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
               />
             </Button>
           </Tooltip>
+          <div>
+            <p className="text-sm mb-1">Rating</p>
+            <div className="flex items-end gap-4">
+              <Controller
+                control={control}
+                name="rating"
+                render={({ field }) => (
+                  <Switch
+                    size="sm"
+                    aria-label="Automatic updates"
+                    onChange={() => handleSwitchRating()}
+                    isSelected={rating?.enabled}
+                    checked={rating?.enabled}
+                  />
+                )}
+              />
+              <Controller
+                control={control}
+                name="rating"
+                render={({ field }) => (
+                  <Checkbox
+                    size="sm"
+                    onChange={() => handleSelectRating()}
+                    checked={rating?.required && rating?.enabled}
+                    isSelected={rating?.required && rating?.enabled}
+                    isDisabled={!rating?.enabled}
+                    className="h-fit"
+                  >
+                    <p className="text-sm">Required</p>
+                  </Checkbox>
+                )}
+              />
+            </div>
+          </div>
         </div>
       ) : tabName === "customerDetails" ? (
         <div className="flex mt-8  flex-col gap-4" key={3}>

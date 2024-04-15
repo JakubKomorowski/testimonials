@@ -5,7 +5,7 @@ export interface Iform {
   accentColor: string;
   collectVideo: boolean;
   collectText: boolean;
-  collectRating: boolean;
+  rating: IRating;
   welcomeTitle: string;
   welcomeMessage: string;
   responseTitle: string;
@@ -15,6 +15,11 @@ export interface Iform {
   thankYouTitle: string;
   thankYouText: string;
   createdAt: string;
+}
+
+export interface IRating {
+  enabled: boolean;
+  required: boolean;
 }
 
 export interface ICustomerDetails {

@@ -3,32 +3,18 @@ import { MENU_LIST, MENU_LIST_MOBILE, ROUTES } from "@/routes";
 import NavItem from "../atoms/NavItem";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
-import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter, usePathname } from "next/navigation";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import Logo from "../atoms/Logo";
 import { useState } from "react";
 import { firstTwoLetters } from "@/lib/utils";
-// import {
-//   Avatar,
-//   Dropdown,
-//   DropdownItem,
-//   DropdownMenu,
-//   DropdownTrigger,
-// } from "@nextui-org/react";
-
-// import {
-//   Dropdown,
-//   DropdownTrigger,
-//   DropdownMenu,
-//   DropdownItem,
-// } from "../../proba";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Avatar,
+} from "@nextui-org/react";
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -69,32 +55,7 @@ const Navbar = () => {
           </div>
         ) : (
           <div className="w-[156px] flex justify-end">
-            <DropdownMenu>
-              <DropdownMenuTrigger className="bg-primary text-lg h-12 w-12 flex items-center justify-center text-bg font-medium rounded-full">
-                {firstTwoLetters(name, mail)}
-              </DropdownMenuTrigger>
-              <DropdownMenuContent>
-                <Link href={ROUTES.dashboard}>
-                  <DropdownMenuItem className="cursor-pointer">
-                    Dashboard
-                  </DropdownMenuItem>
-                </Link>
-                <DropdownMenuItem className="cursor-pointer">
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => {
-                    signOut();
-                    router.push("/");
-                  }}
-                  className="cursor-pointer"
-                >
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-
-            {/* <Dropdown placement="bottom-end">
+            <Dropdown placement="bottom-end">
               <DropdownTrigger>
                 <Avatar
                   name={firstTwoLetters(name, mail)}
@@ -103,11 +64,9 @@ const Navbar = () => {
                 />
               </DropdownTrigger>
               <DropdownMenu aria-label="Profile Actions" variant="flat">
-                <Link href={ROUTES.dashboard}>
-                  <DropdownItem key="dashboard" className="h-14 gap-2">
-                    Dashboard
-                  </DropdownItem>
-                </Link>
+                <DropdownItem key="dashboard" href={ROUTES.dashboard}>
+                  Dashboard
+                </DropdownItem>
                 <DropdownItem key="settings">My Settings</DropdownItem>
                 <DropdownItem
                   onClick={() => {
@@ -119,10 +78,9 @@ const Navbar = () => {
                   Sign Out
                 </DropdownItem>
               </DropdownMenu>
-            </Dropdown> */}
+            </Dropdown>
           </div>
         )}
-
         <Sheet open={open} onOpenChange={setOpen}>
           <button
             onClick={() => {

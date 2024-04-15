@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Iform } from "@/types/Form";
+import { IRating, Iform } from "@/types/Form";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import WelcomeViewClientForm from "../molecules/WelcomeViewClientForm";
@@ -11,6 +11,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
 import { Tooltip, Button as NextButton } from "@nextui-org/react";
+import ThankYouViewClientForm from "../molecules/ThankYouViewClientForm";
 
 interface Props {
   allFormFields: Iform;
@@ -21,16 +22,12 @@ interface Props {
 
 interface Inputs {
   testimonial: string;
-  rating: number;
   name: string;
   email?: string;
   website?: string;
   socialLink?: string;
   photo?: File;
-}
-
-interface TestContextExtended {
-  photo?: unknown;
+  rating?: number;
 }
 
 const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
@@ -46,10 +43,13 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
   const isPhotoRequired = !!allFormFields.customerDetails.find(
     (item) => item.name === "Photo" && item.required
   );
+
   const testimonialFormSchema = yup
     .object({
       testimonial: yup.string().required("Please write a testimonial"),
-      rating: yup.number().required("Field required"),
+      rating: allFormFields.rating.required
+        ? yup.number().required("Field required")
+        : yup.number(),
       name: yup.string().required("Field required"),
       email: isEmailRequired
         ? yup.string().email().required("Field required")
@@ -80,6 +80,8 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
   const formView = useFormViewStore((state) => state.formView);
 
+  console.log(formView);
+
   const views = ["welcome", "response", "customerDetails", "thankYou"];
   const indexOfView = views.indexOf(formView ? formView : views[0]);
 
@@ -87,9 +89,9 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
     view && setFormView(view);
   }, [selectedKey]);
   return (
-    <div className="rounded-[30px] px-12 w-[420px] pt-4 pb-12 mx-auto shadow-[0px_4px_50px_0px_#00000025] mt-28 flex  flex-col items-center">
+    <div className="rounded-[30px] px-12 w-[420px] pt-4 pb-12 mx-auto shadow-[0px_4px_50px_0px_#00000025] my-8 flex  flex-col items-center">
       <div className="flex w-full ">
-        {formView !== "welcome" && (
+        {formView !== "welcome" && formView !== "thankYou" && (
           <NextButton
             isIconOnly
             color={undefined}
@@ -140,6 +142,7 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
             <ResponseViewClientForm
               title={allFormFields.responseTitle}
               questions={allFormFields.responseQuestions}
+              rating={allFormFields.rating}
               isPreview={isPreview}
             />
           )}
@@ -147,6 +150,13 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
             <CustomerDetailsViewClientForm
               title={allFormFields.customerTitle}
               customerDetails={allFormFields.customerDetails}
+              isPreview={isPreview}
+            />
+          )}
+          {formView === "thankYou" && (
+            <ThankYouViewClientForm
+              title={allFormFields.thankYouTitle}
+              text={allFormFields.thankYouText}
               isPreview={isPreview}
             />
           )}
