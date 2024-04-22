@@ -67,7 +67,7 @@ const CustomerDetailsViewClientForm = ({
             autoComplete="name"
             placeholder="John Smith"
             isRequired={true}
-            value={nameValue}
+            value={nameValue || ""}
             defaultValue=""
             isReadOnly={isPreview}
             isInvalid={!isPreview ? !!errors.name : false}
@@ -136,7 +136,7 @@ const CustomerDetailsViewClientForm = ({
                   type={item.id === "email" ? "email" : "text"}
                   placeholder={item.placeholder}
                   label={item.name}
-                  value={watch(item.id)}
+                  value={watch(item.id) || ""}
                   defaultValue=""
                   isRequired={item.required}
                   isReadOnly={isPreview}
@@ -158,7 +158,8 @@ const CustomerDetailsViewClientForm = ({
           variant={"default"}
           className="w-full rounded-medium mt-8 flex gap-2"
           type={isPreview ? "button" : "submit"}
-          onClick={() => (!isPreview ? setFormView("thankYou") : null)}
+          // type="submit"
+          // onClick={() => (!isPreview ? setFormView("thankYou") : null)}
         >
           Submit
         </Button>

@@ -12,25 +12,40 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
 import { Tooltip, Button as NextButton } from "@nextui-org/react";
 import ThankYouViewClientForm from "../molecules/ThankYouViewClientForm";
+import { addDoc, collection } from "firebase/firestore";
+import { db, storage } from "@/app/firebase";
+import { useSession } from "next-auth/react";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 interface Props {
   allFormFields: Iform;
   view?: "welcome" | "response" | "customerDetails" | "thankYou";
   selectedKey?: string;
   isPreview?: boolean;
+  id?: string;
 }
 
+interface FileWithPath extends File {
+  readonly path?: string;
+  readonly preview?: string;
+}
 interface Inputs {
   testimonial: string;
   name: string;
   email?: string;
   website?: string;
   socialLink?: string;
-  photo?: File;
+  photo?: FileWithPath;
   rating?: number;
 }
 
-const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
+const ClientForm = ({
+  allFormFields,
+  view,
+  selectedKey,
+  isPreview,
+  id,
+}: Props) => {
   const isEmailRequired = !!allFormFields.customerDetails.find(
     (item) => item.name === "Email address" && item.required
   );
@@ -60,27 +75,69 @@ const ClientForm = ({ allFormFields, view, selectedKey, isPreview }: Props) => {
       socialLink: isSocialLinkRequired
         ? yup.string().required("Field required")
         : yup.string(),
-      photo: yup
-        .mixed<File>()
-        .test("required", "You need to provide an image", (photo?: File) => {
-          // return file && file.size <-- u can use this if you don't want to allow empty files to be uploaded;
-          if (photo?.name && isPhotoRequired) return true;
-          return false;
-        }),
+      photo: isPhotoRequired
+        ? yup
+            .mixed<File>()
+            .test(
+              "required",
+              "You need to provide an image",
+              (photo?: File) => {
+                // return file && file.size <-- u can use this if you don't want to allow empty files to be uploaded;
+                if (photo?.name && isPhotoRequired) return true;
+                return false;
+              }
+            )
+        : yup.mixed<File>(),
     })
     .required();
 
-  // console.log(allFormFields);
+  const [formUpdating, setFormUpdating] = useState(false);
+
+  const { data: session } = useSession();
+  const testimonialRef = collection(db, "testimonials");
+
   const methods = useForm<Inputs>({
     resolver: yupResolver(testimonialFormSchema),
     mode: "onChange",
   });
-
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
   const setFormView = useFormViewStore((state) => state.setFormView);
   const formView = useFormViewStore((state) => state.formView);
 
-  console.log(formView);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      setFormUpdating(true);
+      if (data.photo && data.photo.name) {
+        const file = {
+          name: data.photo.name,
+          size: data.photo.size,
+          type: data.photo.type,
+          lastModified: data.photo.lastModified,
+          preview: data.photo.preview,
+          path: data.photo.path,
+        };
+        const imageRef = ref(storage, `testimonials/${id}/${data.photo?.name}`);
+        await uploadBytes(imageRef, data.photo);
+        const url = data.photo.name && (await getDownloadURL(imageRef));
+        await addDoc(testimonialRef, {
+          ...data,
+          photo: { downloadUrl: data.photo.path ? url : "", ...file },
+          formId: id,
+          userId: session?.user.id,
+        });
+      } else {
+        await addDoc(testimonialRef, {
+          ...data,
+          photo: { downloadUrl: "" },
+          formId: id,
+          userId: session?.user.id,
+        });
+      }
+      !isPreview ? setFormView("thankYou") : null;
+    } catch (error) {
+      console.log(error);
+    }
+    setFormUpdating(false);
+  };
 
   const views = ["welcome", "response", "customerDetails", "thankYou"];
   const indexOfView = views.indexOf(formView ? formView : views[0]);

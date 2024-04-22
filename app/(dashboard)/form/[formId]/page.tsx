@@ -26,7 +26,7 @@ const SingleForm = async ({ params }: Props) => {
 
   return (
     <div className="h-lvh flex items-center">
-      <ClientForm allFormFields={formattedForm as Iform} />
+      <ClientForm allFormFields={formattedForm as Iform} id={params.formId} />
     </div>
   );
 };
