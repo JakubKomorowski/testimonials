@@ -35,7 +35,7 @@ const ExampleDashboardComp = () => {
   const [loadingState, setLoadingState] = useState(false);
   const formRef = collection(db, "forms");
   const [value, loading, error] = useDocument(
-    auth.currentUser && doc(db, "users", auth.currentUser.uid)
+    doc(db, "users", session?.user.id)
   );
 
   const handleAddFormId = async (id: string) => {

@@ -123,6 +123,7 @@ const ClientForm = ({
           photo: { downloadUrl: data.photo.path ? url : "", ...file },
           formId: id,
           userId: session?.user.id,
+          createdAt: new Date(),
         });
       } else {
         await addDoc(testimonialRef, {
@@ -130,6 +131,7 @@ const ClientForm = ({
           photo: { downloadUrl: "" },
           formId: id,
           userId: session?.user.id,
+          createdAt: new Date(),
         });
       }
       !isPreview ? setFormView("thankYou") : null;

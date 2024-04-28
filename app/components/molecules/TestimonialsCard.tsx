@@ -1,51 +1,36 @@
 "use client";
 import { db } from "@/app/firebase";
 import { ROUTES } from "@/routes";
-import { doc, collection, DocumentData } from "firebase/firestore";
-import { useSession } from "next-auth/react";
+import { Tooltip } from "@nextui-org/react";
+import { DocumentData } from "firebase-admin/firestore";
+import { collection } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
-import { toast } from "sonner";
-import { Tooltip, Button } from "@nextui-org/react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
-interface Props {
-  firstTwo?: boolean;
-}
+type Props = {};
+
 const options = {
   year: "numeric",
   month: "short",
   day: "numeric",
 } as const;
 
-const FormCard = ({ firstTwo }: Props) => {
-  const { data: session } = useSession();
-
-  const [value, loadingState, errorState] = useCollection(
-    collection(db, "forms")
+const TestimonialsCard = (props: Props) => {
+  const [value, loadingState, errorState] = useCollectionData(
+    collection(db, "testimonials")
   );
-
-  const newForms = value?.docs.map((doc) => doc.data());
-
-  const slicedForms = newForms
+  const slicedTestimonials = value
     ?.sort(function (a: DocumentData, b: DocumentData) {
-      return b.createdAt.seconds - a.createdAt.seconds;
+      return b?.createdAt?.seconds - a?.createdAt?.seconds;
     })
     .slice(0, 2);
-  const copyToClipBoard = (copyMe: string) => {
-    try {
-      navigator.clipboard.writeText(copyMe);
-      toast("Copied!");
-    } catch (err) {
-      toast("Failed to copy!");
-    }
-  };
-  const formmatedForms = firstTwo ? slicedForms : newForms;
+
   return (
     <section className="bg-muted  p-6 rounded-lg w-full ">
       <div className="flex justify-between">
-        <h2 className="text-2xl font-bold mb-4">Forms</h2>
+        <h2 className="text-2xl font-bold mb-4">Testimonials</h2>
         <div className="flex gap-2 items-center h-fit cursor-pointer">
           <p>see all </p>
           <Image
@@ -57,29 +42,29 @@ const FormCard = ({ firstTwo }: Props) => {
           />
         </div>
       </div>
-      <div className="flex gap-6 flex-col 2xl:flex-row flex-wrap ">
-        {formmatedForms?.map((el: DocumentData) => {
-          const time = new Date(el.createdAt.seconds * 1000).toLocaleString(
+      <div className="flex gap-6 flex-col  flex-wrap ">
+        {slicedTestimonials?.map((el: DocumentData) => {
+          const time = new Date(el?.createdAt?.seconds * 1000).toLocaleString(
             "en-US",
             options
           );
           return (
             <div
               key={el.id}
-              className="px-3 pt-3 pb-5  rounded-lg bg-container2 flex-1 min-w-[400px]"
+              className="px-3 pt-3 pb-5  rounded-lg bg-container3 flex-1 min-w-[400px]"
             >
               <div className=" flex-1 flex">
                 <Image
-                  src={`/Icons/form.svg`}
+                  src={`/Icons/avatar.svg`}
                   alt="form-icon"
                   width={30}
                   height={30}
-                  className="h-8 w-8 object-contain "
+                  className="h-8 w-8 object-contain ml-2"
                 />
-                <div className="mt-1 pl-2 ">
-                  <h3 className="text-xl font-bold">{el.title}</h3>
+                <div className="mt-1 pl-4 ">
+                  <p className="">{el.name}</p>
                   <p className="text-sm text-gray-500 mb-2">Created: {time}</p>
-                  <p className="mb-4">Responses: 1</p>
+                  <p className="">{el.testimonial}</p>
                 </div>
                 <div className="flex gap-2 h-fit ml-auto">
                   <Tooltip content="Edit" color="foreground">
@@ -108,25 +93,6 @@ const FormCard = ({ firstTwo }: Props) => {
                   </Tooltip>
                 </div>
               </div>
-              <Tooltip content="Copy" placement="top-end" color="foreground">
-                <div
-                  onClick={() =>
-                    copyToClipBoard(
-                      `https://www.trustcatcher.com${ROUTES.form}/${el.id}`
-                    )
-                  }
-                  className="p-2 px-4 rounded-lg bg-container3 text-sm flex gap-4 items-center cursor-pointer ml-9 w-fit max-w-80"
-                >
-                  <p className="text-ellipsis overflow-hidden">{`trustcatcher.com${ROUTES.form}/${el.id}`}</p>
-                  <Image
-                    src={`/Icons/copy.svg`}
-                    alt="form-icon"
-                    width={30}
-                    height={30}
-                    className="h-5 w-5 object-contain "
-                  />
-                </div>
-              </Tooltip>
             </div>
           );
         })}
@@ -135,4 +101,4 @@ const FormCard = ({ firstTwo }: Props) => {
   );
 };
 
-export default FormCard;
+export default TestimonialsCard;

@@ -1,13 +1,14 @@
-import { FirestoreAdapter } from "@auth/firebase-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { cert } from "firebase-admin/app";
-import { NextAuthOptions } from "next-auth";
 import { auth } from "@/app/firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import EmailProvider from "next-auth/providers/email";
 import { adminAuth } from "@/firebase-admin";
 import { ROUTES } from "@/routes";
+import { NextAuthOptions } from "next-auth";
+import { FirestoreAdapter } from "@auth/firebase-adapter";
+import type { Adapter } from "next-auth/adapters";
 
 export const authOptions: NextAuthOptions = {
   pages: {
@@ -22,7 +23,7 @@ export const authOptions: NextAuthOptions = {
     EmailProvider({
       server: {
         host: process.env.EMAIL_SERVER_HOST,
-        port: process.env.EMAIL_SERVER_PORT,
+        port: parseInt(process.env.EMAIL_SERVER_PORT as string),
         auth: {
           user: process.env.EMAIL_SERVER_USER,
           pass: process.env.EMAIL_SERVER_PASSWORD,
@@ -93,5 +94,5 @@ export const authOptions: NextAuthOptions = {
       clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
       privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
     }),
-  }),
+  }) as Adapter,
 };

@@ -82,10 +82,10 @@ const FormBuilder = ({ params }: Props) => {
       {formLoading ? (
         <Loading />
       ) : (
-        <div className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]">
+        <div className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr]">
           <form
             onSubmit={methods.handleSubmit(onSubmit)}
-            className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr,1fr]"
+            className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr]"
           >
             <FormBuilderSidebar
               currentForm={form as Iform}

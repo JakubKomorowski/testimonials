@@ -90,18 +90,19 @@ const CustomerDetailsViewClientForm = ({
                 <AvatarImage src={photoValue.preview} alt="Avatar image" />
               </Avatar>
               {photoValue?.name && (
-                <div className="flex p-2">
+                <div className="flex p-2 gap-2">
                   <p className="text-sm truncate">{photoValue.name}</p>
+
                   <Tooltip content="Delete" color="foreground">
                     <button
                       onClick={handleDeleteLogo}
-                      className="focus:outline-none w-10"
+                      className="focus:outline-none "
                       type="button"
                     >
                       <Image
-                        src="/Icons/close.svg"
-                        width={20}
-                        height={20}
+                        src="/Icons/trash.svg"
+                        width={18}
+                        height={18}
                         alt="delete"
                         className="cursor-pointer"
                       />

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import FormCard from "@/app/components/molecules/FormCard";
+import TestimonialsCard from "@/app/components/molecules/TestimonialsCard";
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
@@ -22,6 +23,9 @@ const Dashboard = async () => {
       <div className="grid grid-cols-8 gap-4 p-7">
         <div className="col-span-6">
           <FormCard firstTwo />
+        </div>
+        <div className="col-span-6">
+          <TestimonialsCard />
         </div>
       </div>
     </div>

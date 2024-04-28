@@ -13,11 +13,6 @@ interface Props {
 
 const FormBuilderSidebarRight = ({ currentForm, loading }: Props) => {
   const { register, setValue, watch } = useFormContext();
-
-  // const [value, loading, error] = useDocument(
-  //   auth.currentUser && doc(db, "users", auth.currentUser.uid)
-  // );
-
   const title = watch("title", currentForm?.title);
   const accentColor = watch("accentColor", currentForm?.accentColor);
 

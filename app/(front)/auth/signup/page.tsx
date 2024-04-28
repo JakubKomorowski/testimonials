@@ -19,12 +19,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { auth } from "@/app/firebase";
+import { auth, db } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { Session, User } from "next-auth";
 import { Input } from "@nextui-org/react";
 import { FaRegEye } from "react-icons/fa6";
 import { FaRegEyeSlash } from "react-icons/fa6";
+import { addDoc, collection, doc, setDoc } from "firebase/firestore";
+
 
 type Inputs = {
   email: string;
@@ -71,6 +73,7 @@ export default function Signup() {
     resolver: yupResolver(schema),
   });
 
+  
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -88,8 +91,11 @@ export default function Signup() {
 
     if (userCredential) {
       await sendEmailVerification(userCredential.user);
-      setModalOpen(isSubmitSuccessful);
+      setModalOpen(true);
+    // const userRef = doc(db, "users", userCredential.user.uid);
+    //   await setDoc(userRef, { email: data?.email });
     }
+   
     return userCredential;
   };
 
