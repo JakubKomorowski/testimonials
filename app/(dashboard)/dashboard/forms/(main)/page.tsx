@@ -1,9 +1,9 @@
 "use client";
-import FormCard from "@/app/components/molecules/FormCard";
 import React from "react";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/routes";
 import { useSession } from "next-auth/react";
+import FormCardWrapper from "@/app/components/molecules/FormCardWrapper";
 
 const Forms = () => {
   const { data: session } = useSession();
@@ -12,7 +12,7 @@ const Forms = () => {
   }
   return (
     <div className="p-8">
-      <FormCard />
+      <FormCardWrapper />
     </div>
   );
 };

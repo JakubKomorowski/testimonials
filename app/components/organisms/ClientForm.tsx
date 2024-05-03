@@ -1,6 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
-import { IRating, Iform } from "@/types/Form";
+import { Iform } from "@/types/Form";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import WelcomeViewClientForm from "../molecules/WelcomeViewClientForm";
@@ -10,12 +9,13 @@ import { useFormViewStore } from "@/store/store";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
-import { Tooltip, Button as NextButton } from "@nextui-org/react";
+import { Button as NextButton } from "@nextui-org/react";
 import ThankYouViewClientForm from "../molecules/ThankYouViewClientForm";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 interface Props {
   allFormFields: Iform;
@@ -92,9 +92,14 @@ const ClientForm = ({
     .required();
 
   const [formUpdating, setFormUpdating] = useState(false);
-
   const { data: session } = useSession();
-  const testimonialRef = collection(db, "testimonials");
+  const [value, loadingState, errorState] = useCollectionData(
+    collection(db, "projects")
+  );
+
+  const projectId = value?.find((project) =>
+    project?.formIds?.includes(id)
+  )?.id;
 
   const methods = useForm<Inputs>({
     resolver: yupResolver(testimonialFormSchema),
@@ -104,6 +109,12 @@ const ClientForm = ({
   const formView = useFormViewStore((state) => state.formView);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const testimonialRef = collection(
+      db,
+      "projects",
+      projectId,
+      "testimonials"
+    );
     try {
       setFormUpdating(true);
       if (data.photo && data.photo.name) {
@@ -118,20 +129,26 @@ const ClientForm = ({
         const imageRef = ref(storage, `testimonials/${id}/${data.photo?.name}`);
         await uploadBytes(imageRef, data.photo);
         const url = data.photo.name && (await getDownloadURL(imageRef));
-        await addDoc(testimonialRef, {
+        const doc = await addDoc(testimonialRef, {
           ...data,
           photo: { downloadUrl: data.photo.path ? url : "", ...file },
           formId: id,
           userId: session?.user.id,
           createdAt: new Date(),
         });
+        updateDoc(doc, {
+          id: doc.id,
+        });
       } else {
-        await addDoc(testimonialRef, {
+        const doc = await addDoc(testimonialRef, {
           ...data,
           photo: { downloadUrl: "" },
           formId: id,
           userId: session?.user.id,
           createdAt: new Date(),
+        });
+        updateDoc(doc, {
+          id: doc.id,
         });
       }
       !isPreview ? setFormView("thankYou") : null;

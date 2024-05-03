@@ -1,7 +1,6 @@
 import ClientForm from "@/app/components/organisms/ClientForm";
 import { db } from "@/app/firebase";
 import { Iform } from "@/types/Form";
-import { Textarea } from "@nextui-org/react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { notFound } from "next/navigation";
 
@@ -9,19 +8,44 @@ interface Props {
   params: { formId: string };
 }
 export async function generateStaticParams() {
-  const forms = await getDocs(collection(db, "forms"));
-  return forms.docs.map((form) => ({ formId: form.data()["id"] }));
+  const projects = await getDocs(collection(db, "projects"));
+  const projectMap = await Promise.all(
+    projects.docs.map(async (project) => {
+      const formsData = await getDocs(
+        collection(db, "projects", project.id, "forms")
+      );
+      return formsData;
+    })
+  );
+
+  const formIds = projectMap.map((el) =>
+    el.docs.map((project) => ({
+      formId: project.data()["id"],
+    }))
+  );
+
+  const margedArrayOfArrays = formIds.flat();
+  return margedArrayOfArrays;
 }
 
 const SingleForm = async ({ params }: Props) => {
-  const docRef = doc(db, "forms", params.formId);
-  const docSnap = await getDoc(docRef);
-  const form = docSnap?.data();
+  const projects = await getDocs(collection(db, "projects"));
+  const projectIds = await Promise.all(
+    projects.docs.map((project) => project.id)
+  );
+  const docRefs = projectIds.map((el) =>
+    doc(db, "projects", el, "forms", params.formId)
+  );
+
+  const docSnaps = await Promise.all(
+    docRefs.map((el) => getDoc(el).then((res) => res.data()))
+  );
+  const form = docSnaps.find((el) => el != undefined);
   if (!form) notFound();
 
   const formattedForm = {
     ...form,
-    createdAt: form.nanoseconds,
+    createdAt: form?.nanoseconds,
   };
 
   return (

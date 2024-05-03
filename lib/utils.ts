@@ -1,5 +1,6 @@
 import { IHeading } from "@/types/PortableTextHeading";
 import { type ClassValue, clsx } from "clsx";
+import { DocumentData } from "firebase-admin/firestore";
 import { twMerge } from "tailwind-merge";
 
 export function cn(...inputs: ClassValue[]) {
@@ -65,4 +66,10 @@ export const firstTwoLetters = (name: string, mail: string) => {
     (initials?.shift()?.[1] || "") + (initials?.pop()?.[1] || "")
   ).toUpperCase();
   return formatedInitials || firstTwoChars;
+};
+
+export const sortByDate = (arr: DocumentData[] | undefined) => {
+  return arr?.sort(function (a: DocumentData, b: DocumentData) {
+    return b.createdAt.seconds - a.createdAt.seconds;
+  });
 };

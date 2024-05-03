@@ -16,7 +16,7 @@ export const data = [
   {
     image: "/avatar2.jpg",
     alt: "avatar",
-    name: "Monica Lee",
+    name: "Amber R. Simpson",
     text: "I've never experienced customer service as attentive and caring as this company's.",
     rating: 5,
   },

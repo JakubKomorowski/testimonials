@@ -12,6 +12,11 @@ interface FormState {
   setFormView: (formView: string) => void;
 }
 
+interface ProjectState {
+  project: string | null | undefined;
+  setProject: (project: string) => void;
+}
+
 export const useSubscriptionStore = create<SubsctiptionState>((set) => ({
   subscription: undefined,
   setSubscription: (subscription: Subscription | null) => set({ subscription }),
@@ -20,4 +25,9 @@ export const useSubscriptionStore = create<SubsctiptionState>((set) => ({
 export const useFormViewStore = create<FormState>((set) => ({
   formView: "welcome",
   setFormView: (formView: string) => set({ formView }),
+}));
+
+export const useProjectStore = create<ProjectState>((set) => ({
+  project: undefined,
+  setProject: (project: string) => set({ project }),
 }));

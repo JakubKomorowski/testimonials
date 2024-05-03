@@ -4,7 +4,7 @@ import ContactFormEmail, {
   ContactFormEmailProps,
 } from "../emails/contact-form-email";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function sendEmail(data: ContactFormEmailProps) {
   const { name, email, message } = data;

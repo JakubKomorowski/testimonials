@@ -1,14 +1,14 @@
 "use client";
 import { db } from "@/app/firebase";
 import { ROUTES } from "@/routes";
-import { doc, collection, DocumentData } from "firebase/firestore";
-import { useSession } from "next-auth/react";
+import { collection, DocumentData } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { useDocument, useCollection } from "react-firebase-hooks/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { toast } from "sonner";
-import { Tooltip, Button } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/react";
+import { useProjectStore } from "@/store/store";
+import { sortByDate } from "@/lib/utils";
 
 interface Props {
   firstTwo?: boolean;
@@ -20,19 +20,26 @@ const options = {
 } as const;
 
 const FormCard = ({ firstTwo }: Props) => {
-  const { data: session } = useSession();
+  const project = useProjectStore((state) => state.project);
 
-  const [value, loadingState, errorState] = useCollection(
-    collection(db, "forms")
+  // useEffect(() => {
+  //   if (!project) return;
+  //   (async () => {
+  //     const formRef = collection(db, "projects", project, "forms");
+  //     const snap = await getDocs(formRef).then((res) => res.docs);
+  //     const newData = snap.map((doc) => {
+  //       return doc.data();
+  //     });
+  //     setData(newData);
+  //   })();
+  // }, [project, data]);
+
+  const [value, loadingState, errorState] = useCollectionData(
+    collection(db, "projects", project || "", "forms")
   );
 
-  const newForms = value?.docs.map((doc) => doc.data());
+  const slicedForms = sortByDate(value)?.slice(0, 2);
 
-  const slicedForms = newForms
-    ?.sort(function (a: DocumentData, b: DocumentData) {
-      return b.createdAt.seconds - a.createdAt.seconds;
-    })
-    .slice(0, 2);
   const copyToClipBoard = (copyMe: string) => {
     try {
       navigator.clipboard.writeText(copyMe);
@@ -41,7 +48,7 @@ const FormCard = ({ firstTwo }: Props) => {
       toast("Failed to copy!");
     }
   };
-  const formmatedForms = firstTwo ? slicedForms : newForms;
+  const formmatedForms = firstTwo ? slicedForms : value;
   return (
     <section className="bg-muted  p-6 rounded-lg w-full ">
       <div className="flex justify-between">

@@ -8,12 +8,16 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import {
+  useCollection,
+  useDocument,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
 import { db } from "../firebase";
 import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useSession } from "next-auth/react";
-import { useSubscriptionStore } from "@/store/store";
+import { useProjectStore, useSubscriptionStore } from "@/store/store";
 import ManageAccountButton from "./atoms/ManageAccountButton";
 import { auth } from "../firebase";
 import { doc, getDoc, getDocs } from "firebase/firestore";
@@ -33,13 +37,24 @@ const ExampleDashboardComp = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { data: session } = useSession();
   const [loadingState, setLoadingState] = useState(false);
-  const formRef = collection(db, "forms");
+  const project = useProjectStore((state) => state.project);
   const [value, loading, error] = useDocument(
     doc(db, "users", session?.user.id)
   );
 
+  // const [projectValue, loadingHere, errorHere] = useDocument(
+  //   doc(db, "projects", project)
+  // );
+
   const handleAddFormId = async (id: string) => {
-    const doc = await addDoc(formRef, {
+    if (!project) return;
+
+    const projectRef = doc(db, "projects", project);
+    const projectValue = await getDoc(projectRef).then((res) => res.data());
+
+    const formRef = collection(db, "projects", project, "forms");
+
+    const formDoc = await addDoc(formRef, {
       userId: session?.user.id,
       id: "",
       title: "Title",
@@ -109,10 +124,15 @@ const ExampleDashboardComp = () => {
         "Thank you for your trust in us and for taking the time to help us improve and grow.",
       createdAt: new Date(),
     });
-    setDoc(
-      doc,
+    await updateDoc(formDoc, {
+      id: formDoc.id,
+    });
+    await setDoc(
+      projectRef,
       {
-        id: doc.id,
+        formIds: projectValue?.formIds
+          ? [...projectValue?.formIds, formDoc.id]
+          : [formDoc.id],
       },
       { merge: true }
     );

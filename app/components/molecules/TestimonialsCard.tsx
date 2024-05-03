@@ -1,12 +1,14 @@
 "use client";
 import { db } from "@/app/firebase";
+import { sortByDate } from "@/lib/utils";
 import { ROUTES } from "@/routes";
+import { useProjectStore } from "@/store/store";
 import { Tooltip } from "@nextui-org/react";
 import { DocumentData } from "firebase-admin/firestore";
-import { collection } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 type Props = {};
@@ -18,14 +20,12 @@ const options = {
 } as const;
 
 const TestimonialsCard = (props: Props) => {
+  const project = useProjectStore((state) => state.project);
   const [value, loadingState, errorState] = useCollectionData(
-    collection(db, "testimonials")
+    collection(db, "projects", project || "", "testimonials")
   );
-  const slicedTestimonials = value
-    ?.sort(function (a: DocumentData, b: DocumentData) {
-      return b?.createdAt?.seconds - a?.createdAt?.seconds;
-    })
-    .slice(0, 2);
+
+  const slicedTestimonials = sortByDate(value)?.slice(0, 2);
 
   return (
     <section className="bg-muted  p-6 rounded-lg w-full ">

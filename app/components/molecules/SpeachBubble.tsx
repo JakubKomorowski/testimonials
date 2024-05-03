@@ -44,6 +44,7 @@ export default function SpeachBubble() {
             onSwiper={setSwiperState}
             onSlideChange={(swiper) => setCurrSlide(swiper.activeIndex)}
             className="main-slider"
+            autoHeight={true}
           >
             {data.map((el, i) => (
               <SwiperSlide key={i}>{el.text}</SwiperSlide>
@@ -60,10 +61,11 @@ export default function SpeachBubble() {
       <SwiperComp
         modules={[Controller]}
         slideToClickedSlide={true}
-        slidesPerView={"auto"}
+        slidesPerView={3}
         centeredSlides={true}
         onSwiper={setThumbsSwiper}
         className="thumb-slider"
+        spaceBetween={10}
       >
         {data.map((el, i) => (
           <SwiperSlide key={i} className="swiper-slide-auto">
@@ -75,7 +77,9 @@ export default function SpeachBubble() {
               />
               <AvatarFallback>AG</AvatarFallback>
             </Avatar>
-            <p className="text-gray-500  text-center">{el.name}</p>
+            <p className="text-gray-500  text-center w-[200px] translate-x-[-58px]">
+              {el.name}
+            </p>
           </SwiperSlide>
         ))}
       </SwiperComp>

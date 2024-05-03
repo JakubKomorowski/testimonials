@@ -84,7 +84,7 @@ export default async function Home() {
           height={100}
           className="absolute right-0 top-[350px] hidden lg:block"
         />
-        <div className="container lg:gap-0 lg:left-1/2 lg:translate-x-[-50%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1160px] mt-20 lg:mt-0">
+        <div className="container lg:gap-0 lg:left-1/2 lg:translate-x-[-55%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1160px] mt-20 lg:mt-0">
           <Circle
             icon="collect"
             text="Gather customer feedback quickly and easily."

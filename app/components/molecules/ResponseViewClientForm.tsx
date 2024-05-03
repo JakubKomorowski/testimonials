@@ -83,7 +83,7 @@ const ResponseViewClientForm = ({
         className="w-full rounded-medium mt-8 flex gap-2"
         type="button"
         onClick={() =>
-          !isPreview && testimonialValue && !rating.required
+          !isPreview && testimonialValue && ratingValue
             ? setFormView("customerDetails")
             : setClickedNext(true)
         }
