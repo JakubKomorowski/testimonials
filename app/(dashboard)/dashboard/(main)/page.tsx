@@ -24,7 +24,6 @@ const Dashboard = async () => {
       {session?.user.email}
       <div className="grid grid-cols-8 gap-4 p-7">
         <div className="col-span-6">
-          {/* <FormCard firstTwo /> */}
           <FormCardWrapper firstTwo />
         </div>
         <div className="col-span-6">

@@ -9,7 +9,7 @@ import { useFormViewStore } from "@/store/store";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
-import { Button as NextButton } from "@nextui-org/react";
+import { Button as NextButton } from "@nextui-org/button";
 import ThankYouViewClientForm from "../molecules/ThankYouViewClientForm";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
@@ -46,23 +46,23 @@ const ClientForm = ({
   isPreview,
   id,
 }: Props) => {
-  const isEmailRequired = !!allFormFields.customerDetails.find(
+  const isEmailRequired = !!allFormFields?.customerDetails?.find(
     (item) => item.name === "Email address" && item.required
   );
-  const isWebsiteRequired = !!allFormFields.customerDetails.find(
+  const isWebsiteRequired = !!allFormFields?.customerDetails?.find(
     (item) => item.name === "Your website" && item.required
   );
-  const isSocialLinkRequired = !!allFormFields.customerDetails.find(
+  const isSocialLinkRequired = !!allFormFields?.customerDetails?.find(
     (item) => item.name === "Social link" && item.required
   );
-  const isPhotoRequired = !!allFormFields.customerDetails.find(
+  const isPhotoRequired = !!allFormFields?.customerDetails?.find(
     (item) => item.name === "Photo" && item.required
   );
 
   const testimonialFormSchema = yup
     .object({
       testimonial: yup.string().required("Please write a testimonial"),
-      rating: allFormFields.rating.required
+      rating: allFormFields?.rating?.required
         ? yup.number().required("Field required")
         : yup.number(),
       name: yup.string().required("Field required"),

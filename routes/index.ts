@@ -2,6 +2,7 @@ export const ROUTES = {
   home: "/",
   features: "/features",
   dashboard: "/dashboard",
+  widgets: "/dashboard/widgets",
   pricing: "/pricing",
   blog: "/blog",
   signin: "/auth/signin",
@@ -34,6 +35,7 @@ export const MENU_LIST_MOBILE = [
 
 export const DASHBOARD_OVERVIEW_MENU_LIST = [
   { text: "Overview", href: ROUTES.dashboard, icon: "eye" },
+  { text: "Your widgets", href: ROUTES.widgets, icon: "widget" },
 ];
 
 export const DASHBOARD_COLLECT_MENU_LIST = [

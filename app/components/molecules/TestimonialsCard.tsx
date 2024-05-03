@@ -5,13 +5,10 @@ import { ROUTES } from "@/routes";
 import { useProjectStore } from "@/store/store";
 import { Tooltip } from "@nextui-org/react";
 import { DocumentData } from "firebase-admin/firestore";
-import { collection, getDocs } from "firebase/firestore";
+import { collection } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-
-type Props = {};
 
 const options = {
   year: "numeric",
@@ -19,12 +16,11 @@ const options = {
   day: "numeric",
 } as const;
 
-const TestimonialsCard = (props: Props) => {
+const TestimonialsCard = () => {
   const project = useProjectStore((state) => state.project);
   const [value, loadingState, errorState] = useCollectionData(
     collection(db, "projects", project || "", "testimonials")
   );
-
   const slicedTestimonials = sortByDate(value)?.slice(0, 2);
 
   return (

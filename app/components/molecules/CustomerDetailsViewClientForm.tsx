@@ -2,7 +2,8 @@
 import { Button } from "@/components/ui/button";
 import { useFormViewStore } from "@/store/store";
 import { ICustomerDetails } from "@/types/Form";
-import { Input, Tooltip } from "@nextui-org/react";
+import { Tooltip } from "@nextui-org/tooltip";
+import { Input } from "@nextui-org/input";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 import { inputConfig } from "../organisms/FormBuilderSidebar";

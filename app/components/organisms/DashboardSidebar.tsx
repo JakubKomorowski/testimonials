@@ -1,32 +1,27 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import Logo from "../atoms/Logo";
 import DashboardSidebarLinkItem from "../atoms/DashboardSidebarLinkItem";
 import {
   DASHBOARD_COLLECT_MENU_LIST,
   DASHBOARD_OVERVIEW_MENU_LIST,
 } from "@/routes";
-import {
-  Input,
-  Select,
-  SelectItem,
-  SelectSection,
-  SelectedItems,
-  Selection,
-} from "@nextui-org/react";
+import { Input } from "@nextui-org/input";
+import { Select, SelectSection, SelectItem } from "@nextui-org/select";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useSession } from "next-auth/react";
-import { Popover, PopoverContent } from "@nextui-org/react";
+import { Popover, PopoverContent } from "@nextui-org/popover";
 import { Button } from "@/components/ui/button";
 import { useProjectStore } from "@/store/store";
+import { Selection, Spinner } from "@nextui-org/react";
 
 const DashboardSidebar = () => {
   const [value, setValue] = useState<Selection>();
   const [inputValue, setInputValue] = useState("");
   const [openSelect, setOpenSelect] = useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const [projects, loadingState, errorState] = useCollectionData(
     collection(db, "projects")
@@ -37,8 +32,8 @@ const DashboardSidebar = () => {
   const setProject = useProjectStore((state) => state.setProject);
 
   useEffect(() => {
-    setProject(userProjects?.[0].id);
-  }, [userProjects?.[0].id]);
+    setProject(localStorage.getItem("projectId") || userProjects?.[0].id);
+  }, [userProjects?.[0]?.id]);
 
   const handleAddProject = async () => {
     const doc = await addDoc(projectRef, {
@@ -50,6 +45,12 @@ const DashboardSidebar = () => {
     });
     setInputValue("");
     setIsOpen(false);
+  };
+
+  const handleSelect = (e: ChangeEvent<HTMLSelectElement>) => {
+    setProject(e.target.value);
+    if (typeof window !== "undefined")
+      localStorage.setItem("projectId", e.target.value);
   };
 
   return (
@@ -66,55 +67,65 @@ const DashboardSidebar = () => {
         }}
       >
         <div
-          className="flex w-full flex-wrap md:flex-nowrap gap-4"
+          className="flex w-full flex-wrap md:flex-nowrap gap-4 justify-center"
           ref={selectRef}
         >
-          <Select
-            isOpen={openSelect}
-            onOpenChange={(open) => open !== openSelect && setOpenSelect(open)}
-            items={userProjects}
-            label="Select a project"
-            className="max-w-xs"
-            variant="bordered"
-            placeholder="Select a project"
-            selectedKeys={value || [userProjects?.[0].id]}
-            onSelectionChange={setValue}
-            onChange={(e) => setProject(e.target.value)}
-          >
-            {userProjects ? (
-              <SelectSection showDivider title="Projects">
-                {userProjects.map((project) => (
-                  <SelectItem
-                    key={project.id}
-                    value={project.id}
-                    textValue={project.name}
-                  >
-                    {project.name}
+          {loadingState ? (
+            <Spinner />
+          ) : (
+            <Select
+              isOpen={openSelect}
+              onOpenChange={(open) =>
+                open !== openSelect && setOpenSelect(open)
+              }
+              label="Select a project"
+              className="max-w-xs"
+              variant="bordered"
+              selectedKeys={
+                value || [
+                  (typeof window !== "undefined" &&
+                    localStorage.getItem("projectId")) ??
+                    userProjects?.[0].id,
+                ]
+              }
+              onSelectionChange={setValue}
+              onChange={(e) => handleSelect(e)}
+            >
+              {userProjects ? (
+                <SelectSection showDivider title="Projects">
+                  {userProjects.map((project) => (
+                    <SelectItem
+                      key={project.id}
+                      value={project.id}
+                      textValue={project.name}
+                    >
+                      {project.name}
+                    </SelectItem>
+                  ))}
+                </SelectSection>
+              ) : (
+                <SelectSection showDivider title="Projects">
+                  <SelectItem key={"default"} value={"default"}>
+                    {"default"}
                   </SelectItem>
-                ))}
-              </SelectSection>
-            ) : (
-              <SelectSection showDivider title="Projects">
-                <SelectItem key={"default"} value={"default"}>
-                  {"default"}
+                </SelectSection>
+              )}
+
+              <SelectSection>
+                <SelectItem
+                  key={"add-project"}
+                  value="add-project"
+                  isReadOnly
+                  onClick={() => {
+                    setIsOpen(true);
+                    setOpenSelect(false);
+                  }}
+                >
+                  Add project
                 </SelectItem>
               </SelectSection>
-            )}
-
-            <SelectSection>
-              <SelectItem
-                key={"add-project"}
-                value="add-project"
-                isReadOnly
-                onClick={() => {
-                  setIsOpen(true);
-                  setOpenSelect(false);
-                }}
-              >
-                Add project
-              </SelectItem>
-            </SelectSection>
-          </Select>
+            </Select>
+          )}
         </div>
         <PopoverContent>
           <div className="px-1 py-2 w-full">
