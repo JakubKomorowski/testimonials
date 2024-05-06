@@ -226,6 +226,11 @@ export default async function Home() {
           })}
         </div>
       </section>
+      {/* <iframe
+        src="http://localhost:3000/testi"
+        width={"100%"}
+        height={"800px"}
+      ></iframe> */}
     </main>
   );
 }

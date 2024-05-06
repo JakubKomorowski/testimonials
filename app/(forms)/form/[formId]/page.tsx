@@ -24,8 +24,7 @@ export async function generateStaticParams() {
     }))
   );
 
-  const margedArrayOfArrays = formIds.flat();
-  return margedArrayOfArrays;
+  return formIds.flat();
 }
 
 const SingleForm = async ({ params }: Props) => {

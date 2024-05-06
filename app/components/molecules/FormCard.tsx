@@ -37,7 +37,6 @@ const FormCard = ({ firstTwo }: Props) => {
   const [value, loadingState, errorState] = useCollectionData(
     collection(db, "projects", project || "", "forms")
   );
-
   const slicedForms = sortByDate(value)?.slice(0, 2);
 
   const copyToClipBoard = (copyMe: string) => {
@@ -54,14 +53,31 @@ const FormCard = ({ firstTwo }: Props) => {
       <div className="flex justify-between">
         <h2 className="text-2xl font-bold mb-4">Forms</h2>
         <div className="flex gap-2 items-center h-fit cursor-pointer">
-          <p>see all </p>
-          <Image
-            src={`/Icons/link.svg`}
-            alt="form-icon"
-            width={30}
-            height={30}
-            className="h-7 w-7 object-contain "
-          />
+          <Tooltip content="See all" color="foreground">
+            <Link
+              href={ROUTES.forms}
+              className="flex gap-2 items-center h-fit cursor-pointer"
+            >
+              <Image
+                src={`/Icons/link.svg`}
+                alt="form-icon"
+                width={30}
+                height={30}
+                className="h-7 w-7 object-contain "
+              />
+            </Link>
+          </Tooltip>
+          <Tooltip content="Add form" color="foreground">
+            <Link href={ROUTES.addForm}>
+              <Image
+                src={`/Icons/plus.svg`}
+                alt="form-icon"
+                width={30}
+                height={30}
+                className="h-7 w-7 object-contain "
+              />
+            </Link>
+          </Tooltip>
         </div>
       </div>
       <div className="flex gap-6 flex-col 2xl:flex-row flex-wrap ">

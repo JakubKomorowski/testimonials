@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import QuoteCard from "./QuoteCard";
-import { data } from "@/app/exampleData";
+import { data } from "@/app/data/exampleData";
 
 export function CarouselComponent() {
   return (

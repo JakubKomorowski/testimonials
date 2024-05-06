@@ -1,4 +1,3 @@
-import ThemeButton from "@/app/components/atoms/ThemeButton";
 import ThemeChangeProvider from "@/app/components/providers/ThemeProvider";
 import DashboardSidebar from "@/app/components/organisms/DashboardSidebar";
 import DashboardTopbar from "@/app/components/organisms/DashboardTopbar";

@@ -16,6 +16,7 @@ import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import Loading from "@/app/components/atoms/loading";
 
 interface Props {
   allFormFields: Iform;
@@ -165,80 +166,87 @@ const ClientForm = ({
     view && setFormView(view);
   }, [selectedKey]);
   return (
-    <div className="rounded-[30px] px-12 w-[420px] pt-4 pb-12 mx-auto shadow-[0px_4px_50px_0px_#00000025] my-8 flex  flex-col items-center">
-      <div className="flex w-full ">
-        {formView !== "welcome" && formView !== "thankYou" && (
-          <NextButton
-            isIconOnly
-            color={undefined}
-            variant="ghost"
-            aria-label="Back"
-            size="sm"
-            onClick={() =>
-              !isPreview ? setFormView(views[indexOfView - 1]) : null
-            }
-            type="button"
-          >
-            <Image
-              src={`/Icons/back.svg`}
-              alt="form-icon"
-              width={20}
-              height={20}
-              className="ml-[-2px] "
-            />
-          </NextButton>
-        )}
+    <>
+      {formUpdating ? (
+        <Loading />
+      ) : (
+        <div className="rounded-[30px] px-12 w-[420px] pt-4 pb-12 mx-auto shadow-[0px_4px_50px_0px_#00000025] my-8 flex  flex-col items-center">
+          <div className="flex w-full ">
+            {formView !== "welcome" && formView !== "thankYou" && (
+              <NextButton
+                isIconOnly
+                color={undefined}
+                variant="ghost"
+                aria-label="Back"
+                size="sm"
+                onClick={() =>
+                  !isPreview ? setFormView(views[indexOfView - 1]) : null
+                }
+                type="button"
+              >
+                <Image
+                  src={`/Icons/back.svg`}
+                  alt="form-icon"
+                  width={20}
+                  height={20}
+                  className="ml-[-2px] "
+                />
+              </NextButton>
+            )}
 
-        {(allFormFields?.logo?.preview || allFormFields?.logo?.downloadUrl) && (
-          <div className="w-full h-8 flex justify-end ">
-            <Image
-              src={
-                allFormFields.logo.downloadUrl
-                  ? allFormFields.logo.downloadUrl
-                  : allFormFields.logo.preview
-              }
-              width={100}
-              height={20}
-              alt="logo"
-              style={{ width: "auto", height: "100%" }}
-            />
+            {(allFormFields?.logo?.preview ||
+              allFormFields?.logo?.downloadUrl) && (
+              <div className="w-full h-8 flex justify-end ">
+                <Image
+                  src={
+                    allFormFields.logo.downloadUrl
+                      ? allFormFields.logo.downloadUrl
+                      : allFormFields.logo.preview
+                  }
+                  width={100}
+                  height={20}
+                  alt="logo"
+                  style={{ width: "auto", height: "100%" }}
+                />
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <FormProvider {...methods}>
-        <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
-          {formView === "welcome" && (
-            <WelcomeViewClientForm
-              title={allFormFields.welcomeTitle}
-              message={allFormFields.welcomeMessage}
-              isPreview={isPreview}
-            />
-          )}
-          {formView === "response" && (
-            <ResponseViewClientForm
-              title={allFormFields.responseTitle}
-              questions={allFormFields.responseQuestions}
-              rating={allFormFields.rating}
-              isPreview={isPreview}
-            />
-          )}
-          {formView === "customerDetails" && (
-            <CustomerDetailsViewClientForm
-              title={allFormFields.customerTitle}
-              customerDetails={allFormFields.customerDetails}
-              isPreview={isPreview}
-            />
-          )}
-          {formView === "thankYou" && (
-            <ThankYouViewClientForm
-              title={allFormFields.thankYouTitle}
-              text={allFormFields.thankYouText}
-              isPreview={isPreview}
-            />
-          )}
-        </form>
-      </FormProvider>
-    </div>
+          <FormProvider {...methods}>
+            <form onSubmit={methods.handleSubmit(onSubmit)} className="w-full">
+              {formView === "welcome" && (
+                <WelcomeViewClientForm
+                  title={allFormFields.welcomeTitle}
+                  message={allFormFields.welcomeMessage}
+                  isPreview={isPreview}
+                />
+              )}
+              {formView === "response" && (
+                <ResponseViewClientForm
+                  title={allFormFields.responseTitle}
+                  questions={allFormFields.responseQuestions}
+                  rating={allFormFields.rating}
+                  isPreview={isPreview}
+                />
+              )}
+              {formView === "customerDetails" && (
+                <CustomerDetailsViewClientForm
+                  title={allFormFields.customerTitle}
+                  customerDetails={allFormFields.customerDetails}
+                  isPreview={isPreview}
+                />
+              )}
+              {formView === "thankYou" && (
+                <ThankYouViewClientForm
+                  title={allFormFields.thankYouTitle}
+                  text={allFormFields.thankYouText}
+                  isPreview={isPreview}
+                />
+              )}
+            </form>
+          </FormProvider>
+        </div>
+      )}
+    </>
   );
 };
 

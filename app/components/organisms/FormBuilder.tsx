@@ -3,11 +3,15 @@ import FormBuilderSidebar from "@/app/components/organisms/FormBuilderSidebar";
 import FormBuilderSidebarRight from "@/app/components/organisms/FormBuilderSidebarRight";
 import FormBuilderTopbar from "@/app/components/organisms/FormBuilderTopbar";
 import { Tab, Tabs } from "@nextui-org/tabs";
-import { updateDoc } from "firebase/firestore";
-import { doc } from "firebase/firestore";
+import {
+  DocumentData,
+  DocumentReference,
+  addDoc,
+  collection,
+  updateDoc,
+} from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
-import { useDocumentData } from "react-firebase-hooks/firestore";
 import {
   useForm,
   SubmitHandler,
@@ -15,33 +19,34 @@ import {
   FieldValues,
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
-import { Key, useEffect, useState } from "react";
+import { Key, useState } from "react";
 import { Iform } from "@/types/Form";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { ROUTES } from "@/routes";
-import Loading from "@/app/loading";
+import Loading from "@/app/components/atoms/loading";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import ClientForm from "@/app/components/organisms/ClientForm";
+import { formData } from "@/app/data/formData";
 
 interface Props {
-  params: { formId: string };
+  params?: { formId: string };
   project: string;
+  docRef?: DocumentReference<DocumentData, DocumentData>;
+  form: DocumentData | undefined;
+  formLoading?: boolean;
 }
 
-const FormBuilder = ({ params, project }: Props) => {
+const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
   const { data: session } = useSession();
   if (!session || !session.user) {
     redirect(ROUTES.signin);
   }
-
+  const router = useRouter();
   const methods = useForm();
   const allFormFields = methods.watch() as Iform;
-  const docRef = doc(db, "projects", project, "forms", params.formId);
+  const formRef = collection(db, "projects", project, "forms");
   const [tabName, setTabName] = useState<Key | string>("Welcome page");
   const [formUpdating, setFormUpdating] = useState(false);
-  const [form, formLoading, formError] = useDocumentData(
-    doc(db, "projects", project, "forms", params.formId)
-  );
   const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
@@ -53,29 +58,65 @@ const FormBuilder = ({ params, project }: Props) => {
       preview: data.logo.preview,
       path: data.logo.path,
     };
-    const isImageChanged = form?.logo.name !== data.logo.name;
-    const imageRef = ref(storage, `forms/${params.formId}/${data.logo.name}`);
 
-    try {
-      setFormUpdating(true);
-      if (isImageChanged && data.logo.name) {
+    if (params?.formId) {
+      const isImageChanged = form?.logo.name !== data.logo.name;
+      const imageRef = ref(
+        storage,
+        `forms/${params?.formId}/${data.logo.name}`
+      );
+      try {
         setFormUpdating(true);
-        await uploadBytes(imageRef, data.logo);
+        if (isImageChanged && data.logo.name) {
+          setFormUpdating(true);
+          await uploadBytes(imageRef, data.logo);
+        }
+        const url = data.logo.name && (await getDownloadURL(imageRef));
+        if (docRef) {
+          await updateDoc(docRef, {
+            ...form,
+            ...data,
+            logo: { downloadUrl: data.logo.path ? url : "", ...file },
+          });
+        }
+        toast({
+          title: "Form successfully updated",
+        });
+        router.push(ROUTES.forms);
+      } catch (error) {
+        toast({
+          title: "Something went wrong",
+        });
       }
-      const url = data.logo.name && (await getDownloadURL(imageRef));
-      await updateDoc(docRef, {
-        ...form,
-        ...data,
-        logo: { downloadUrl: data.logo.path ? url : "", ...file },
-      });
-      toast({
-        title: "Form successfully updated",
-      });
-    } catch (error) {
-      toast({
-        title: "Something went wrong",
-      });
+    } else {
+      try {
+        setFormUpdating(true);
+        const formDoc = await addDoc(formRef, {
+          ...formData(session?.user.id),
+          ...data,
+          logo: file,
+        });
+        const imageRef = ref(storage, `forms/${formDoc.id}/${data.logo.name}`);
+        if (data.logo.name) {
+          setFormUpdating(true);
+          await uploadBytes(imageRef, data.logo);
+        }
+        const url = data.logo.name && (await getDownloadURL(imageRef));
+        await updateDoc(formDoc, {
+          logo: { downloadUrl: data.logo.path ? url : "", ...file },
+          id: formDoc.id,
+        });
+        toast({
+          title: "Form successfully created",
+        });
+        router.push(ROUTES.forms);
+      } catch (error) {
+        toast({
+          title: "Something went wrong",
+        });
+      }
     }
+
     setFormUpdating(false);
   };
 
@@ -92,11 +133,11 @@ const FormBuilder = ({ params, project }: Props) => {
             <FormBuilderSidebar
               currentForm={form as Iform}
               tabName={tabName as string}
-              loading={formLoading}
+              loading={formLoading ? formLoading : false}
             />
             <FormBuilderSidebarRight
               currentForm={form as Iform}
-              loading={formLoading}
+              loading={formLoading ? formLoading : false}
             />
             <FormBuilderTopbar loading={formUpdating} />
           </form>

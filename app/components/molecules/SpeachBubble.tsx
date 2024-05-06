@@ -8,7 +8,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Navigation, Controller } from "swiper/modules";
-import { data } from "@/app/exampleData";
+import { data } from "@/app/data/exampleData";
 import SpeachBubbleCard from "./SpeachBubbleCard";
 import ArrowButton from "../atoms/ArrowButton";
 
