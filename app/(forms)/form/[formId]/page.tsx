@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 
   const formIds = projectMap.map((el) =>
     el.docs.map((project) => ({
-      formId: project.data()["id"],
+      formId: project.data()["id"] || "404",
     }))
   );
 

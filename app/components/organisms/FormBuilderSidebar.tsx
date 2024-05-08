@@ -139,13 +139,13 @@ const FormBuilderSidebar = ({ currentForm, tabName, loading }: Props) => {
     <aside className=" p-4  px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">
       <div className="mb-16 flex gap-2 items-center">
         <Image
-          src={`/Icons/marker.svg`}
+          src={`/Icons/form.svg`}
           alt="form-icon"
           width={30}
           height={30}
           className="h-8 w-8 object-contain "
         />
-        <p className="text-2xl">Form Creation</p>
+        <p className="text-2xl">Form Creator</p>
       </div>
       <div className="text-xl">{tabTtitle}</div>
       {tabName === "welcome" ? (

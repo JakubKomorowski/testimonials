@@ -12,7 +12,7 @@ interface Props {
   params: { id: string };
 }
 
-const Widget = ({ params }: Props) => {
+const WidgetBuilderPage = ({ params }: Props) => {
   const project = useProjectStore((state) => state.project);
   const { data: session } = useSession();
   const [projects, loadingState, errorState] = useCollectionData(
@@ -28,4 +28,4 @@ const Widget = ({ params }: Props) => {
   return project ? <WidgetBuilder id={params.id} project={project} /> : null;
 };
 
-export default Widget;
+export default WidgetBuilderPage;
