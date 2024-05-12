@@ -1,16 +1,15 @@
 "use client";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { firstTwoLetters } from "@/lib/utils";
 import { ROUTES } from "@/routes";
-import { Avatar } from "@nextui-org/react";
 import { useSession, signOut } from "next-auth/react";
-import Link from "next/link";
 import React from "react";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+  Avatar,
+} from "@nextui-org/react";
 
 const DashboardTopbar = () => {
   const { data: session } = useSession();
@@ -19,29 +18,34 @@ const DashboardTopbar = () => {
   return (
     <div className="p-3 px-6  border-gray-300 border-b h-fit flex justify-end col-span-3">
       <div className="w-[156px] flex justify-end ">
-        <DropdownMenu>
-          <DropdownMenuTrigger className=" outline-none bg-primary   flex items-center justify-center text-bg font-medium rounded-full">
+        <Dropdown>
+          <DropdownTrigger className=" outline-none bg-primary   flex items-center justify-center text-bg font-medium rounded-full">
             <Avatar
               name={firstTwoLetters(name, mail)}
-              // as="button"
+              as="button"
               className="transition-transform text-md bg-primary"
             />
-          </DropdownMenuTrigger>
-          <DropdownMenuContent className="mr-6">
-            <DropdownMenuItem className="cursor-pointer">
-              <Link href={ROUTES.dashboard}>Dashboard</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="cursor-pointer">
+          </DropdownTrigger>
+          <DropdownMenu variant="flat" aria-label="Profile Actions">
+            <DropdownItem
+              className="cursor-pointer"
+              key="dashboard"
+              href={ROUTES.dashboard}
+            >
+              Dashboard
+            </DropdownItem>
+            <DropdownItem key="profile" className="cursor-pointer">
               Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem
+            </DropdownItem>
+            <DropdownItem
+              key="sign_out"
               onClick={() => signOut()}
               className="cursor-pointer"
             >
               Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </div>
     </div>
   );

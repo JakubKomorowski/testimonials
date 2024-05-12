@@ -8,6 +8,9 @@ import {
   DocumentReference,
   addDoc,
   collection,
+  doc,
+  getDoc,
+  setDoc,
   updateDoc,
 } from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
@@ -50,6 +53,10 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
   const { toast } = useToast();
 
   const onSubmit: SubmitHandler<Iform | FieldValues> = async (data) => {
+    if (!project) return;
+
+    const projectRef = doc(db, "projects", project);
+    const projectValue = await getDoc(projectRef).then((res) => res.data());
     const file = {
       name: data.logo.name,
       size: data.logo.size,
@@ -106,6 +113,15 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
           logo: { downloadUrl: data.logo.path ? url : "", ...file },
           id: formDoc.id,
         });
+        await setDoc(
+          projectRef,
+          {
+            formIds: projectValue?.formIds
+              ? [...projectValue?.formIds, formDoc.id]
+              : [formDoc.id],
+          },
+          { merge: true }
+        );
         toast({
           title: "Form successfully created",
         });
@@ -125,10 +141,10 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
       {formLoading ? (
         <Loading />
       ) : (
-        <div className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr]">
+        <div className="h-screen grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[65px,1fr,1fr]">
           <form
             onSubmit={methods.handleSubmit(onSubmit)}
-            className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[60px,1fr,1fr]"
+            className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[65px,1fr,1fr]"
           >
             <FormBuilderSidebar
               currentForm={form as Iform}

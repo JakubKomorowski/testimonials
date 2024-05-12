@@ -32,7 +32,7 @@ const WelcomeViewClientForm = ({ title, message, isPreview }: Props) => {
         Send in text
       </Button>
       <Button
-        variant={"secondary"}
+        variant="secondary"
         className="w-full rounded-medium mt-2 flex gap-2"
         type="button"
       >

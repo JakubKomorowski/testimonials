@@ -149,7 +149,7 @@ const DashboardSidebar = () => {
       </Popover>
       <div className="my-8">
         <p className="text-gray-400 mb-2">Dashboard</p>
-        <ul>
+        <ul className="flex flex-col gap-1">
           {DASHBOARD_OVERVIEW_MENU_LIST.map((menu) => {
             return (
               <li key={menu.text}>
@@ -162,7 +162,7 @@ const DashboardSidebar = () => {
         </ul>
       </div>
       <p className="text-gray-400 mb-2">Collect</p>
-      <ul>
+      <ul className="flex flex-col gap-1">
         {DASHBOARD_COLLECT_MENU_LIST.map((menu) => {
           return (
             <li key={menu.text}>

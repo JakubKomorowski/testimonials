@@ -51,7 +51,7 @@ module.exports = {
           hover: "hsl(var(--primary-hover))",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "hsl(var(--bg))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -106,6 +106,8 @@ module.exports = {
         light: {
           colors: {
             danger: "#18181B",
+            primary: "#d2dd31",
+            secondary: "#020817",
           },
         },
       },

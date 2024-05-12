@@ -102,6 +102,8 @@ const ClientForm = ({
     project?.formIds?.includes(id)
   )?.id;
 
+  console.log(id);
+
   const methods = useForm<Inputs>({
     resolver: yupResolver(testimonialFormSchema),
     mode: "onChange",
@@ -116,6 +118,7 @@ const ClientForm = ({
       projectId,
       "testimonials"
     );
+
     try {
       setFormUpdating(true);
       if (data.photo && data.photo.name) {
