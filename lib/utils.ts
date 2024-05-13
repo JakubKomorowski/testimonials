@@ -73,3 +73,12 @@ export const sortByDate = (arr: DocumentData[] | undefined) => {
     return b.createdAt.seconds - a.createdAt.seconds;
   });
 };
+
+export const dateParser = (date: number) => {
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  } as const;
+  return new Date(date * 1000).toLocaleDateString("en-US", options);
+};

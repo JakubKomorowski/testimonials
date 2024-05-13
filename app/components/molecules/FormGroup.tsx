@@ -19,7 +19,7 @@ const options = {
   day: "numeric",
 } as const;
 
-const FormCard = ({ firstTwo }: Props) => {
+const FormGroup = ({ firstTwo }: Props) => {
   const project = useProjectStore((state) => state.project);
 
   // useEffect(() => {
@@ -158,4 +158,4 @@ const FormCard = ({ firstTwo }: Props) => {
   );
 };
 
-export default FormCard;
+export default FormGroup;

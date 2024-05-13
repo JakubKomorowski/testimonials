@@ -1,6 +1,6 @@
 "use client";
 import { db } from "@/app/firebase";
-import { sortByDate } from "@/lib/utils";
+import { dateParser, sortByDate } from "@/lib/utils";
 import { ROUTES } from "@/routes";
 import { useProjectStore } from "@/store/store";
 import { Tooltip } from "@nextui-org/react";
@@ -10,13 +10,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
-const options = {
-  year: "numeric",
-  month: "short",
-  day: "numeric",
-} as const;
-
-const TestimonialsCard = () => {
+const TestimonialsGroup = () => {
   const project = useProjectStore((state) => state.project);
   const [value, loadingState, errorState] = useCollectionData(
     collection(db, "projects", project || "", "testimonials")
@@ -40,10 +34,7 @@ const TestimonialsCard = () => {
       </div>
       <div className="flex gap-6 flex-col  flex-wrap ">
         {slicedTestimonials?.map((el: DocumentData) => {
-          const time = new Date(el?.createdAt?.seconds * 1000).toLocaleString(
-            "en-US",
-            options
-          );
+          const time = dateParser(el?.createdAt?.seconds);
           return (
             <div
               key={el.id}
@@ -97,4 +88,4 @@ const TestimonialsCard = () => {
   );
 };
 
-export default TestimonialsCard;
+export default TestimonialsGroup;
