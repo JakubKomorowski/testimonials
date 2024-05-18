@@ -9,9 +9,10 @@ const DefaultCard: FC<DefaultCardType> = ({
   text,
   name,
   rating,
+  preview,
 }) => {
   return (
-    <div className="flex flex-col items-center max-w-[270px] ">
+    <div className="flex flex-col items-center w-[250px]">
       <Avatar className="w-[70px] h-[70px] mb-3">
         <AvatarImage src={image} alt={alt} className="object-cover" />
         <AvatarFallback>AG</AvatarFallback>

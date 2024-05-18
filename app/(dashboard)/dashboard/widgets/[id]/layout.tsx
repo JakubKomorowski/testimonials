@@ -1,7 +1,7 @@
 import ThemeChangeProvider from "@/app/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
 
-export default async function DashboardLayout({
+export default async function WidgetLayout({
   children,
 }: {
   children: React.ReactNode;

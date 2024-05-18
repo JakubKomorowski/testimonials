@@ -8,11 +8,16 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Navigation, Controller } from "swiper/modules";
-import { data } from "@/app/data/exampleData";
-import SpeachBubbleCard from "./SpeachBubbleCard";
+// import { data } from "@/app/data/exampleData";
+import SpeachBubbleCard from "../molecules/SpeachBubbleCard";
 import ArrowButton from "../atoms/ArrowButton";
+import { Testimonial } from "@/types/Testimonial";
 
-export default function SpeachBubble() {
+interface Props {
+  data?: Testimonial[];
+  preview?: boolean;
+}
+export default function SpeachBubble({ data, preview }: Props) {
   const [thumbsSwiper, setThumbsSwiper] = useState<Swiper | null>(null);
   const [swiperState, setSwiperState] = useState<Swiper | null>(null);
   const swiperRef = useRef<Swiper>();
@@ -32,8 +37,12 @@ export default function SpeachBubble() {
           onClick={() => swiperRef.current?.slidePrev()}
           orientation="previous"
           disabled={swiperRef.current?.activeIndex === 0}
+          preview={preview}
         />
-        <SpeachBubbleCard rating={data.map((el) => el.rating)[currSlide]}>
+        <SpeachBubbleCard
+          rating={data?.map((el) => el.rating)[currSlide]}
+          preview={preview}
+        >
           <SwiperComp
             onBeforeInit={(swiper) => {
               swiperRef.current = swiper;
@@ -46,8 +55,8 @@ export default function SpeachBubble() {
             className="main-slider"
             autoHeight={true}
           >
-            {data.map((el, i) => (
-              <SwiperSlide key={i}>{el.text}</SwiperSlide>
+            {data?.map((el, i) => (
+              <SwiperSlide key={i}>{el.testimonial}</SwiperSlide>
             ))}
           </SwiperComp>
         </SpeachBubbleCard>
@@ -55,6 +64,7 @@ export default function SpeachBubble() {
           onClick={() => swiperRef.current?.slideNext()}
           orientation="next"
           disabled={swiperState?.slides?.length! - 1 === currSlide}
+          preview={preview}
         />
       </div>
 
@@ -67,12 +77,12 @@ export default function SpeachBubble() {
         className="thumb-slider"
         spaceBetween={10}
       >
-        {data.map((el, i) => (
+        {data?.map((el, i) => (
           <SwiperSlide key={i} className="swiper-slide-auto">
             <Avatar className="w-full h-fit mb-3 ">
               <AvatarImage
-                src={el.image}
-                alt={el.alt}
+                src={el?.photo?.downloadUrl}
+                alt={el.photo?.name}
                 className="object-cover"
               />
               <AvatarFallback>AG</AvatarFallback>

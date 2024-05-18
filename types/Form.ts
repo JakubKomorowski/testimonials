@@ -46,3 +46,15 @@ export interface ILogo {
   webkitRelativePath: string;
   downloadUrl?: string;
 }
+
+export interface IPhoto {
+  path: string;
+  preview: string;
+  lastModified: number;
+  lastModifiedDate: any;
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath: string;
+  downloadUrl?: string;
+}

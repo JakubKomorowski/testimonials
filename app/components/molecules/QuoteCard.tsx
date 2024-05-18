@@ -6,7 +6,7 @@ import QuoteIcon from "../atoms/QuoteIcon";
 
 const QuoteCard: FC<DefaultCard> = ({ image, alt, text, name, rating }) => {
   return (
-    <div className="flex flex-col items-center  relative p-6 pb-8 border rounded-lg">
+    <div className="flex flex-col items-center  relative p-6 pb-8 border rounded-lg min-w-[200px] max-w-[700px]">
       <div className="flex justify-end w-full">
         <RatingComponent rating={rating} size={25} readonly={true} />
       </div>

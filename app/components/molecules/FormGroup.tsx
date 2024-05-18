@@ -21,6 +21,10 @@ const options = {
 
 const FormGroup = ({ firstTwo }: Props) => {
   const project = useProjectStore((state) => state.project);
+  const [value, loadingState, errorState] = useCollectionData(
+    collection(db, "projects", project || "", "forms")
+  );
+  const slicedForms = sortByDate(value)?.slice(0, 2);
 
   // useEffect(() => {
   //   if (!project) return;
@@ -33,11 +37,6 @@ const FormGroup = ({ firstTwo }: Props) => {
   //     setData(newData);
   //   })();
   // }, [project, data]);
-
-  const [value, loadingState, errorState] = useCollectionData(
-    collection(db, "projects", project || "", "forms")
-  );
-  const slicedForms = sortByDate(value)?.slice(0, 2);
 
   const copyToClipBoard = (copyMe: string) => {
     try {

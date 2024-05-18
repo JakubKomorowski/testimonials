@@ -1,7 +1,8 @@
 export interface DefaultCard {
-  image: string;
-  alt: string;
-  text: string;
-  name: string;
-  rating: number;
+  image?: string;
+  alt?: string;
+  text?: string;
+  name?: string;
+  rating?: number;
+  preview?: boolean;
 }

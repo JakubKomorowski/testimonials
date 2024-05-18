@@ -1,30 +1,62 @@
 import { dateParser } from "@/lib/utils";
+import { Testimonial } from "@/types/Testimonial";
 import { Tooltip } from "@nextui-org/react";
-import { DocumentData } from "firebase-admin/firestore";
 import Image from "next/image";
+import { DraggableProvided } from "@hello-pangea/dnd";
 import { Dispatch } from "react";
-import { FieldValues, UseFormSetValue } from "react-hook-form";
+import { DocumentData } from "firebase-admin/firestore";
 
 type Props = {
-  el: DocumentData;
-  setChoosenTestimonials: React.Dispatch<React.SetStateAction<string[]>>;
+  el: Testimonial;
+  setChoosenTestimonials: React.Dispatch<React.SetStateAction<Testimonial[]>>;
   plus?: boolean;
   minus?: boolean;
-  selectedTestimonialsId: string[];
+  selectedTestimonials: Testimonial[];
+  innerRef?: (element: HTMLElement | null) => void;
+  provided?: DraggableProvided;
+  setTestimonials: Dispatch<React.SetStateAction<DocumentData | undefined>>;
+  testimonials?: DocumentData;
 };
 
 const DashboardTestimonialCard = ({
   el,
-  selectedTestimonialsId,
+  selectedTestimonials,
   plus,
   setChoosenTestimonials,
   minus,
+  innerRef,
+  provided,
+  testimonials,
+  setTestimonials,
 }: Props) => {
   const time = dateParser(el?.createdAt?.seconds);
+  const handleAddTestimonial = (id?: string) => {
+    if (selectedTestimonials.find((item) => item.id === id)) {
+      setChoosenTestimonials([...selectedTestimonials]);
+    } else {
+      setChoosenTestimonials([...selectedTestimonials, el]);
+      if (testimonials?.length > 0 && testimonials !== undefined) {
+        setTestimonials(
+          [...testimonials.filter((item: Testimonial) => item.id !== id)] ?? []
+        );
+      }
+    }
+  };
+  const handleRemoveTestimonial = (el: Testimonial) => {
+    setChoosenTestimonials([
+      ...selectedTestimonials.filter((item) => item.id !== el.id),
+    ]);
+    if (testimonials !== undefined) {
+      setTestimonials([...(testimonials as Testimonial[]), el]);
+    }
+  };
   return (
     <div
       key={el.id}
-      className="px-3 pt-3 pb-5  rounded-lg bg-container3  min-w-[400px] h-fit "
+      className="px-3 pt-3 pb-5 mb-4 rounded-lg bg-container3  min-w-[400px] h-fit "
+      ref={innerRef}
+      {...provided?.draggableProps}
+      {...provided?.dragHandleProps}
     >
       <div className="flex">
         <Image
@@ -45,9 +77,7 @@ const DashboardTestimonialCard = ({
               <button
                 className="cursor-pointer"
                 onClick={() => {
-                  setChoosenTestimonials([
-                    ...new Set([...selectedTestimonialsId, el.id]),
-                  ]);
+                  handleAddTestimonial(el.id);
                 }}
               >
                 <Image
@@ -60,15 +90,12 @@ const DashboardTestimonialCard = ({
               </button>
             </Tooltip>
           )}
-
           {minus && (
             <Tooltip content="Remove" color="foreground">
               <button
                 className="cursor-pointer"
                 onClick={() => {
-                  setChoosenTestimonials([
-                    ...selectedTestimonialsId.filter((item) => item !== el.id),
-                  ]);
+                  handleRemoveTestimonial(el);
                 }}
               >
                 <Image

@@ -44,6 +44,7 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
   if (!session || !session.user) {
     redirect(ROUTES.signin);
   }
+
   const router = useRouter();
   const methods = useForm();
   const allFormFields = methods.watch() as Iform;

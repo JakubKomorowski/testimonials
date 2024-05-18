@@ -1,7 +1,11 @@
-import React from "react";
+"use client";
 
-const page = () => {
-  return <div>page</div>;
+import WidgetGroup from "@/app/components/molecules/WidgetGroup";
+import { useProjectStore } from "@/store/store";
+
+const Widgets = () => {
+  const project = useProjectStore((state) => state.project);
+  return project ? <WidgetGroup project={project} /> : null;
 };
 
-export default page;
+export default Widgets;

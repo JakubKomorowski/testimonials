@@ -1,4 +1,5 @@
 import { widgetTemplatesData } from "@/app/data/widgetTemplatesData";
+import { classNames } from "@/lib/utils";
 import {
   Card,
   CardBody,
@@ -9,7 +10,7 @@ import {
   PopoverContent,
 } from "@nextui-org/react";
 import Image from "next/image";
-import { useRef, useState, Key } from "react";
+import { useRef, useState, Key, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 type Props = {};
@@ -19,7 +20,11 @@ const WidgetBuilderSidebar = (props: Props) => {
   const selectRef = useRef<any>();
   const { setValue, watch } = useFormContext();
   const [tabName, setTabName] = useState<Key | string>("static");
-  const card = watch("card", tabName === "static" ? "classic" : "slider");
+  const card = watch("card", "classic");
+  useEffect(() => {
+    setValue("card", "classic");
+  }, []);
+
   return (
     <aside className="p-4 px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">
       <div className="mb-16 flex gap-2 items-center">
@@ -58,10 +63,18 @@ const WidgetBuilderSidebar = (props: Props) => {
                 onClick={() => setIsOpen(true)}
                 className="cursor-pointer"
               >
-                <Card isPressable className="h-32 " ref={selectRef}>
+                <Card
+                  isPressable
+                  className={classNames(
+                    "h-32",
+                    card === "classic" ? "border-primary border" : ""
+                  )}
+                  ref={selectRef}
+                  onPress={() => setValue("card", "classic")}
+                >
                   <CardBody className="justify-center">
                     <Image
-                      src={`/testimonialClassic.png`}
+                      src={`/classic.png`}
                       alt="form-icon"
                       width={500}
                       height={300}
@@ -85,7 +98,10 @@ const WidgetBuilderSidebar = (props: Props) => {
             <div className="mt-6" key={item.name}>
               <Card
                 isPressable
-                className="h-32"
+                className={classNames(
+                  "h-32",
+                  item.name === card ? "border-primary border" : ""
+                )}
                 onPress={() => setValue("card", item.name)}
               >
                 <CardBody className="justify-center">

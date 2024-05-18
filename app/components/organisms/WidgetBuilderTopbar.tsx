@@ -2,7 +2,7 @@ import { ROUTES } from "@/routes";
 import { Button, Spinner, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -17,27 +17,109 @@ import { db } from "@/app/firebase";
 import { DocumentData } from "firebase-admin/firestore";
 import { useFormContext } from "react-hook-form";
 import DashboardTestimonialCard from "../atoms/DashboardTestimonialCard";
+import { Testimonial } from "@/types/Testimonial";
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from "@hello-pangea/dnd";
 
 interface Props {
   project: string;
+  widgetUpdating: boolean;
 }
 
-const WidgetBuilderTopbar = ({ project }: Props) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [choosenTestimonials, setChoosenTestimonials] = useState<string[]>([]);
+const WidgetBuilderTopbar = ({ project, widgetUpdating }: Props) => {
+  const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
+  const [choosenTestimonials, setChoosenTestimonials] = useState<Testimonial[]>(
+    []
+  );
   const [value, loadingState, errorState] = useCollectionData(
     collection(db, "projects", project || "", "testimonials")
   );
   const { setValue, watch } = useFormContext();
-  const selectedTestimonialsId = watch("testimonials", []);
-  const selectedTestimonials = value?.filter((el) => {
-    return choosenTestimonials.some((f: string) => {
-      return f === el.id;
-    });
-  });
+  const selectedTestimonials = watch("testimonials", []);
+  const [state, setState] = useState(false);
+  const [testimonials, setTestimonials] = useState<DocumentData | undefined>(
+    value ? [...value] : []
+  );
+  useEffect(() => {
+    setTestimonials(value);
+  }, [value]);
+
+  useEffect(() => {
+    onClose();
+  }, [state]);
+
+  function onDragEnd(result: DropResult) {
+    if (!result.destination) return;
+    const { source, destination } = result;
+    const startIndex = source.index;
+    const endIndex = destination?.index;
+    const tempTestimonials = [...(testimonials as Testimonial[])];
+    const [removed] = tempTestimonials?.splice(startIndex, 1);
+    const choosenTempTestimonials = [...(choosenTestimonials as Testimonial[])];
+    const [choosenRemoved] = choosenTempTestimonials?.splice(startIndex, 1);
+
+    if (
+      source.droppableId === "testimonials" &&
+      destination.droppableId === "choosenTestimonials"
+    ) {
+      setTestimonials((items: Testimonial[]) => {
+        const testimonials = [...items];
+        testimonials.splice(startIndex, 1);
+        return testimonials;
+      });
+      setChoosenTestimonials((items: Testimonial[]) => {
+        const tempChoosenTestimonials = [...items];
+        tempChoosenTestimonials?.splice(endIndex as number, 0, removed);
+        return tempChoosenTestimonials;
+      });
+    }
+
+    if (
+      source.droppableId === "choosenTestimonials" &&
+      destination.droppableId === "testimonials"
+    ) {
+      setTestimonials((items: Testimonial[]) => {
+        const testimonials = [...items];
+        testimonials?.splice(endIndex as number, 0, choosenRemoved);
+        return testimonials;
+      });
+      setChoosenTestimonials((items: Testimonial[]) => {
+        const tempChoosenTestimonials = [...items];
+        tempChoosenTestimonials.splice(startIndex, 1);
+        return tempChoosenTestimonials;
+      });
+    }
+
+    if (
+      source.droppableId === "choosenTestimonials" &&
+      destination.droppableId === "choosenTestimonials"
+    ) {
+      setChoosenTestimonials((items: Testimonial[]) => {
+        const testimonials = [...items];
+        const [removed] = testimonials.splice(startIndex, 1);
+        testimonials.splice(endIndex as number, 0, removed);
+        return testimonials;
+      });
+    }
+    if (
+      source.droppableId === "testimonials" &&
+      destination.droppableId === "testimonials"
+    ) {
+      setTestimonials((items: Testimonial[]) => {
+        const testimonials = [...items];
+        const [removed] = testimonials.splice(startIndex, 1);
+        testimonials.splice(endIndex as number, 0, removed);
+        return testimonials;
+      });
+    }
+  }
 
   return (
-    <>
+    <DragDropContext onDragEnd={(result) => onDragEnd(result)}>
       <div className=" px-3 border-gray-300 border-b h-full flex justify-between items-center col-start-2  col-span-4 row-start-1">
         <Tooltip content="Go to widgets" placement="right">
           <Link href={ROUTES.widgets}>
@@ -65,12 +147,21 @@ const WidgetBuilderTopbar = ({ project }: Props) => {
           </div>
           <div className="px-1">
             <Button type="submit" color="secondary" className="text-white">
-              {false ? <Spinner color="current" size="sm" /> : "Save"}
+              {widgetUpdating ? <Spinner color="current" size="sm" /> : "Save"}
             </Button>
           </div>
         </div>
       </div>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size="5xl">
+      <Modal
+        isOpen={isOpen}
+        scrollBehavior="inside"
+        onOpenChange={onOpenChange}
+        size="5xl"
+        onClose={() => {
+          setChoosenTestimonials(selectedTestimonials);
+        }}
+        className="h-[80vh]"
+      >
         <ModalContent>
           {(onClose) => (
             <>
@@ -81,43 +172,98 @@ const WidgetBuilderTopbar = ({ project }: Props) => {
                 </p>
               </ModalHeader>
               <ModalBody>
-                <div className="flex gap-4">
-                  <div className="p-4 flex-1 bg-muted flex flex-col gap-4 rounded-md">
-                    <div className="text-xl  ">All testimonials</div>
-                    {value?.map((el: DocumentData) => {
-                      return (
-                        <DashboardTestimonialCard
-                          key={el.id}
-                          el={el}
-                          plus
-                          selectedTestimonialsId={choosenTestimonials}
-                          setChoosenTestimonials={setChoosenTestimonials}
-                        />
-                      );
-                    })}
+                <div className="flex gap-4 ">
+                  <div className="p-4 bg-muted flex flex-col rounded-md flex-1">
+                    <Droppable droppableId="testimonials" key="testimonials">
+                      {(provided) => (
+                        <div
+                          className=" flex-1 flex flex-col   "
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          <div className="text-xl mb-4">All testimonials</div>
+                          {testimonials?.map(
+                            (el: Testimonial | DocumentData, i: number) => {
+                              return (
+                                <Draggable
+                                  key={el.id}
+                                  draggableId={el.id}
+                                  index={i}
+                                >
+                                  {(provided, snapshot) => (
+                                    <DashboardTestimonialCard
+                                      innerRef={provided.innerRef}
+                                      provided={provided}
+                                      key={el.id}
+                                      el={el as Testimonial}
+                                      plus
+                                      selectedTestimonials={choosenTestimonials}
+                                      setChoosenTestimonials={
+                                        setChoosenTestimonials
+                                      }
+                                      setTestimonials={setTestimonials}
+                                      testimonials={testimonials}
+                                    />
+                                  )}
+                                </Draggable>
+                              );
+                            }
+                          )}
+                          {provided?.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
                   </div>
-                  <div className=" p-4 bg-muted flex flex-col gap-4 rounded-md flex-1">
-                    <div className="text-xl">Selected testimonials</div>
-                    {selectedTestimonials?.map((el: DocumentData) => {
-                      return (
-                        <DashboardTestimonialCard
-                          key={el.id}
-                          el={el}
-                          minus
-                          selectedTestimonialsId={choosenTestimonials}
-                          setChoosenTestimonials={setChoosenTestimonials}
-                        />
-                      );
-                    })}
+                  <div className="p-4 bg-muted flex flex-col rounded-md flex-1">
+                    <div className="text-xl mb-4">Selected testimonials</div>
+                    <Droppable
+                      droppableId="choosenTestimonials"
+                      key="choosenTestimonials"
+                    >
+                      {(provided) => (
+                        <div
+                          className=" flex flex-col flex-1"
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}
+                        >
+                          {choosenTestimonials?.map((el: Testimonial, i) => {
+                            return (
+                              <Draggable
+                                key={el.id}
+                                draggableId={el.id}
+                                index={i}
+                              >
+                                {(provided, snapshot) => (
+                                  <DashboardTestimonialCard
+                                    innerRef={provided.innerRef}
+                                    provided={provided}
+                                    key={el.id}
+                                    el={el}
+                                    minus
+                                    selectedTestimonials={choosenTestimonials}
+                                    setChoosenTestimonials={
+                                      setChoosenTestimonials
+                                    }
+                                    setTestimonials={setTestimonials}
+                                    testimonials={testimonials}
+                                  />
+                                )}
+                              </Draggable>
+                            );
+                          })}
+                          {provided?.placeholder}
+                        </div>
+                      )}
+                    </Droppable>
                   </div>
                 </div>
               </ModalBody>
               <ModalFooter>
                 <Button
                   color="primary"
-                  onClick={() => {
-                    onClose();
+                  onPress={() => {
                     setValue("testimonials", choosenTestimonials);
+                    setState(!state);
                   }}
                 >
                   Save
@@ -127,7 +273,7 @@ const WidgetBuilderTopbar = ({ project }: Props) => {
           )}
         </ModalContent>
       </Modal>
-    </>
+    </DragDropContext>
   );
 };
 

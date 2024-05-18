@@ -4,7 +4,7 @@ import { FaStar } from "react-icons/fa";
 import { FC } from "react";
 
 interface Props {
-  rating: number;
+  rating?: number;
   size: number;
   readonly?: boolean;
   handleRating?: (rate: number) => void;

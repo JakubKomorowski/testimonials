@@ -1,16 +1,26 @@
 import React from "react";
 import QuoteIcon from "../atoms/QuoteIcon";
 import RatingComponent from "../atoms/RatingComponent";
+import { classNames } from "@/lib/utils";
 
 interface Props {
   children: React.ReactNode;
-  rating: number;
+  rating?: number;
+  preview?: boolean;
 }
 
-const SpeachBubbleCard = ({ children, rating }: Props) => {
+const SpeachBubbleCard = ({ children, rating, preview }: Props) => {
+  const SpeachBubbleCardClass = preview
+    ? "max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px]"
+    : "max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]";
   return (
     <div>
-      <div className="relative max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px] rounded-2xl border border-gray-100 bg-white shadow-[0px_4px_50px_0px_#00000025]">
+      <div
+        className={classNames(
+          SpeachBubbleCardClass,
+          "relative rounded-2xl border border-gray-100 bg-white shadow-[0px_4px_50px_0px_#00000025]"
+        )}
+      >
         <div className="absolute left-1/2 bottom-0 h-8 w-8 -translate-x-1/2 translate-y-1/2 rotate-45 transform border-r border-b border-gray-100 bg-white"></div>
         <div className="absolute left-8 top-8 hidden md:block">
           <QuoteIcon className="text-black w-12 h-8" opacity={0.15} />
