@@ -9,13 +9,17 @@ import {
   Popover,
   PopoverContent,
 } from "@nextui-org/react";
+import { DocumentData } from "firebase-admin/firestore";
 import Image from "next/image";
 import { useRef, useState, Key, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
-type Props = {};
+type Props = {
+  widgetLoading?: boolean;
+  widgetCard?: string;
+};
 
-const WidgetBuilderSidebar = (props: Props) => {
+const WidgetBuilderSidebar = ({ widgetLoading, widgetCard }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<any>();
   const { setValue, watch } = useFormContext();
@@ -24,6 +28,10 @@ const WidgetBuilderSidebar = (props: Props) => {
   useEffect(() => {
     setValue("card", "classic");
   }, []);
+
+  useEffect(() => {
+    setValue("card", widgetCard);
+  }, [widgetLoading]);
 
   return (
     <aside className="p-4 px-6 border-r border-gray-300 row-span-4 col-start-1 row-start-1">

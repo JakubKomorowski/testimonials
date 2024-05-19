@@ -10,7 +10,6 @@ import TestimonialsGroupWrapper from "@/app/components/molecules/TestimonialsGro
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
-  const emailRef = collection(db, "emails");
 
   if (!session || !session.user) {
     redirect(ROUTES.signin);

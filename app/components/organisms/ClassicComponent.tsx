@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import DefaultCard from "../molecules/DefaultCard";
 import { Testimonial } from "@/types/Testimonial";
 
@@ -8,7 +8,8 @@ interface Props {
 }
 
 const ClassicComponent = ({ data, preview }: Props) => {
-  const firstThreeElements = data?.slice(0, 3);
+  // const firstThreeElements = data?.slice(0, 3);
+  const firstThreeElements = useMemo(() => data?.slice(0, 3), [data]);
   return (
     // <section className="container grid grid-cols-fluid gap-10 mt-36">
     <section className="container flex flex-wrap justify-around gap-16">

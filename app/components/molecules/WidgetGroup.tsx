@@ -17,7 +17,7 @@ const WidgetGroup = ({ project }: Props) => {
     <div className="grid grid-cols-fluid gap-4 p-8">
       {value?.map((widget) => {
         return (
-          <Card className="py-4" isPressable>
+          <Card className="py-4" isPressable key={widget.id}>
             <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
               <h4 className="font-bold text-large">My widget</h4>
               <small className="text-default-500">12 Tracks</small>

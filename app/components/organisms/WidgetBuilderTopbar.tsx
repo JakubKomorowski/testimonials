@@ -28,15 +28,22 @@ import {
 interface Props {
   project: string;
   widgetUpdating: boolean;
+  widgetTestimonials?: Testimonial[];
+  widgetLoading?: boolean;
 }
 
-const WidgetBuilderTopbar = ({ project, widgetUpdating }: Props) => {
+const WidgetBuilderTopbar = ({
+  project,
+  widgetUpdating,
+  widgetTestimonials,
+  widgetLoading,
+}: Props) => {
   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
   const [choosenTestimonials, setChoosenTestimonials] = useState<Testimonial[]>(
     []
   );
   const [value, loadingState, errorState] = useCollectionData(
-    collection(db, "projects", project || "", "testimonials")
+    collection(db, "projects", project, "testimonials")
   );
   const { setValue, watch } = useFormContext();
   const selectedTestimonials = watch("testimonials", []);
@@ -44,13 +51,22 @@ const WidgetBuilderTopbar = ({ project, widgetUpdating }: Props) => {
   const [testimonials, setTestimonials] = useState<DocumentData | undefined>(
     value ? [...value] : []
   );
+
+  const toRemove = new Set(widgetTestimonials?.map((el) => el?.id));
+  const difference = value?.filter((x: DocumentData) => !toRemove.has(x.id));
+
   useEffect(() => {
-    setTestimonials(value);
+    setTestimonials(difference);
   }, [value]);
 
   useEffect(() => {
     onClose();
   }, [state]);
+
+  useEffect(() => {
+    setChoosenTestimonials(widgetTestimonials || []);
+    setValue("testimonials", widgetTestimonials);
+  }, [widgetTestimonials]);
 
   function onDragEnd(result: DropResult) {
     if (!result.destination) return;
