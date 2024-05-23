@@ -2,21 +2,21 @@
 import { Iform } from "@/types/Form";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
-import WelcomeViewClientForm from "../molecules/WelcomeViewClientForm";
+import WelcomeViewClientForm from "../../molecules/Forms/WelcomeViewClientForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
-import ResponseViewClientForm from "../molecules/ResponseViewClientForm";
+import ResponseViewClientForm from "../../molecules/Forms/ResponseViewClientForm";
 import { useFormViewStore } from "@/store/store";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import CustomerDetailsViewClientForm from "../molecules/CustomerDetailsViewClientForm";
+import CustomerDetailsViewClientForm from "../../molecules/Forms/CustomerDetailsViewClientForm";
 import { Button as NextButton } from "@nextui-org/button";
-import ThankYouViewClientForm from "../molecules/ThankYouViewClientForm";
+import ThankYouViewClientForm from "../../molecules/Forms/ThankYouViewClientForm";
 import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import Loading from "@/app/components/atoms/loading";
+import Loading from "@/app/components/atoms/Loading";
 
 interface Props {
   allFormFields: Iform;

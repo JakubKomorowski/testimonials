@@ -5,8 +5,9 @@ import { ROUTES } from "@/routes";
 import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import { collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
-import FormGroupWrapper from "@/app/components/molecules/FormGroupWrapper";
-import TestimonialsGroupWrapper from "@/app/components/molecules/TestimonialsGroupWrapper";
+import FormGroupWrapper from "@/app/components/organisms/Forms/FormGroupWrapper";
+import TestimonialsGroupWrapper from "@/app/components/organisms/Testimonials/TestimonialsGroupWrapper";
+import { Tweet } from "@/app/components/organisms/Tweet";
 
 const Dashboard = async () => {
   const session = await getServerSession(authOptions);
@@ -26,6 +27,7 @@ const Dashboard = async () => {
           <TestimonialsGroupWrapper />
         </div>
       </div>
+      <Tweet id="1792540739764715525" />
     </div>
   );
 };

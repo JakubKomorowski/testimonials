@@ -1,7 +1,7 @@
 "use client";
-import FormBuilderSidebar from "@/app/components/organisms/FormBuilderSidebar";
-import FormBuilderSidebarRight from "@/app/components/organisms/FormBuilderSidebarRight";
-import FormBuilderTopbar from "@/app/components/organisms/FormBuilderTopbar";
+import FormBuilderSidebar from "@/app/components/organisms/Forms/FormBuilderSidebar";
+import FormBuilderSidebarRight from "@/app/components/organisms/Forms/FormBuilderSidebarRight";
+import FormBuilderTopbar from "@/app/components/organisms/Forms/FormBuilderTopbar";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import {
   DocumentData,
@@ -26,10 +26,11 @@ import { Key, useState } from "react";
 import { Iform } from "@/types/Form";
 import { redirect, useRouter } from "next/navigation";
 import { ROUTES } from "@/routes";
-import Loading from "@/app/components/atoms/loading";
+
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import ClientForm from "@/app/components/organisms/ClientForm";
+import ClientForm from "@/app/components/organisms/Forms/ClientForm";
 import { formData } from "@/app/data/formData";
+import Loading from "../../atoms/Loading";
 
 interface Props {
   params?: { formId: string };

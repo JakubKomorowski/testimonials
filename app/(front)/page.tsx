@@ -6,13 +6,13 @@ import Circle from "../components/atoms/Circle";
 import { Metadata } from "next";
 import { ROUTES } from "@/routes";
 import Link from "next/link";
-import DefaultCard from "../components/molecules/DefaultCard";
-import QuoteCard from "../components/molecules/QuoteCard";
-import { CarouselComponent } from "../components/organisms/CaruselComponent";
+import DefaultCard from "../components/molecules/WidgetTemplates/DefaultCard";
+import QuoteCard from "../components/molecules/WidgetTemplates/QuoteCard";
+import { CarouselComponent } from "../components/organisms/WidgetTemplates/CaruselComponent";
 import Divider from "../components/atoms/Divider";
 import { Button } from "@/components/ui/button";
 import AddEmailButton from "../components/atoms/AddEmailButton";
-import SpeachBubble from "../components/organisms/SpeachBubble";
+import SpeachBubble from "../components/organisms/WidgetTemplates/SpeachBubble";
 import PostCard from "../components/molecules/PostCard";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
 import { Post } from "@/types/Post";
@@ -84,7 +84,7 @@ export default async function Home() {
           height={100}
           className="absolute right-0 top-[350px] hidden lg:block"
         />
-        <div className="container lg:gap-0 lg:left-1/2 lg:translate-x-[-55%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1160px] mt-20 lg:mt-0">
+        <div className="container lg:gap-0 lg:left-1/2 px-1 lg:translate-x-[-50%] flex flex-col items-center lg:flex-row justify-between lg:absolute bottom-[-130px] xl:bottom-[-140px] w-full max-w-[1160px] mt-20 lg:mt-0">
           <Circle
             icon="collect"
             text="Gather customer feedback quickly and easily."

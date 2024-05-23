@@ -20,6 +20,8 @@ const nextConfig = {
         hostname: "firebasestorage.googleapis.com",
         port: "",
       },
+      { protocol: "https", hostname: "pbs.twimg.com" },
+      { protocol: "https", hostname: "abs.twimg.com" },
     ],
   },
 };

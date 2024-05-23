@@ -1,10 +1,11 @@
-import { dateParser } from "@/lib/utils";
+import { dateParser, firstTwoLetters } from "@/lib/utils";
 import { Testimonial } from "@/types/Testimonial";
-import { Tooltip } from "@nextui-org/react";
+import { Avatar, Tooltip } from "@nextui-org/react";
 import Image from "next/image";
 import { DraggableProvided } from "@hello-pangea/dnd";
 import { Dispatch } from "react";
 import { DocumentData } from "firebase-admin/firestore";
+import RatingComponent from "../../atoms/RatingComponent";
 
 type Props = {
   el: Testimonial;
@@ -18,7 +19,7 @@ type Props = {
   testimonials?: DocumentData;
 };
 
-const DashboardTestimonialCard = ({
+const TestimonialCard = ({
   el,
   selectedTestimonials,
   plus,
@@ -59,16 +60,18 @@ const DashboardTestimonialCard = ({
       {...provided?.dragHandleProps}
     >
       <div className="flex">
-        <Image
-          src={`/Icons/avatar.svg`}
-          alt="form-icon"
-          width={30}
-          height={30}
-          className="h-8 w-8 object-contain ml-2"
+        <Avatar
+          showFallback
+          name={firstTwoLetters(el.name, el.email || "")}
+          src={el.photo?.downloadUrl}
+          className=" object-contain ml-2 shrink-0"
         />
         <div className="mt-1 pl-4 ">
           <p className="">{el.name}</p>
-          <p className="text-sm text-gray-500 mb-2">Created: {time}</p>
+          <p className="text-sm text-gray-500">Created: {time}</p>
+          <div className="mb-2">
+            <RatingComponent rating={el.rating} size={15} readonly={true} />
+          </div>
           <p className="">{el.testimonial}</p>
         </div>
         <div className=" ml-auto shrink-0">
@@ -114,4 +117,4 @@ const DashboardTestimonialCard = ({
   );
 };
 
-export default DashboardTestimonialCard;
+export default TestimonialCard;

@@ -1,5 +1,5 @@
 "use client";
-import WidgetBuilder from "@/app/components/organisms/WidgetBuilder";
+import WidgetBuilder from "@/app/components/organisms/Widgets/WidgetBuilder";
 import { db } from "@/app/firebase";
 import useSetUserProject from "@/app/hooks/useSetUserProject";
 import { collection, doc } from "firebase/firestore";

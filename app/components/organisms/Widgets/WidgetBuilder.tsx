@@ -19,12 +19,10 @@ import { useRouter } from "next/navigation";
 import WidgetBuilderSidebarRight from "./WidgetBuilderSidebarRight";
 import WidgetBuilderTopbar from "./WidgetBuilderTopbar";
 import WidgetBuilderSidebar from "./WidgetBuilderSidebar";
-import SpeachBubble from "./SpeachBubble";
-import { CarouselComponent } from "./CaruselComponent";
-import ClassicComponent from "./ClassicComponent";
 import { Testimonial } from "@/types/Testimonial";
 import { Spinner } from "@nextui-org/react";
 import { Widget } from "@/types/Widget";
+import ClientWidget from "./ClientWidget";
 interface Props {
   id?: string;
   project: string;
@@ -138,7 +136,7 @@ const WidgetBuilder = ({
           />
         </form>
         <div className="col-span-3 col-start-2 row-start-2 flex justify-center mt-16">
-          <div className="flex flex-col items-center ">
+          <div className="flex flex-col items-center max-w-full">
             {(selectedTestimonials.length === 0 &&
               widget?.testimonials.length === 0) ||
             (selectedTestimonials.length === 0 &&
@@ -149,42 +147,15 @@ const WidgetBuilder = ({
                 <div className="mt-2">Add testimonials to see a widget</div>
               )
             ) : (
-              <>
-                {card === "bubble" && (
-                  <SpeachBubble
-                    data={
-                      selectedTestimonials.length === 0
-                        ? widget?.testimonials
-                        : selectedTestimonials
-                    }
-                    preview
-                  />
-                )}
-                {card === "slider" && (
-                  <div className="px-16">
-                    <CarouselComponent
-                      data={
-                        selectedTestimonials.length === 0
-                          ? widget?.testimonials
-                          : selectedTestimonials
-                      }
-                      preview
-                    />
-                  </div>
-                )}
-                {card === "classic" && (
-                  <div className="px-1">
-                    <ClassicComponent
-                      data={
-                        selectedTestimonials.length === 0
-                          ? widget?.testimonials
-                          : selectedTestimonials
-                      }
-                      preview
-                    />
-                  </div>
-                )}
-              </>
+              <ClientWidget
+                preview
+                card={card}
+                data={
+                  selectedTestimonials.length === 0
+                    ? widget?.testimonials
+                    : selectedTestimonials
+                }
+              />
             )}
           </div>
         </div>

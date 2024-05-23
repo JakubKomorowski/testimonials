@@ -9,8 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/thumbs";
 import { Navigation, Controller } from "swiper/modules";
 // import { data } from "@/app/data/exampleData";
-import SpeachBubbleCard from "../molecules/SpeachBubbleCard";
-import ArrowButton from "../atoms/ArrowButton";
+import SpeachBubbleCard from "../../molecules/WidgetTemplates/SpeachBubbleCard";
+import ArrowButton from "../../atoms/ArrowButton";
 import { Testimonial } from "@/types/Testimonial";
 
 interface Props {

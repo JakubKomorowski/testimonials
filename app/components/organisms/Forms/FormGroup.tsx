@@ -79,7 +79,7 @@ const FormGroup = ({ firstTwo }: Props) => {
           </Tooltip>
         </div>
       </div>
-      <div className="flex gap-6 flex-col 2xl:flex-row flex-wrap ">
+      <div className="flex gap-6 flex-col  ">
         {formmatedForms?.map((el: DocumentData) => {
           const time = new Date(el.createdAt.seconds * 1000).toLocaleString(
             "en-US",
@@ -103,7 +103,7 @@ const FormGroup = ({ firstTwo }: Props) => {
                   <p className="text-sm text-gray-500 mb-2">Created: {time}</p>
                   <p className="mb-4">Responses: 1</p>
                 </div>
-                <div className="flex gap-2 h-fit ml-auto">
+                <div className="flex gap-2 h-fit ml-auto shrink-0">
                   <Tooltip content="Edit" color="foreground">
                     <div className="cursor-pointer flex-1 shrink-0">
                       <Link href={`${ROUTES.forms}/${el.id}`}>

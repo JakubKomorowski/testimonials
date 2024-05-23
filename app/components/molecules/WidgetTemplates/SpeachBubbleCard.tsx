@@ -1,6 +1,6 @@
 import React from "react";
-import QuoteIcon from "../atoms/QuoteIcon";
-import RatingComponent from "../atoms/RatingComponent";
+import QuoteIcon from "../../atoms/QuoteIcon";
+import RatingComponent from "../../atoms/RatingComponent";
 import { classNames } from "@/lib/utils";
 
 interface Props {

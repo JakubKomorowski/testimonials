@@ -1,5 +1,5 @@
 import React from "react";
-import SpeachBubble from "../../components/organisms/SpeachBubble";
+import SpeachBubble from "../../components/organisms/WidgetTemplates/SpeachBubble";
 
 const page = () => {
   return <SpeachBubble />;

@@ -16,7 +16,7 @@ import { collection } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { DocumentData } from "firebase-admin/firestore";
 import { useFormContext } from "react-hook-form";
-import DashboardTestimonialCard from "../atoms/DashboardTestimonialCard";
+import TestimonialCard from "../../molecules/Widgets/TestimonialCard";
 import { Testimonial } from "@/types/Testimonial";
 import {
   DragDropContext,
@@ -207,7 +207,7 @@ const WidgetBuilderTopbar = ({
                                   index={i}
                                 >
                                   {(provided, snapshot) => (
-                                    <DashboardTestimonialCard
+                                    <TestimonialCard
                                       innerRef={provided.innerRef}
                                       provided={provided}
                                       key={el.id}
@@ -250,7 +250,7 @@ const WidgetBuilderTopbar = ({
                                 index={i}
                               >
                                 {(provided, snapshot) => (
-                                  <DashboardTestimonialCard
+                                  <TestimonialCard
                                     innerRef={provided.innerRef}
                                     provided={provided}
                                     key={el.id}

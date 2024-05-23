@@ -1,6 +1,6 @@
 "use client";
 
-import WidgetGroup from "@/app/components/molecules/WidgetGroup";
+import WidgetGroup from "@/app/components/molecules/Widgets/WidgetGroup";
 import { useProjectStore } from "@/store/store";
 
 const Widgets = () => {

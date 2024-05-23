@@ -6,7 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import QuoteCard from "../molecules/QuoteCard";
+import QuoteCard from "../../molecules/WidgetTemplates/QuoteCard";
 import { Testimonial } from "@/types/Testimonial";
 import { classNames } from "@/lib/utils";
 
@@ -26,9 +26,9 @@ export function CarouselComponent({ data, preview }: Props) {
       ? "basis-5/6 md:basis-1/2"
       : data?.length === 1
       ? "basis-5/6"
-      : "basis-5/6 xl:basis-1/2 2xl:basis-1/3";
+      : "basis-5/6 xl:basis-1/2 2xl:basis-1/3 ";
 
-  const caruselContentClass = preview ? "max-w-[350px] xl:max-w-full" : "";
+  const caruselContentClass = preview ? "max-w-[400px] xl:max-w-full" : "";
   return (
     <Carousel
       opts={{

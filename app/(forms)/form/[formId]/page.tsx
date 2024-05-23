@@ -1,4 +1,4 @@
-import ClientForm from "@/app/components/organisms/ClientForm";
+import ClientForm from "@/app/components/organisms/Forms/ClientForm";
 import { db } from "@/app/firebase";
 import { Iform } from "@/types/Form";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
@@ -39,6 +39,7 @@ const SingleForm = async ({ params }: Props) => {
   const docSnaps = await Promise.all(
     docRefs.map((el) => getDoc(el).then((res) => res.data()))
   );
+
   const form = docSnaps.find((el) => el != undefined);
   if (!form) notFound();
 

@@ -6,11 +6,11 @@ import { Tooltip } from "@nextui-org/tooltip";
 import { Input } from "@nextui-org/input";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { inputConfig } from "../organisms/FormBuilderSidebar";
-import { DropzoneField } from "./DropzoneField";
+import { inputConfig } from "../../organisms/Forms/FormBuilderSidebar";
+import { DropzoneField } from "../DropzoneField";
 import Image from "next/image";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import Star from "../atoms/Star";
+import Star from "../../atoms/Star";
 
 interface Props {
   title: string;

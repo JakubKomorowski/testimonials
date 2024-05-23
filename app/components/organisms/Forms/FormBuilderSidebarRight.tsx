@@ -4,7 +4,7 @@ import { useFormContext } from "react-hook-form";
 import { Iform } from "@/types/Form";
 import { inputConfig } from "./FormBuilderSidebar";
 import { useEffect } from "react";
-import { DropzoneField } from "../molecules/DropzoneField";
+import { DropzoneField } from "../../molecules/DropzoneField";
 import { DocumentData, getDoc } from "firebase/firestore";
 interface Props {
   currentForm?: DocumentData & Iform;

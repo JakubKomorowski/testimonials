@@ -5,7 +5,7 @@ import { IRating, IResponseQuestions } from "@/types/Form";
 import { Textarea } from "@nextui-org/react";
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
-import RatingComponent from "../atoms/RatingComponent";
+import RatingComponent from "../../atoms/RatingComponent";
 
 interface Props {
   title: string;

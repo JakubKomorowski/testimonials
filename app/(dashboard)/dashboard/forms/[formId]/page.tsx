@@ -1,5 +1,5 @@
 "use client";
-import FormBuilder from "@/app/components/organisms/FormBuilder";
+import FormBuilder from "@/app/components/organisms/Forms/FormBuilder";
 import { db } from "@/app/firebase";
 import useSetUserProject from "@/app/hooks/useSetUserProject";
 import { collection, doc } from "firebase/firestore";

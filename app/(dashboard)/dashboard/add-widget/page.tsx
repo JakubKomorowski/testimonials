@@ -1,5 +1,5 @@
 "use client";
-import WidgetBuilder from "@/app/components/organisms/WidgetBuilder";
+import WidgetBuilder from "@/app/components/organisms/Widgets/WidgetBuilder";
 import useSetUserProject from "@/app/hooks/useSetUserProject";
 import { ROUTES } from "@/routes";
 import { useSession } from "next-auth/react";

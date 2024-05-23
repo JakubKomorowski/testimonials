@@ -1,5 +1,5 @@
 "use client";
-import FormBuilder from "@/app/components/organisms/FormBuilder";
+import FormBuilder from "@/app/components/organisms/Forms/FormBuilder";
 import { formData } from "@/app/data/formData";
 import useSetUserProject from "@/app/hooks/useSetUserProject";
 import { ROUTES } from "@/routes";

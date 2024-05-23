@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import DefaultCard from "../molecules/DefaultCard";
+import DefaultCard from "../../molecules/WidgetTemplates/DefaultCard";
 import { Testimonial } from "@/types/Testimonial";
 
 interface Props {

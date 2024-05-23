@@ -1,10 +1,10 @@
 "use client";
 import { useProjectStore } from "@/store/store";
-import TestimonialsCard from "./TestimonialsGroup";
+import TestimonialsGroup from "./TestimonialsGroup";
 
 const TestimonialsGroupWrapper = () => {
   const project = useProjectStore((state) => state.project);
-  return project ? <TestimonialsCard /> : null;
+  return project ? <TestimonialsGroup /> : null;
 };
 
 export default TestimonialsGroupWrapper;
