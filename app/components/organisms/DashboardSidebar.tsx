@@ -13,9 +13,10 @@ import { db } from "@/app/firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useSession } from "next-auth/react";
 import { Popover, PopoverContent } from "@nextui-org/popover";
-import { Button } from "@/components/ui/button";
 import { useProjectStore } from "@/store/store";
-import { Selection, Spinner } from "@nextui-org/react";
+import Image from "next/image";
+import { Selection, Spinner, Button, useDisclosure } from "@nextui-org/react";
+import ImportTestimonialsModal from "../molecules/ImportTestimonialsModal";
 
 const DashboardSidebar = () => {
   const [value, setValue] = useState<Selection>();
@@ -30,6 +31,8 @@ const DashboardSidebar = () => {
   const selectRef = useRef<any>();
   const userProjects = projects?.filter((el) => el.userId === session?.user.id);
   const setProject = useProjectStore((state) => state.setProject);
+  const { isOpen: isOpenModal, onOpen, onOpenChange } = useDisclosure();
+  const [selectedSocial, setSelectedSocial] = useState("");
 
   useEffect(() => {
     setProject(localStorage.getItem("projectId") || userProjects?.[0].id);
@@ -172,7 +175,26 @@ const DashboardSidebar = () => {
             </li>
           );
         })}
+        <button
+          onClick={onOpen}
+          className="flex gap-4 items-center rounded-2xl px-5 py-3 hover:bg-gray-100 w-full"
+        >
+          <Image
+            src={`/Icons/social-media.svg`}
+            alt="hand-writing"
+            width={20}
+            height={20}
+            className="h-5 w-5 object-contain "
+          />
+          Import
+        </button>
       </ul>
+      <ImportTestimonialsModal
+        isOpenModal={isOpenModal}
+        onOpenChange={onOpenChange}
+        selectedSocial={selectedSocial}
+        setSelectedSocial={setSelectedSocial}
+      />
     </aside>
   );
 };

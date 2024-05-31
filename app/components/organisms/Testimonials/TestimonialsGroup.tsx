@@ -44,7 +44,7 @@ const TestimonialsGroup = () => {
       </div>
       <div className="flex gap-6 flex-col  2xl:flex-row flex-wrap ">
         {slicedTestimonials?.map((el: Testimonial) => {
-          return <TestimonialCard el={el} />;
+          return <TestimonialCard el={el} key={el.id} />;
         })}
       </div>
     </section>

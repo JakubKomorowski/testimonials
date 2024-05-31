@@ -25,7 +25,7 @@ export const components: TwitterComponents = {
 
 export const CustomTweet = ({ tweet: t }: Props) => {
   const tweet = enrichTweet(t);
-  console.log(tweet);
+  // console.log(tweet);
   return (
     <TweetContainer>
       <TweetHeader tweet={tweet} components={components} />

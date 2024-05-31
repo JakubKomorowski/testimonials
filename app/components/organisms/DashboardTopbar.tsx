@@ -15,6 +15,7 @@ const DashboardTopbar = () => {
   const { data: session } = useSession();
   let name = session?.user?.name as string;
   let mail = session?.user?.email as string;
+
   return (
     <div className="p-3 px-6  border-gray-300 border-b h-fit flex justify-end col-span-3">
       <div className="w-[156px] flex justify-end ">
@@ -22,6 +23,7 @@ const DashboardTopbar = () => {
           <DropdownTrigger className=" outline-none bg-primary   flex items-center justify-center text-bg font-medium rounded-full">
             <Avatar
               name={firstTwoLetters(name, mail)}
+              showFallback
               as="button"
               className="transition-transform text-md bg-primary"
             />

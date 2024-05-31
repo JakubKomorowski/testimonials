@@ -14,10 +14,7 @@ type Props = {
 const TestimonialCard = ({ el }: Props) => {
   const time = dateParser(el?.createdAt?.seconds);
   return (
-    <div
-      key={el.id}
-      className="px-3 pt-3 pb-5  rounded-lg bg-container3 flex-1 min-w-[400px]"
-    >
+    <div className="px-3 pt-3 pb-5  rounded-lg bg-container3 flex-1 min-w-[400px]">
       <div className=" flex-1 flex">
         <Avatar
           showFallback
