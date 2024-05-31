@@ -16,7 +16,7 @@ import { db, storage } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import Loading from "@/app/components/atoms/Loading";
+import Loading from "../../atoms/Loading";
 
 interface Props {
   allFormFields: Iform;

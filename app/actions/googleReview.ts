@@ -7,8 +7,7 @@ export async function googleReview(id: string) {
     method: "GET",
     headers: {
       "content-type": "application/json",
-      Authorization:
-        "Basic amFrdWJrb21vcm93c2tpNUB3cC5wbDo3ODJjN2Q1ZWYyNjNjYTQ0",
+      Authorization: `Basic ${process.env.DATA_FOR_SEO_KEY}`,
     },
   };
 
@@ -27,8 +26,7 @@ export async function googleReview(id: string) {
       ]),
       headers: {
         "content-type": "application/json",
-        Authorization:
-          "Basic amFrdWJrb21vcm93c2tpNUB3cC5wbDo3ODJjN2Q1ZWYyNjNjYTQ0",
+        Authorization: `Basic ${process.env.DATA_FOR_SEO_KEY}`,
       },
     }
   );
