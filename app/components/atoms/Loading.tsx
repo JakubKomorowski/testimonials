@@ -1,5 +1,4 @@
 import { Spinner } from "@nextui-org/spinner";
-import React from "react";
 
 const Loading = () => {
   return (
