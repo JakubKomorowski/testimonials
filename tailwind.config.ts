@@ -30,6 +30,7 @@ module.exports = {
       },
       gridTemplateColumns: {
         fluid: "repeat(auto-fit, minmax(270px, 1fr))",
+        fluidLarge: "repeat(auto-fit, minmax(400px, 1fr))",
       },
       colors: {
         bg: "hsl(var(--bg))",

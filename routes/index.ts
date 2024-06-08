@@ -16,6 +16,7 @@ export const ROUTES = {
   collectingWidgets: "/dashboard/collecting-widgets",
   socialMedia: "/dashboard/social-media",
   addForm: "/dashboard/add-form",
+  addWidget: "/dashboard/add-widget",
 };
 
 export const FOOTER_MENU_LIST = [

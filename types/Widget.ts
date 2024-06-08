@@ -17,4 +17,5 @@ export interface Widget {
   userId: string;
   card: string;
   createdAt: Date | Timestamp;
+  name: string;
 }

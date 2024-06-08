@@ -4,6 +4,7 @@ import {
   DocumentReference,
   addDoc,
   collection,
+  doc,
   updateDoc,
 } from "firebase/firestore";
 import { db } from "@/app/firebase";
@@ -15,7 +16,7 @@ import {
 } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import WidgetBuilderSidebarRight from "./WidgetBuilderSidebarRight";
 import WidgetBuilderTopbar from "./WidgetBuilderTopbar";
 import WidgetBuilderSidebar from "./WidgetBuilderSidebar";
@@ -23,6 +24,7 @@ import { Testimonial } from "@/types/Testimonial";
 import { Spinner } from "@nextui-org/react";
 import { Widget } from "@/types/Widget";
 import ClientWidget from "./ClientWidget";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 interface Props {
   id?: string;
   project: string;
@@ -39,6 +41,7 @@ const WidgetBuilder = ({
   docRef,
 }: Props) => {
   const router = useRouter();
+  const currentId = useSearchParams().get("id");
   const methods = useForm();
   const selectedTestimonials = methods.watch(
     "testimonials",
@@ -49,14 +52,38 @@ const WidgetBuilder = ({
   const { toast } = useToast();
   const [widgetUpdating, setWidgetUpdating] = useState(false);
 
+  const currentDocRef =
+    project && currentId
+      ? doc(db, "projects", project, "widgets", currentId)
+      : undefined;
+
+  const [currentWidgetValue, currentWidgetLoading, currentWidgetError] =
+    useDocumentData(
+      project && currentId
+        ? doc(db, "projects", project, "widgets", currentId)
+        : null
+    );
+
   useEffect(() => {
     methods.setValue("card", "classic");
   }, []);
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (!project) return;
+    if (
+      !data.testimonials &&
+      !currentWidgetValue?.testimonials &&
+      !selectedTestimonials
+    ) {
+      toast({
+        title: "You need to add at least one testimonial",
+      });
+      return;
+    }
+
     const dataToAdd: Widget = {
       card: data.card,
+      name: data.name,
       userId: data.testimonials[0].userId,
       createdAt: new Date(),
       testimonials: data.testimonials.map((testimonial: Testimonial) => ({
@@ -64,28 +91,30 @@ const WidgetBuilder = ({
         name: testimonial.name,
         id: testimonial.id,
         photo: testimonial.photo,
-        rating: testimonial.rating,
-        website: testimonial.website,
+        rating: testimonial.rating || 0,
+        website: testimonial.website || "",
         testimonial: testimonial.testimonial,
-        socialLink: testimonial.socialLink,
+        socialLink: testimonial.socialLink || "",
       })),
     };
-    if (id && docRef) {
+
+    if ((id && docRef) || (currentId && currentDocRef)) {
       try {
         setWidgetUpdating(true);
-        await updateDoc(docRef, {
-          ...widget,
+        await updateDoc(currentDocRef ? currentDocRef : docRef!, {
+          ...(widget || currentWidgetValue),
           card: data.card,
-          createdAt: widget?.createdAt,
+          name: data.name,
+          createdAt: widget?.createdAt || currentWidgetValue?.createdAt,
           testimonials: data.testimonials.map((testimonial: Testimonial) => ({
             createdAt: testimonial.createdAt,
             name: testimonial.name,
             id: testimonial.id,
             photo: testimonial.photo,
-            rating: testimonial.rating,
-            website: testimonial.website,
+            rating: testimonial.rating || 0,
+            website: testimonial.website || "",
             testimonial: testimonial.testimonial,
-            socialLink: testimonial.socialLink,
+            socialLink: testimonial.socialLink || "",
           })),
         });
         toast({
@@ -104,6 +133,7 @@ const WidgetBuilder = ({
         await updateDoc(widgetDoc, {
           id: widgetDoc.id,
         });
+        router.push(`?id=${widgetDoc.id}`);
         toast({
           title: "Widget successfully created",
         });
@@ -124,23 +154,27 @@ const WidgetBuilder = ({
           className="h-screen col-span-5  grid grid-cols-[300px,1fr,1fr,1fr,250px] grid-rows-[65px,1fr]"
         >
           <WidgetBuilderSidebar
-            widgetLoading={widgetLoading}
-            widgetCard={widget?.card}
+            widgetLoading={widgetLoading || currentWidgetLoading}
+            widgetCard={widget?.card || currentWidgetValue?.card}
           />
-          <WidgetBuilderSidebarRight />
+          <WidgetBuilderSidebarRight
+            widgetLoading={widgetLoading || currentWidgetLoading}
+            widgetName={widget?.name || currentWidgetValue?.name}
+          />
           <WidgetBuilderTopbar
             project={project}
             widgetUpdating={widgetUpdating}
-            widgetTestimonials={widget?.testimonials}
+            widgetTestimonials={
+              widget?.testimonials || currentWidgetValue?.testimonials
+            }
             widgetLoading={widgetLoading}
           />
         </form>
         <div className="col-span-3 col-start-2 row-start-2 flex justify-center mt-16">
           <div className="flex flex-col items-center max-w-full">
-            {(selectedTestimonials.length === 0 &&
-              widget?.testimonials.length === 0) ||
-            (selectedTestimonials.length === 0 &&
-              widget?.testimonials === undefined) ? (
+            {!selectedTestimonials?.length &&
+            !widget?.testimonials &&
+            !currentWidgetValue?.testimonials ? (
               widgetLoading ? (
                 <Spinner color="primary" />
               ) : (
@@ -152,7 +186,7 @@ const WidgetBuilder = ({
                 card={card}
                 data={
                   selectedTestimonials.length === 0
-                    ? widget?.testimonials
+                    ? widget?.testimonials || currentWidgetValue?.testimonials
                     : selectedTestimonials
                 }
               />

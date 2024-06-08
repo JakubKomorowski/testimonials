@@ -22,7 +22,7 @@ const TestimonialCard = ({ el }: Props) => {
           src={el.photo?.downloadUrl}
           className=" object-contain ml-2 shrink-0"
         />
-        <div className="mt-1 pl-4 ">
+        <div className="mt-2 pl-4 ">
           <p className="">{el.name}</p>
           <p className="text-sm text-gray-500 ">Created: {time}</p>
           <div className="mb-2">

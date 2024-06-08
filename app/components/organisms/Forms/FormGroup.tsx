@@ -8,7 +8,7 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { toast } from "sonner";
 import { Tooltip } from "@nextui-org/react";
 import { useProjectStore } from "@/store/store";
-import { sortByDate } from "@/lib/utils";
+import { cn, sortByDate } from "@/lib/utils";
 
 interface Props {
   firstTwo?: boolean;
@@ -47,10 +47,11 @@ const FormGroup = ({ firstTwo }: Props) => {
     }
   };
   const formmatedForms = firstTwo ? slicedForms : value;
+  const className = firstTwo ? "bg-muted" : "";
   return (
-    <section className="bg-muted  p-6 rounded-lg w-full ">
+    <section className={cn("p-6 rounded-large w-full", className)}>
       <div className="flex justify-between">
-        <h2 className="text-2xl font-bold mb-4">Forms</h2>
+        <h2 className="text-xl font-bold mb-4">Forms</h2>
         <div className="flex gap-2 items-center h-fit cursor-pointer">
           <Tooltip content="See all" color="foreground">
             <Link
@@ -79,7 +80,7 @@ const FormGroup = ({ firstTwo }: Props) => {
           </Tooltip>
         </div>
       </div>
-      <div className="flex gap-6 flex-col  ">
+      <div className="flex gap-6 flex-col xl:flex-row flex-wrap">
         {formmatedForms?.map((el: DocumentData) => {
           const time = new Date(el.createdAt.seconds * 1000).toLocaleString(
             "en-US",

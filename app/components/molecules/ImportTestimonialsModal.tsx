@@ -3,12 +3,13 @@ import {
   ModalContent,
   ModalHeader,
   ModalBody,
-  ModalFooter,
   Button,
   Input,
+  Card,
+  CardBody,
 } from "@nextui-org/react";
 import { socials } from "@/app/data/socialData";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { inputConfig } from "../organisms/Forms/FormBuilderSidebar";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { useProjectStore } from "@/store/store";
@@ -16,6 +17,9 @@ import { addDoc, collection, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useSession } from "next-auth/react";
 import { googleReview } from "@/app/actions/googleReview";
+import { classNames } from "@/lib/utils";
+import * as client from "dataforseo-client";
+import TestimonialCard from "./Testimonials/TestimonialCard";
 
 type Props = {
   isOpenModal: boolean;
@@ -33,18 +37,34 @@ const ImportTestimonialsModal = ({
   const { register, handleSubmit, reset } = useForm();
   const project = useProjectStore((state) => state.project);
   const [error, setError] = useState(false);
+  const [googlePlaces, setGooglePlaces] = useState<any[]>([]);
+  const [googlePlaceId, setGooglePlaceId] = useState<string>("");
+  const [googlePlaceLoading, setGooglePlaceLoading] = useState<boolean>(false);
+  const [browserLang, setBrowserLang] = useState<string | undefined>();
+
+  const [googleReviews, setGoogleReviews] = useState<
+    client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined
+  >();
   const { data: session } = useSession();
 
-  // const browserLang = navigator.geolocation.getCurrentPosition((pos) =>
-  //   console.log(pos)
-  // );
-  // console.log(browserLang);
+  useEffect(() => {
+    setBrowserLang(navigator?.language);
+  }, []);
+
+  console.log(googleReviews);
+  const handleFindGooglePlaces = async (id: string) => {
+    const result: client.IBusinessDataGoogleReviewsTaskGetResponseInfo =
+      await googleReview(id, browserLang);
+    console.log(result);
+    setGooglePlaces([]);
+    setGoogleReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+  };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (!project) return;
     const testimonialRef = collection(db, "projects", project, "testimonials");
-    const newData = data?.[selectedSocial];
-    const id = newData.split("/").slice(-1)[0];
+    const inputText = data?.[selectedSocial];
+    const id = inputText.split("/").slice(-1)[0];
 
     if (selectedSocial === "Twitter") {
       const response = await fetch(`api/twitter?id=${id}`);
@@ -74,27 +94,33 @@ const ImportTestimonialsModal = ({
         "https://places.googleapis.com/v1/places:searchText",
         {
           method: "POST",
-          body: JSON.stringify({ textQuery: newData }),
+          body: JSON.stringify({ textQuery: inputText }),
           headers: {
             "Content-Type": "application/json",
             "X-Goog-Api-Key": process.env
               .NEXT_PUBLIC_FIREBASE_API_KEY as string,
             "X-Goog-FieldMask":
-              "places.displayName,places.formattedAddress,places.id,places.name,places.photos",
+              "places.displayName,places.formattedAddress,places.id,places.name,places.userRatingCount",
           },
         }
       );
-      const data = await res.json();
 
-      const result = await googleReview(data.places[0].id);
-      console.log(result);
+      const data = await res.json();
+      console.log(data);
+
+      setGooglePlaces(data.places);
     }
 
     reset();
   };
 
   return (
-    <Modal isOpen={isOpenModal} onOpenChange={onOpenChange} size="4xl">
+    <Modal
+      isOpen={isOpenModal}
+      onOpenChange={onOpenChange}
+      size="4xl"
+      scrollBehavior="inside"
+    >
       <ModalContent>
         {(onClose) => (
           <>
@@ -124,29 +150,100 @@ const ImportTestimonialsModal = ({
                 onSubmit={handleSubmit(onSubmit)}
                 // action={googleReview}
               >
-                <p className="text-xl mb-12">Import from {selectedSocial}</p>
-                <div className="w-full mb-4">
-                  {selectedSocial &&
-                    socials
-                      .filter((el) => el.title === selectedSocial)
-                      .map((item) => (
-                        <Input
-                          key={item.title}
-                          {...inputConfig}
-                          placeholder={item.exampleUrl}
-                          label={item.label}
-                          {...register(selectedSocial)}
-                        />
-                      ))}
+                <p className="text-xl mb-8">Import from {selectedSocial}</p>
+                <div className="w-full mb-8">
+                  <div className="flex items-end gap-2">
+                    {selectedSocial &&
+                      socials
+                        .filter((el) => el.title === selectedSocial)
+                        .map((item) => (
+                          <Input
+                            key={item.title}
+                            {...inputConfig}
+                            placeholder={item.exampleUrl}
+                            label={item.label}
+                            {...register(selectedSocial)}
+                          />
+                        ))}
+                    {selectedSocial === "Google" && (
+                      <Button type="submit" color="primary">
+                        Search
+                      </Button>
+                    )}
+                  </div>
+
                   {error && (
                     <p className="text-destructive text-sm">
                       {selectedSocial} link is invalid
                     </p>
                   )}
                 </div>
-                <Button type="submit" color="primary">
-                  Add
-                </Button>
+                {selectedSocial !== "Google" && (
+                  <Button type="submit" color="primary">
+                    Add
+                  </Button>
+                )}
+                {selectedSocial === "Google" && (
+                  <>
+                    {googlePlaces.length !== 0 && (
+                      <p className="mb-4">Select your business:</p>
+                    )}
+                    {googlePlaces?.map((place) => (
+                      <Card
+                        key={place.id}
+                        onPress={() => setGooglePlaceId(place.id)}
+                        className={classNames(
+                          "mb-4",
+                          place.id === googlePlaceId
+                            ? "border-primary border"
+                            : ""
+                        )}
+                        isPressable
+                      >
+                        <CardBody className="p-4">
+                          <div className="flex justify-between gap-12 ">
+                            <p className="text font-semibold flex mb-2">
+                              {place?.displayName.text}
+                            </p>
+                            <p className="text-sm text-gray-700 whitespace-nowrap">
+                              {place?.userRatingCount} reviews
+                            </p>
+                          </div>
+
+                          <p className="text-sm text-gray-700">
+                            {place?.formattedAddress}
+                          </p>
+                        </CardBody>
+                      </Card>
+                    ))}
+                    {googlePlaces.length !== 0 && (
+                      <Button
+                        type="button"
+                        color="primary"
+                        onClick={() => handleFindGooglePlaces(googlePlaceId)}
+                      >
+                        Import testimonials
+                      </Button>
+                    )}
+                    {googleReviews?.map((review) => {
+                      const el = {
+                        testimonial: review?.review_text,
+                        name: review?.profile_name,
+                        rating: review?.rating.value,
+                        id: review?.review_id,
+                        photo: { downloadUrl: review?.profile_image_url },
+                        createdAt: {
+                          seconds: Date.parse(review?.timestamp),
+                          nanoseconds: 194000000,
+                        },
+                        source: "google",
+                      };
+                      return (
+                        <TestimonialCard el={el} key={review?.review_id} />
+                      );
+                    })}
+                  </>
+                )}
               </form>
             </ModalBody>
           </>

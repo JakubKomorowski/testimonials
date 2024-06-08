@@ -162,7 +162,12 @@ const WidgetBuilderTopbar = ({
             </Button>
           </div>
           <div className="px-1">
-            <Button type="submit" color="secondary" className="text-white">
+            <Button
+              type="submit"
+              disabled={widgetUpdating}
+              color="secondary"
+              className="text-white"
+            >
               {widgetUpdating ? <Spinner color="current" size="sm" /> : "Save"}
             </Button>
           </div>

@@ -11,7 +11,7 @@ const Forms = () => {
     redirect(ROUTES.signin);
   }
   return (
-    <div className="p-8">
+    <div className="">
       <FormGroupWrapper />
     </div>
   );

@@ -2,6 +2,10 @@ import { Timestamp } from "firebase-admin/firestore";
 import { FileWithPath } from "react-dropzone";
 import { IPhoto } from "./Form";
 
+interface ITimestamp {
+  seconds: number;
+  nanoseconds: number;
+}
 export interface Testimonial {
   testimonial: string;
   name: string;
@@ -10,7 +14,7 @@ export interface Testimonial {
   socialLink?: string;
   photo?: IPhoto;
   rating?: number;
-  createdAt: Timestamp;
+  createdAt: Timestamp | ITimestamp;
   formId?: string;
   id: string;
   userId?: string;

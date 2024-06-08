@@ -22,9 +22,9 @@ const TestimonialsGroup = () => {
   ) as Testimonial[];
 
   return (
-    <section className="bg-muted  p-6 rounded-lg w-full ">
+    <section className="bg-muted  p-6 rounded-large w-full ">
       <div className="flex justify-between">
-        <h2 className="text-2xl font-bold mb-4">Testimonials</h2>
+        <h2 className="text-xl font-bold mb-4">Testimonials</h2>
         <div className="flex gap-2 items-center h-fit cursor-pointer">
           <Tooltip content="See all" color="foreground">
             <Link
