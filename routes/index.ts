@@ -13,6 +13,7 @@ export const ROUTES = {
   contact: "/contact",
   form: "/form",
   forms: "/dashboard/forms",
+  testimonials: "/dashboard/testimonials",
   collectingWidgets: "/dashboard/collecting-widgets",
   socialMedia: "/dashboard/social-media",
   addForm: "/dashboard/add-form",
@@ -38,6 +39,7 @@ export const MENU_LIST_MOBILE = [
 export const DASHBOARD_OVERVIEW_MENU_LIST = [
   { text: "Overview", href: ROUTES.dashboard, icon: "eye" },
   { text: "Your widgets", href: ROUTES.widgets, icon: "widget" },
+  { text: "Testimonials", href: ROUTES.testimonials, icon: "chat" },
 ];
 
 export const DASHBOARD_COLLECT_MENU_LIST = [
@@ -47,5 +49,5 @@ export const DASHBOARD_COLLECT_MENU_LIST = [
     href: ROUTES.collectingWidgets,
     icon: "collecting-widget",
   },
-  { text: "Social media", href: ROUTES.socialMedia, icon: "social-media" },
+  // { text: "Social media", href: ROUTES.socialMedia, icon: "social-media" },
 ];

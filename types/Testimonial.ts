@@ -14,9 +14,10 @@ export interface Testimonial {
   socialLink?: string;
   photo?: IPhoto;
   rating?: number;
-  createdAt: Timestamp | ITimestamp;
+  createdAt?: Timestamp | ITimestamp;
   formId?: string;
   id: string;
   userId?: string;
   source?: string;
+  date?: ITimestamp;
 }

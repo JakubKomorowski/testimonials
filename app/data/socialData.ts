@@ -7,14 +7,14 @@ export const socials = [
   {
     icon: FaGoogle,
     title: "Google",
-    label: "Google URL",
-    exampleUrl: "https://www.reddit.com/r/Science/comments/thszdm/simple-post/",
+    label: "Your Bussiness",
+    exampleUrl: "Hair shop, London",
   },
   {
     icon: FaXTwitter,
     title: "Twitter",
     label: "Tweet URL",
-    exampleUrl: "https://www.reddit.com/r/Science/comments/thszdm/simple-post/",
+    exampleUrl: "https://x.com/username/status/1000819959999999990",
   },
   {
     icon: FaRedditAlien,

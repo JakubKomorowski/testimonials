@@ -4,14 +4,14 @@ import React from "react";
 const CollectingWidget = () => {
   return (
     <section className="bg-muted  p-6 rounded-large w-full ">
-      <h2 className="text-xl font-bold mb-4">Collectiong widget</h2>
-      <Card>
+      <h2 className="text-xl font-bold mb-4">Collecting widget</h2>
+      <Card className="p-4 py-3 min-w-[200px] max-w-[350px]">
         <CardBody>
-          <div className="flex flex-col items-center px-2">
-            <p className="text-xl text-center font-semibold mb-2 ">
+          <div className="flex flex-col items-center ">
+            <p className="text-xl text-center font-semibold mb-4 ">
               Do you like Medium.com?
             </p>
-            <p className="text-center  text-sm mb-3">
+            <p className="text-center  text-sm mb-8">
               We would love to feature your testimonial on our site. You can
               promote your website too.
             </p>

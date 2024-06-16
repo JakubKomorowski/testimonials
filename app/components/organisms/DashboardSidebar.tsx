@@ -31,7 +31,12 @@ const DashboardSidebar = () => {
   const selectRef = useRef<any>();
   const userProjects = projects?.filter((el) => el.userId === session?.user.id);
   const setProject = useProjectStore((state) => state.setProject);
-  const { isOpen: isOpenModal, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenModal,
+    onOpen,
+    onOpenChange,
+    onClose,
+  } = useDisclosure();
   const [selectedSocial, setSelectedSocial] = useState("");
 
   useEffect(() => {
@@ -186,7 +191,7 @@ const DashboardSidebar = () => {
             height={20}
             className="h-5 w-5 object-contain "
           />
-          Import
+          Import testimonials
         </button>
       </ul>
       <ImportTestimonialsModal
@@ -194,6 +199,7 @@ const DashboardSidebar = () => {
         onOpenChange={onOpenChange}
         selectedSocial={selectedSocial}
         setSelectedSocial={setSelectedSocial}
+        onClose={onClose}
       />
     </aside>
   );

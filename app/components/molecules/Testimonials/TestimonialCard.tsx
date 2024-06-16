@@ -1,61 +1,133 @@
 import { Testimonial } from "@/types/Testimonial";
-import React from "react";
-import { dateParser, firstTwoLetters } from "@/lib/utils";
-import { Avatar, Tooltip } from "@nextui-org/react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { cn, dateParser, firstTwoLetters } from "@/lib/utils";
+import { Avatar, Badge, Tooltip } from "@nextui-org/react";
 import RatingComponent from "../../atoms/RatingComponent";
 import Image from "next/image";
 import Link from "next/link";
 import { ROUTES } from "@/routes";
+import { IoCheckmark } from "react-icons/io5";
+import { useProjectStore } from "@/store/store";
+import { deleteDoc, doc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 type Props = {
   el: Testimonial;
+  googleSelectedReviews?: Testimonial[];
+  setGoogleSelectedReviews?: Dispatch<SetStateAction<Testimonial[]>>;
+  preview?: boolean;
 };
 
-const TestimonialCard = ({ el }: Props) => {
-  const time = dateParser(el?.createdAt?.seconds);
+const TestimonialCard = ({
+  el,
+  googleSelectedReviews,
+  setGoogleSelectedReviews,
+  preview,
+}: Props) => {
+  const time = dateParser(el?.date?.seconds || el?.createdAt?.seconds || 0);
+  const project = useProjectStore((state) => state.project);
+
+  const handleSelect = (id: string) => {
+    if (setGoogleSelectedReviews) {
+      if (googleSelectedReviews?.find((item) => item.id === id)) {
+        setGoogleSelectedReviews(
+          googleSelectedReviews?.filter((item) => item.id !== id)
+        );
+      } else {
+        setGoogleSelectedReviews([...(googleSelectedReviews || []), el]);
+      }
+    }
+  };
+
+  const handleDeleteTestimonial = async (id: string) => {
+    if (!project) return;
+    const docRef = doc(db, "projects", project, "testimonials", id);
+    await deleteDoc(docRef);
+  };
+
+  const isSelected = (id: string) => {
+    const isSelected = googleSelectedReviews?.find((item) => item.id === id);
+    return !!isSelected;
+  };
+  const previewClassName = preview ? "cursor-pointer hover:bg-container2" : "";
+
   return (
-    <div className="px-3 pt-3 pb-5  rounded-lg bg-container3 flex-1 min-w-[400px]">
-      <div className=" flex-1 flex">
-        <Avatar
-          showFallback
-          name={firstTwoLetters(el.name, el.email || "")}
-          src={el.photo?.downloadUrl}
-          className=" object-contain ml-2 shrink-0"
-        />
+    <div
+      onClick={() => (preview ? handleSelect(el.id) : null)}
+      className={cn(
+        "px-3 pt-3 pb-5  rounded-lg bg-container3 flex-1 min-w-[400px] relative",
+        previewClassName
+      )}
+    >
+      <div className="absolute top-0 right-0">
+        <Badge
+          content={<IoCheckmark size={20} />}
+          color="primary"
+          size="lg"
+          shape="circle"
+          className="top-[-15px]  w-7 h-7 "
+          isInvisible={!isSelected(el.id)}
+        >
+          <div></div>
+        </Badge>
+      </div>
+
+      <div className=" flex-1 flex w-full">
+        {el.photo?.downloadUrl ? (
+          <Image
+            src={el.photo?.downloadUrl}
+            width={100}
+            height={100}
+            alt="photo"
+            className="w-10 h-10 rounded-full"
+          />
+        ) : (
+          <Avatar
+            showFallback
+            name={firstTwoLetters(el.name, el.email || "")}
+            src={el.photo?.downloadUrl}
+            className=" object-contain ml-2 shrink-0"
+          />
+        )}
         <div className="mt-2 pl-4 ">
           <p className="">{el.name}</p>
           <p className="text-sm text-gray-500 ">Created: {time}</p>
           <div className="mb-2">
             <RatingComponent rating={el.rating} size={15} readonly={true} />
           </div>
-          <p className="">{el.testimonial}</p>
+          <p>{el.testimonial}</p>
         </div>
-        <div className="flex gap-2 h-fit ml-auto shrink-0">
-          <Tooltip content="Edit" color="foreground">
-            <div className="cursor-pointer flex-1 shrink-0">
-              <Link href={`${ROUTES.forms}/${el.id}`}>
+        {!preview && (
+          <div className="flex gap-2 h-fit ml-auto shrink-0">
+            <Tooltip content="Edit" color="foreground">
+              <div className="cursor-pointer flex-1 shrink-0">
+                <Link href={`${ROUTES.forms}/${el.id}`}>
+                  <Image
+                    src={`/Icons/edit.svg`}
+                    alt="form-icon"
+                    width={30}
+                    height={30}
+                    className="h-6 w-6 object-contain "
+                  />
+                </Link>
+              </div>
+            </Tooltip>
+            <Tooltip content="Delete" color="foreground">
+              <button
+                onClick={() => handleDeleteTestimonial(el.id)}
+                className="cursor-pointer flex-1 shrink-0"
+              >
                 <Image
-                  src={`/Icons/edit.svg`}
+                  src={`/Icons/trash.svg`}
                   alt="form-icon"
                   width={30}
                   height={30}
                   className="h-6 w-6 object-contain "
                 />
-              </Link>
-            </div>
-          </Tooltip>
-          <Tooltip content="Delete" color="foreground">
-            <div className="cursor-pointer flex-1 shrink-0">
-              <Image
-                src={`/Icons/trash.svg`}
-                alt="form-icon"
-                width={30}
-                height={30}
-                className="h-6 w-6 object-contain "
-              />
-            </div>
-          </Tooltip>
-        </div>
+              </button>
+            </Tooltip>
+          </div>
+        )}
       </div>
     </div>
   );

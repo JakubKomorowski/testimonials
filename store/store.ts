@@ -17,6 +17,11 @@ interface ProjectState {
   setProject: (project: string) => void;
 }
 
+interface TestimonialsModalState {
+  modalOpen: boolean;
+  setModalOpen: (modalOpen: boolean) => void;
+}
+
 export const useSubscriptionStore = create<SubsctiptionState>((set) => ({
   subscription: undefined,
   setSubscription: (subscription: Subscription | null) => set({ subscription }),
@@ -31,3 +36,10 @@ export const useProjectStore = create<ProjectState>((set) => ({
   project: undefined,
   setProject: (project: string) => set({ project }),
 }));
+
+export const useTestimonialsModalStore = create<TestimonialsModalState>(
+  (set) => ({
+    modalOpen: false,
+    setModalOpen: (modalOpen: boolean) => set({ modalOpen }),
+  })
+);

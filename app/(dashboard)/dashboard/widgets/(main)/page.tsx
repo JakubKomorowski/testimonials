@@ -5,7 +5,7 @@ import { useProjectStore } from "@/store/store";
 
 const Widgets = () => {
   const project = useProjectStore((state) => state.project);
-  return project ? <WidgetGroup project={project} /> : null;
+  return <WidgetGroup project={project} preview />;
 };
 
 export default Widgets;

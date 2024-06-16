@@ -1,10 +1,12 @@
 "use client";
-import { useProjectStore } from "@/store/store";
 import TestimonialsGroup from "./TestimonialsGroup";
 
-const TestimonialsGroupWrapper = () => {
-  const project = useProjectStore((state) => state.project);
-  return project ? <TestimonialsGroup /> : null;
+interface Props {
+  firstTwo?: boolean;
+}
+
+const TestimonialsGroupWrapper = ({ firstTwo }: Props) => {
+  return <TestimonialsGroup firstTwo={firstTwo} />;
 };
 
 export default TestimonialsGroupWrapper;

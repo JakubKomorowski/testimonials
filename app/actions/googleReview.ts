@@ -30,7 +30,7 @@ export async function googleReview(id: string, lang?: string) {
   );
   const task = await taskRes.json();
 
-  await new Promise((resolve) => setTimeout(resolve, 10000));
+  await new Promise((resolve) => setTimeout(resolve, 8000));
 
   const res = await fetch(
     "https://api.dataforseo.com/v3/business_data/google/reviews/task_get/" +
@@ -40,8 +40,8 @@ export async function googleReview(id: string, lang?: string) {
     .then((res) => res.json())
     .catch((error) => console.log(error));
 
-  if (res.task_error !== 0) {
-    await new Promise((resolve) => setTimeout(resolve, 10000));
+  if (res.tasks_error !== 0) {
+    await new Promise((resolve) => setTimeout(resolve, 12000));
 
     const res = await fetch(
       "https://api.dataforseo.com/v3/business_data/google/reviews/task_get/" +
