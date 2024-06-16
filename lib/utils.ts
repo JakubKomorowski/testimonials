@@ -62,10 +62,10 @@ export const firstTwoLetters = (name: string, mail: string) => {
   if (name) {
     initials = [...name.matchAll(rgx)] || [];
   }
-  const formatedInitials = (
+  const formattedInitials = (
     (initials?.shift()?.[1] || "") + (initials?.pop()?.[1] || "")
   ).toUpperCase();
-  return formatedInitials || firstTwoChars;
+  return formattedInitials || firstTwoChars;
 };
 
 export const sortByDate = (arr: DocumentData[] | undefined) => {

@@ -2,18 +2,10 @@ import { db } from "@/app/firebase";
 import { collection, deleteDoc, doc } from "firebase/firestore";
 import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  Image,
-  Tooltip,
-  Spinner,
-} from "@nextui-org/react";
+import { Image, Tooltip, Spinner } from "@nextui-org/react";
 import { DocumentData } from "firebase-admin/firestore";
 import Link from "next/link";
 import { ROUTES } from "@/routes";
-import Loading from "../../atoms/Loading";
 
 type Props = { project?: string | null; preview?: boolean };
 

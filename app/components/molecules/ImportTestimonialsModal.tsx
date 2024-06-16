@@ -29,6 +29,7 @@ import * as client from "dataforseo-client";
 import TestimonialCard from "./Testimonials/TestimonialCard";
 import { Testimonial } from "@/types/Testimonial";
 import { twitterReview } from "@/app/actions/twitterReview";
+import { trustpilotReview } from "@/app/actions/trustpilotReview";
 
 type Props = {
   isOpenModal: boolean;
@@ -49,14 +50,18 @@ const ImportTestimonialsModal = ({
   const project = useProjectStore((state) => state.project);
   const [error, setError] = useState(false);
   const [googlePlaces, setGooglePlaces] = useState<any[]>([]);
-  const [googleSelectedReviews, setGoogleSelectedReviews] = useState<
-    Testimonial[]
-  >([]);
+  const [selectedReviews, setSelectedReviews] = useState<Testimonial[]>([]);
   const [googlePlaceId, setGooglePlaceId] = useState<string>("");
-  const [googlePlaceLoading, setGooglePlaceLoading] = useState<boolean>(false);
+  const [reviewLoading, setReviewLoading] = useState<boolean>(false);
   const [googlePlaceError, setGooglePlaceError] = useState<boolean>(false);
   const [browserLang, setBrowserLang] = useState<string | undefined>();
   const [googleReviews, setGoogleReviews] = useState<
+    client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined
+  >();
+
+  const [trustpilotPlaceError, setTrustpilotPlaceError] =
+    useState<boolean>(false);
+  const [trustpilotReviews, setTrustpilotReviews] = useState<
     client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined
   >();
   const { data: session } = useSession();
@@ -66,21 +71,40 @@ const ImportTestimonialsModal = ({
   }, []);
 
   const handleFindGooglePlaces = async (id: string) => {
-    setGooglePlaceLoading(true);
+    setReviewLoading(true);
     setGoogleReviews([]);
     const result: client.IBusinessDataGoogleReviewsTaskGetResponseInfo =
       await googleReview(id, browserLang);
-
+    setSelectedReviews([]);
     setGooglePlaces([]);
     setGoogleReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
-    setGooglePlaceLoading(false);
+    setReviewLoading(false);
     setGooglePlaceError(result?.res.tasks_error !== 0 ? true : false);
   };
 
   const handleAddGoogleTestimonials = async () => {
     if (!project) return;
     const batch = writeBatch(db);
-    googleSelectedReviews.forEach((item) => {
+    selectedReviews.forEach((item) => {
+      const data = {
+        ...item,
+        createdAt: new Date(),
+        userId: session?.user.id,
+      };
+      const docRef = doc(collection(db, "projects", project, "testimonials"));
+      batch.set(docRef, data);
+      batch.update(docRef, {
+        id: docRef.id,
+      });
+    });
+    await batch.commit();
+    onClose();
+  };
+
+  const handleAddTrustpilotTestimonials = async () => {
+    if (!project) return;
+    const batch = writeBatch(db);
+    selectedReviews.forEach((item) => {
       const data = {
         ...item,
         createdAt: new Date(),
@@ -144,8 +168,22 @@ const ImportTestimonialsModal = ({
       setGooglePlaces(data.places);
     }
 
+    if (selectedSocial === "Trustpilot") {
+      setReviewLoading(true);
+      setTrustpilotReviews([]);
+      const result: client.IBusinessDataTrustpilotReviewsTaskGetResponseInfo =
+        await trustpilotReview(id);
+      setSelectedReviews([]);
+      setTrustpilotReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+      setReviewLoading(false);
+      setTrustpilotPlaceError(result?.res.tasks_error !== 0 ? true : false);
+    }
+
     reset();
   };
+
+  const twoStep =
+    selectedSocial === "Google" || selectedSocial === "Trustpilot";
 
   return (
     <Modal
@@ -197,9 +235,13 @@ const ImportTestimonialsModal = ({
                             {...register(selectedSocial)}
                           />
                         ))}
-                    {selectedSocial === "Google" && (
+                    {twoStep && (
                       <Button type="submit" color="primary">
-                        Search
+                        {selectedSocial === "Trustpilot" && reviewLoading ? (
+                          <Spinner color="current" size="sm" />
+                        ) : (
+                          "Search"
+                        )}
                       </Button>
                     )}
                   </div>
@@ -210,7 +252,7 @@ const ImportTestimonialsModal = ({
                     </p>
                   )}
                 </div>
-                {selectedSocial !== "Google" && (
+                {!twoStep && (
                   <Button type="submit" color="primary">
                     Add
                   </Button>
@@ -254,7 +296,7 @@ const ImportTestimonialsModal = ({
                         color="primary"
                         onClick={() => handleFindGooglePlaces(googlePlaceId)}
                       >
-                        {googlePlaceLoading ? (
+                        {reviewLoading ? (
                           <Spinner color="current" size="sm" />
                         ) : (
                           "Import testimonials"
@@ -284,10 +326,8 @@ const ImportTestimonialsModal = ({
                                 el={el}
                                 preview
                                 key={review?.review_id}
-                                setGoogleSelectedReviews={
-                                  setGoogleSelectedReviews
-                                }
-                                googleSelectedReviews={googleSelectedReviews}
+                                setSelectedReviews={setSelectedReviews}
+                                selectedReviews={selectedReviews}
                               />
                             );
                           })
@@ -305,6 +345,52 @@ const ImportTestimonialsModal = ({
                       )}
                     </div>
                   </>
+                )}
+
+                {selectedSocial === "Trustpilot" && (
+                  <div className="flex flex-col gap-4 pb-4">
+                    {trustpilotReviews && trustpilotReviews?.length !== 0 && (
+                      <p className="">Select testimonials to import:</p>
+                    )}
+                    {trustpilotReviews
+                      ? trustpilotReviews?.map((review) => {
+                          const el = {
+                            testimonial: review?.review_text,
+                            name: review?.user_profile.name,
+                            rating: review?.rating.value,
+                            id: review?.url.split("/").slice(-1)[0],
+                            photo: {
+                              downloadUrl: review?.user_profile.image_url,
+                            },
+                            date: {
+                              seconds: Date.parse(review?.timestamp) / 1000,
+                              nanoseconds: 194000000,
+                            },
+                            source: "trustpilot",
+                          };
+                          return (
+                            <TestimonialCard
+                              el={el}
+                              preview
+                              key={review?.url}
+                              setSelectedReviews={setSelectedReviews}
+                              selectedReviews={selectedReviews}
+                            />
+                          );
+                        })
+                      : trustpilotPlaceError && (
+                          <p>Something went wrong, please try again later</p>
+                        )}
+                    {trustpilotReviews && trustpilotReviews?.length !== 0 && (
+                      <Button
+                        type="button"
+                        color="primary"
+                        onClick={() => handleAddTrustpilotTestimonials()}
+                      >
+                        Add
+                      </Button>
+                    )}
+                  </div>
                 )}
               </form>
             </ModalBody>

@@ -56,7 +56,7 @@ const TestimonialsGroup = ({ firstTwo }: Props) => {
         )}
       </div>
       {!loadingState ? (
-        <div className="flex gap-6 flex-col  2xl:flex-row flex-wrap ">
+        <div className="flex gap-6 flex-col  xl:flex-row flex-wrap ">
           {formattedTestimonials?.map((el: Testimonial) => {
             return <TestimonialCard el={el} key={el.id} />;
           })}

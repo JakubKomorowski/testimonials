@@ -13,28 +13,26 @@ import { db } from "@/app/firebase";
 
 type Props = {
   el: Testimonial;
-  googleSelectedReviews?: Testimonial[];
-  setGoogleSelectedReviews?: Dispatch<SetStateAction<Testimonial[]>>;
+  selectedReviews?: Testimonial[];
+  setSelectedReviews?: Dispatch<SetStateAction<Testimonial[]>>;
   preview?: boolean;
 };
 
 const TestimonialCard = ({
   el,
-  googleSelectedReviews,
-  setGoogleSelectedReviews,
+  selectedReviews,
+  setSelectedReviews,
   preview,
 }: Props) => {
   const time = dateParser(el?.date?.seconds || el?.createdAt?.seconds || 0);
   const project = useProjectStore((state) => state.project);
 
   const handleSelect = (id: string) => {
-    if (setGoogleSelectedReviews) {
-      if (googleSelectedReviews?.find((item) => item.id === id)) {
-        setGoogleSelectedReviews(
-          googleSelectedReviews?.filter((item) => item.id !== id)
-        );
+    if (setSelectedReviews) {
+      if (selectedReviews?.find((item) => item.id === id)) {
+        setSelectedReviews(selectedReviews?.filter((item) => item.id !== id));
       } else {
-        setGoogleSelectedReviews([...(googleSelectedReviews || []), el]);
+        setSelectedReviews([...(selectedReviews || []), el]);
       }
     }
   };
@@ -46,7 +44,7 @@ const TestimonialCard = ({
   };
 
   const isSelected = (id: string) => {
-    const isSelected = googleSelectedReviews?.find((item) => item.id === id);
+    const isSelected = selectedReviews?.find((item) => item.id === id);
     return !!isSelected;
   };
   const previewClassName = preview ? "cursor-pointer hover:bg-container2" : "";
