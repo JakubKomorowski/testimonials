@@ -82,3 +82,16 @@ export const dateParser = (date: number) => {
   } as const;
   return new Date(date * 1000).toLocaleDateString("en-US", options);
 };
+
+export function replaceCharacters(
+  str: string,
+  chars: string,
+  conversionFunc: (c: String) => string
+) {
+  return [...str]
+    .reduce((p: string[], c) => {
+      p.push(chars.indexOf(c) === -1 ? c : conversionFunc(c));
+      return p;
+    }, [])
+    .join("");
+}

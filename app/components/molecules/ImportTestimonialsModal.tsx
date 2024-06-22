@@ -30,6 +30,9 @@ import TestimonialCard from "./Testimonials/TestimonialCard";
 import { Testimonial } from "@/types/Testimonial";
 import { twitterReview } from "@/app/actions/twitterReview";
 import { trustpilotReview } from "@/app/actions/trustpilotReview";
+import { tripadvisorReview } from "@/app/actions/tripadvisorReview";
+import { amazonReview } from "@/app/actions/amazonReview";
+import ImportedTestimonialsGroup from "../organisms/Testimonials/ImportedTestimonialsGroup";
 
 type Props = {
   isOpenModal: boolean;
@@ -53,17 +56,11 @@ const ImportTestimonialsModal = ({
   const [selectedReviews, setSelectedReviews] = useState<Testimonial[]>([]);
   const [googlePlaceId, setGooglePlaceId] = useState<string>("");
   const [reviewLoading, setReviewLoading] = useState<boolean>(false);
-  const [googlePlaceError, setGooglePlaceError] = useState<boolean>(false);
   const [browserLang, setBrowserLang] = useState<string | undefined>();
-  const [googleReviews, setGoogleReviews] = useState<
+  const [reviews, setReviews] = useState<
     client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined
   >();
-
-  const [trustpilotPlaceError, setTrustpilotPlaceError] =
-    useState<boolean>(false);
-  const [trustpilotReviews, setTrustpilotReviews] = useState<
-    client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined
-  >();
+  const [placeError, setPlaceError] = useState<boolean>(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -71,18 +68,19 @@ const ImportTestimonialsModal = ({
   }, []);
 
   const handleFindGooglePlaces = async (id: string) => {
+    setPlaceError(false);
     setReviewLoading(true);
-    setGoogleReviews([]);
+    setReviews([]);
     const result: client.IBusinessDataGoogleReviewsTaskGetResponseInfo =
       await googleReview(id, browserLang);
     setSelectedReviews([]);
     setGooglePlaces([]);
-    setGoogleReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+    setReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
     setReviewLoading(false);
-    setGooglePlaceError(result?.res.tasks_error !== 0 ? true : false);
+    setPlaceError(result?.res.tasks_error !== 0 ? true : false);
   };
 
-  const handleAddGoogleTestimonials = async () => {
+  const handleAddTestimonials = async () => {
     if (!project) return;
     const batch = writeBatch(db);
     selectedReviews.forEach((item) => {
@@ -98,25 +96,7 @@ const ImportTestimonialsModal = ({
       });
     });
     await batch.commit();
-    onClose();
-  };
-
-  const handleAddTrustpilotTestimonials = async () => {
-    if (!project) return;
-    const batch = writeBatch(db);
-    selectedReviews.forEach((item) => {
-      const data = {
-        ...item,
-        createdAt: new Date(),
-        userId: session?.user.id,
-      };
-      const docRef = doc(collection(db, "projects", project, "testimonials"));
-      batch.set(docRef, data);
-      batch.update(docRef, {
-        id: docRef.id,
-      });
-    });
-    await batch.commit();
+    setReviews([]);
     onClose();
   };
 
@@ -162,35 +142,61 @@ const ImportTestimonialsModal = ({
           },
         }
       );
-
       const data = await res.json();
-
       setGooglePlaces(data.places);
     }
 
     if (selectedSocial === "Trustpilot") {
+      setPlaceError(false);
       setReviewLoading(true);
-      setTrustpilotReviews([]);
+      setReviews([]);
       const result: client.IBusinessDataTrustpilotReviewsTaskGetResponseInfo =
         await trustpilotReview(id);
       setSelectedReviews([]);
-      setTrustpilotReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+      setReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+      setPlaceError(result?.res.tasks_error !== 0 ? true : false);
       setReviewLoading(false);
-      setTrustpilotPlaceError(result?.res.tasks_error !== 0 ? true : false);
+    }
+
+    if (selectedSocial === "Tripadvisor") {
+      setPlaceError(false);
+      setReviewLoading(true);
+      setReviews([]);
+      const result: client.IBusinessDataTripadvisorReviewsTaskGetResponseInfo =
+        await tripadvisorReview(id);
+      setSelectedReviews([]);
+      setReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+      setPlaceError(result?.res.tasks_error !== 0 ? true : false);
+      setReviewLoading(false);
+    }
+
+    if (selectedSocial === "Amazon") {
+      setPlaceError(false);
+      setReviewLoading(true);
+      setReviews([]);
+      const result = await amazonReview(inputText);
+      setSelectedReviews([]);
+      setReviews(result?.res.data[0]);
+      setPlaceError(result?.res.status !== "Success" ? true : false);
+      setReviewLoading(false);
     }
 
     reset();
   };
 
   const twoStep =
-    selectedSocial === "Google" || selectedSocial === "Trustpilot";
+    selectedSocial === "Google" ||
+    selectedSocial === "Trustpilot" ||
+    selectedSocial === "Tripadvisor" ||
+    selectedSocial === "Amazon";
 
   return (
     <Modal
       isOpen={isOpenModal}
       onOpenChange={onOpenChange}
-      size="4xl"
+      size="5xl"
       scrollBehavior="inside"
+      className="pb-0"
     >
       <ModalContent>
         {(onClose) => (
@@ -198,7 +204,7 @@ const ImportTestimonialsModal = ({
             <ModalHeader className="flex flex-col gap-1">
               Import testimonials
             </ModalHeader>
-            <ModalBody className="flex flex-row pb-8">
+            <ModalBody className="flex flex-row pb-0">
               <div className="flex border-r-1 border-gray-300 pr-4 w-fit">
                 <ul>
                   {socials.map((item) => {
@@ -237,7 +243,10 @@ const ImportTestimonialsModal = ({
                         ))}
                     {twoStep && (
                       <Button type="submit" color="primary">
-                        {selectedSocial === "Trustpilot" && reviewLoading ? (
+                        {(selectedSocial === "Trustpilot" ||
+                          selectedSocial === "Amazon" ||
+                          selectedSocial === "Tripadvisor") &&
+                        reviewLoading ? (
                           <Spinner color="current" size="sm" />
                         ) : (
                           "Search"
@@ -304,11 +313,11 @@ const ImportTestimonialsModal = ({
                       </Button>
                     )}
                     <div className="flex flex-col gap-4 pb-4">
-                      {googleReviews && googleReviews?.length !== 0 && (
+                      {reviews && reviews?.length !== 0 && (
                         <p className="">Select testimonials to import:</p>
                       )}
-                      {googleReviews
-                        ? googleReviews?.map((review) => {
+                      {reviews
+                        ? reviews?.map((review) => {
                             const el = {
                               testimonial: review?.review_text,
                               name: review?.profile_name,
@@ -331,66 +340,35 @@ const ImportTestimonialsModal = ({
                               />
                             );
                           })
-                        : googlePlaceError && (
+                        : placeError && (
                             <p>Something went wrong, please try again later</p>
                           )}
-                      {googleReviews && googleReviews?.length !== 0 && (
+                      {reviews && reviews?.length !== 0 && (
                         <Button
+                          className="w-full"
                           type="button"
                           color="primary"
-                          onClick={() => handleAddGoogleTestimonials()}
+                          isDisabled={selectedReviews.length === 0}
+                          onClick={() => handleAddTestimonials()}
                         >
-                          Add
+                          Import {selectedReviews.length}{" "}
+                          {selectedReviews.length === 1
+                            ? "testimonial"
+                            : "testimonials"}
                         </Button>
                       )}
                     </div>
                   </>
                 )}
-
-                {selectedSocial === "Trustpilot" && (
-                  <div className="flex flex-col gap-4 pb-4">
-                    {trustpilotReviews && trustpilotReviews?.length !== 0 && (
-                      <p className="">Select testimonials to import:</p>
-                    )}
-                    {trustpilotReviews
-                      ? trustpilotReviews?.map((review) => {
-                          const el = {
-                            testimonial: review?.review_text,
-                            name: review?.user_profile.name,
-                            rating: review?.rating.value,
-                            id: review?.url.split("/").slice(-1)[0],
-                            photo: {
-                              downloadUrl: review?.user_profile.image_url,
-                            },
-                            date: {
-                              seconds: Date.parse(review?.timestamp) / 1000,
-                              nanoseconds: 194000000,
-                            },
-                            source: "trustpilot",
-                          };
-                          return (
-                            <TestimonialCard
-                              el={el}
-                              preview
-                              key={review?.url}
-                              setSelectedReviews={setSelectedReviews}
-                              selectedReviews={selectedReviews}
-                            />
-                          );
-                        })
-                      : trustpilotPlaceError && (
-                          <p>Something went wrong, please try again later</p>
-                        )}
-                    {trustpilotReviews && trustpilotReviews?.length !== 0 && (
-                      <Button
-                        type="button"
-                        color="primary"
-                        onClick={() => handleAddTrustpilotTestimonials()}
-                      >
-                        Add
-                      </Button>
-                    )}
-                  </div>
+                {selectedSocial !== "Google" && (
+                  <ImportedTestimonialsGroup
+                    reviews={reviews}
+                    setSelectedReviews={setSelectedReviews}
+                    selectedReviews={selectedReviews}
+                    placeError={placeError}
+                    handleAddTestimonials={handleAddTestimonials}
+                    source={selectedSocial}
+                  />
                 )}
               </form>
             </ModalBody>
