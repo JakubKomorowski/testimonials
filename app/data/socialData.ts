@@ -1,8 +1,10 @@
 import {
   FaGoogle,
   FaTripadvisor,
-  FaRedditAlien,
   FaAmazon,
+  FaFacebook,
+  FaGooglePlay,
+  FaLinkedin,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiTrustpilot } from "react-icons/si";
@@ -19,12 +21,6 @@ export const socials = [
     title: "Twitter",
     label: "Tweet URL",
     exampleUrl: "https://x.com/username/status/1000819959999999990",
-  },
-  {
-    icon: FaRedditAlien,
-    title: "Reddit",
-    label: "Reddit URL",
-    exampleUrl: "https://www.reddit.com/r/Science/comments/thszdm/simple-post/",
   },
   {
     icon: SiTrustpilot,
@@ -44,5 +40,11 @@ export const socials = [
     title: "Amazon",
     label: "Amazon URL",
     exampleUrl: "https://www.amazon.com/product/dp/B09HGDP9J6",
+  },
+  {
+    icon: FaFacebook,
+    title: "Facebook",
+    label: "Facebook URL",
+    exampleUrl: "https://www.facebook.com/your_business_name",
   },
 ];

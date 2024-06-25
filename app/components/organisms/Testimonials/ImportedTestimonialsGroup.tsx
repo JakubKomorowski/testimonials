@@ -5,7 +5,7 @@ import { Button } from "@nextui-org/react";
 import TestimonialCard from "../../molecules/Testimonials/TestimonialCard";
 
 interface Props {
-  reviews: client.BaseBusinessDataSerpElementItem[] | undefined[] | undefined;
+  reviews: client.IBaseBusinessDataSerpElementItem[] | undefined[] | undefined;
   selectedReviews?: Testimonial[];
   setSelectedReviews?: Dispatch<SetStateAction<Testimonial[]>>;
   placeError?: boolean;
@@ -26,51 +26,78 @@ const ImportedTestimonialsGroup = ({
       {reviews && reviews?.length !== 0 && (
         <p className="">Select testimonials to import:</p>
       )}
-      {reviews
-        ? reviews?.map((review) => {
-            const el = {
-              testimonial: review?.review_text,
-              name: review?.user_profile?.name,
-              rating: review?.rating?.value || "0",
-              id: review?.url?.split("/").slice(-1)[0],
-              TestimonialId: review?.url?.split("/").slice(-1)[0],
-              photo: {
-                downloadUrl: review?.user_profile?.image_url,
-              },
-              date: {
-                seconds: Date.parse(review?.timestamp) / 1000,
-                nanoseconds: 194000000,
-              },
-              source: source,
-            };
-            const amazonReview = {
-              testimonial: review?.body,
-              name: review?.author_title,
-              rating: review?.rating,
-              id: review?.id,
-              testimonialId: review?.id,
-              photo: {
-                downloadUrl: review?.author_profile_img?.includes("default")
-                  ? ""
-                  : review?.author_profile_img,
-              },
-              date: {
-                seconds: review?.review_timestamp,
-                nanoseconds: 194000000,
-              },
-              source: source,
-            };
-            return (
-              <TestimonialCard
-                el={source === "Amazon" ? amazonReview : el}
-                preview
-                key={review?.url}
-                setSelectedReviews={setSelectedReviews}
-                selectedReviews={selectedReviews}
-              />
-            );
-          })
-        : placeError && <p>Something went wrong, please try again later</p>}
+      {!placeError ? (
+        reviews?.map((review) => {
+          const el = {
+            testimonial: review?.review_text,
+            name: review?.user_profile?.name || review?.profile_name,
+            rating: review?.rating?.value || "0",
+            id: review?.url?.split("/").slice(-1)[0] || review?.review_id,
+            TestimonialId:
+              review?.url?.split("/").slice(-1)[0] || review?.review_id,
+            photo: {
+              downloadUrl:
+                review?.user_profile?.image_url || review?.profile_image_url,
+            },
+            date: {
+              seconds: Date.parse(review?.timestamp) / 1000,
+              nanoseconds: 194000000,
+            },
+            source: source,
+          };
+          const amazonReview = {
+            testimonial: review?.body,
+            name: review?.author_title,
+            rating: review?.rating,
+            id: review?.id,
+            testimonialId: review?.id,
+            photo: {
+              downloadUrl: review?.author_profile_img?.includes("default")
+                ? ""
+                : review?.author_profile_img,
+            },
+            date: {
+              seconds: review?.review_timestamp,
+              nanoseconds: 194000000,
+            },
+            source: source,
+          };
+
+          const facebookReview = {
+            testimonial: review?.review_text,
+            name: review?.author_title,
+            rating: 0,
+            id: review?.review_id,
+            testimonialId: review?.review_id,
+            photo: {
+              downloadUrl: review?.author_image,
+            },
+            date: {
+              seconds: review?.review_timestamp,
+              nanoseconds: 194000000,
+            },
+            source: source,
+          };
+
+          return (
+            <TestimonialCard
+              el={
+                source === "Amazon"
+                  ? amazonReview
+                  : source === "Facebook"
+                  ? facebookReview
+                  : el
+              }
+              preview
+              key={review?.url || review?.review_id || review?.id}
+              setSelectedReviews={setSelectedReviews}
+              selectedReviews={selectedReviews}
+            />
+          );
+        })
+      ) : (
+        <p>Something went wrong, please try again later</p>
+      )}
       {reviews && reviews?.length !== 0 && (
         <div className="sticky bottom-0 bg-white py-4">
           <Button

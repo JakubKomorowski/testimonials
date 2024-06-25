@@ -26,6 +26,7 @@ const nextConfig = {
       { protocol: "https", hostname: "user-images.trustpilot.com" },
       { protocol: "https", hostname: "media-cdn.tripadvisor.com" },
       { protocol: "https", hostname: "images-na.ssl-images-amazon.com" },
+      { protocol: "https", hostname: "**" },
     ],
   },
 };
