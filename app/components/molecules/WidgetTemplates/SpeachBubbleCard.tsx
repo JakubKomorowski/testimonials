@@ -13,6 +13,8 @@ const SpeachBubbleCard = ({ children, rating, preview }: Props) => {
   const SpeachBubbleCardClass = preview
     ? "max-w-[300px] md:max-w-[400px] lg:max-w-[500px] xl:max-w-[600px]"
     : "max-w-[300px] sm:max-w-[400px] md:max-w-[500px] lg:max-w-[600px]";
+
+  const withRatingClass = rating ? "pb-16" : "pb-8";
   return (
     <div>
       <div
@@ -25,14 +27,16 @@ const SpeachBubbleCard = ({ children, rating, preview }: Props) => {
         <div className="absolute left-8 top-8 hidden md:block">
           <QuoteIcon className="text-black w-12 h-8" opacity={0.15} />
         </div>
-        <div className="p-8 pb-16">
+        <div className={classNames("p-8", withRatingClass)}>
           <div className="md:border-l-2 md:border-gray-200 md:pl-8 md:ml-20">
             {children}
           </div>
         </div>
-        <div className="absolute right-12 bottom-7">
-          <RatingComponent rating={rating} size={15} readonly={true} />
-        </div>
+        {rating !== 0 && (
+          <div className="absolute right-12 bottom-7">
+            <RatingComponent rating={rating} size={15} readonly={true} />
+          </div>
+        )}
       </div>
     </div>
   );

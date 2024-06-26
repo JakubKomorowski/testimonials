@@ -49,7 +49,21 @@ export async function trustpilotReview(domain: string) {
       .then((res) => res.json())
       .catch((error) => console.log(error));
 
-    return { res };
+    if (res.tasks_error !== 0) {
+      await new Promise((resolve) => setTimeout(resolve, 20000));
+
+      const res = await fetch(
+        "https://api.dataforseo.com/v3/business_data/trustpilot/reviews/task_get/" +
+          task.tasks[0].id,
+        options
+      )
+        .then((res) => res.json())
+        .catch((error) => console.log(error));
+
+      return { res };
+    } else {
+      return { res };
+    }
   } else {
     return { res };
   }

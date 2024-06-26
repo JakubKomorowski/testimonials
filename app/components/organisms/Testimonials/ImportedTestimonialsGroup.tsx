@@ -79,6 +79,39 @@ const ImportedTestimonialsGroup = ({
             source: source,
           };
 
+          const googlePlayReview = {
+            testimonial: review?.review_text,
+            name: review?.author_title,
+            rating: review?.review_rating,
+            id: review?.review_id,
+            testimonialId: review?.review_id,
+            photo: {
+              downloadUrl: review?.author_image || "",
+            },
+            date: {
+              seconds: review?.review_timestamp,
+              nanoseconds: 194000000,
+            },
+            source: source,
+          };
+
+          const appStoreReview = {
+            testimonial: review?.review_text,
+            title: review?.review_title,
+            name: review?.author_title,
+            rating: Number(review?.review_rating),
+            id: review?.review_timestamp,
+            testimonialId: review?.review_timestamp,
+            photo: {
+              downloadUrl: review?.author_image || "",
+            },
+            date: {
+              seconds: review?.review_timestamp,
+              nanoseconds: 194000000,
+            },
+            source: source,
+          };
+
           return (
             <TestimonialCard
               el={
@@ -86,6 +119,10 @@ const ImportedTestimonialsGroup = ({
                   ? amazonReview
                   : source === "Facebook"
                   ? facebookReview
+                  : source === "Google Play"
+                  ? googlePlayReview
+                  : source === "App Store"
+                  ? appStoreReview
                   : el
               }
               preview

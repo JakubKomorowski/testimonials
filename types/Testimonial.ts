@@ -8,6 +8,7 @@ interface ITimestamp {
 }
 export interface Testimonial {
   testimonial: string;
+  title?: string;
   name: string;
   email?: string;
   website?: string;

@@ -5,6 +5,7 @@ import {
   FaFacebook,
   FaGooglePlay,
   FaLinkedin,
+  FaAppStoreIos,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiTrustpilot } from "react-icons/si";
@@ -26,7 +27,7 @@ export const socials = [
     icon: SiTrustpilot,
     title: "Trustpilot",
     label: "Trustpilot URL",
-    exampleUrl: "https://www.reddit.com/r/Science/comments/thszdm/simple-post/",
+    exampleUrl: "https://www.trustpilot.com/review/www.thepearlsource.com",
   },
   {
     icon: FaTripadvisor,
@@ -47,4 +48,23 @@ export const socials = [
     label: "Facebook URL",
     exampleUrl: "https://www.facebook.com/your_business_name",
   },
+  {
+    icon: FaGooglePlay,
+    title: "Google Play",
+    label: "Google Play URL",
+    exampleUrl:
+      "https://play.google.com/store/apps/details?id=com.facebook.katana",
+  },
+  {
+    icon: FaAppStoreIos,
+    title: "App Store",
+    label: "App Store URL",
+    exampleUrl: "https://apps.apple.com/us/app/telegram-messenger/id686449807",
+  },
+  // {
+  //   icon: FaLinkedin,
+  //   title: "Linkedin",
+  //   label: "Linkedin URL",
+  //   exampleUrl: "https://www.linkedin.com/company/google/",
+  // },
 ];

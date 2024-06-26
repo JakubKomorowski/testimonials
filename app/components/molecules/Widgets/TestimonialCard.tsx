@@ -30,7 +30,7 @@ const TestimonialCard = ({
   testimonials,
   setTestimonials,
 }: Props) => {
-  const time = dateParser(el?.createdAt?.seconds);
+  const time = dateParser(el?.date?.seconds || el?.createdAt?.seconds || 0);
   const handleAddTestimonial = (id?: string) => {
     if (selectedTestimonials.find((item) => item.id === id)) {
       setChoosenTestimonials([...selectedTestimonials]);
@@ -70,8 +70,11 @@ const TestimonialCard = ({
           <p className="">{el.name}</p>
           <p className="text-sm text-gray-500">Created: {time}</p>
           <div className="mb-2">
-            <RatingComponent rating={el.rating} size={15} readonly={true} />
+            {el.rating !== 0 && (
+              <RatingComponent rating={el.rating} size={15} readonly={true} />
+            )}
           </div>
+          <p className="font-semibold">{el.title}</p>
           <p className="">{el.testimonial}</p>
         </div>
         <div className=" ml-auto shrink-0">

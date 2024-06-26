@@ -91,8 +91,12 @@ const TestimonialCard = ({
           <p className="">{el.name}</p>
           <p className="text-sm text-gray-500 ">Created: {time}</p>
           <div className="mb-2">
-            <RatingComponent rating={el.rating} size={15} readonly={true} />
+            {el.rating !== 0 && (
+              <RatingComponent rating={el.rating} size={15} readonly={true} />
+            )}
           </div>
+
+          <p className="font-semibold">{el.title}</p>
           <p>{el.testimonial}</p>
         </div>
         {!preview && (

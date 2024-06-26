@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Swiper as SwiperComp, SwiperSlide } from "swiper/react";
 import type { Swiper } from "swiper";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/navigation";
@@ -12,6 +11,9 @@ import { Navigation, Controller } from "swiper/modules";
 import SpeachBubbleCard from "../../molecules/WidgetTemplates/SpeachBubbleCard";
 import ArrowButton from "../../atoms/ArrowButton";
 import { Testimonial } from "@/types/Testimonial";
+import { firstTwoLetters } from "@/lib/utils";
+import { Avatar } from "@nextui-org/react";
+// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Props {
   data?: Testimonial[];
@@ -56,7 +58,10 @@ export default function SpeachBubble({ data, preview }: Props) {
             autoHeight={true}
           >
             {data?.map((el, i) => (
-              <SwiperSlide key={i}>{el.testimonial}</SwiperSlide>
+              <SwiperSlide key={i}>
+                <p className="font-semibold">{el.title}</p>
+                <p>{el.testimonial}</p>
+              </SwiperSlide>
             ))}
           </SwiperComp>
         </SpeachBubbleCard>
@@ -79,14 +84,24 @@ export default function SpeachBubble({ data, preview }: Props) {
       >
         {data?.map((el, i) => (
           <SwiperSlide key={i} className="swiper-slide-auto">
-            <Avatar className="w-full h-fit mb-3 ">
+            {/* <Avatar className="w-full h-full mb-3 ">
               <AvatarImage
                 src={el?.photo?.downloadUrl}
                 alt={el.photo?.name}
-                className="object-cover"
+                className="object-cover "
               />
-              <AvatarFallback>AG</AvatarFallback>
-            </Avatar>
+              <AvatarFallback className="h-full">
+                {firstTwoLetters(el.name)}
+              </AvatarFallback>
+            </Avatar> */}
+            <Avatar
+              src={el?.photo?.downloadUrl}
+              // className=" w-full h-full mb-3 bg-transparent"
+              classNames={{
+                base: "w-full h-full mb-3 bg-transparent",
+                icon: "bg-gray-300",
+              }}
+            />
             <p className="text-gray-500  text-center w-[200px] translate-x-[-58px]">
               {el.name}
             </p>

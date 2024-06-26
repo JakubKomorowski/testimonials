@@ -23,16 +23,18 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useSession } from "next-auth/react";
-import { googleReview } from "@/app/actions/googleReview";
-import { classNames } from "@/lib/utils";
+import { googleReview } from "@/app/actions/reviews/googleReview";
+import { classNames, validURL } from "@/lib/utils";
 import * as client from "dataforseo-client";
 import { Testimonial } from "@/types/Testimonial";
-import { twitterReview } from "@/app/actions/twitterReview";
-import { trustpilotReview } from "@/app/actions/trustpilotReview";
-import { tripadvisorReview } from "@/app/actions/tripadvisorReview";
-import { amazonReview } from "@/app/actions/amazonReview";
+import { twitterReview } from "@/app/actions/reviews/twitterReview";
+import { trustpilotReview } from "@/app/actions/reviews/trustpilotReview";
+import { tripadvisorReview } from "@/app/actions/reviews/tripadvisorReview";
+import { amazonReview } from "@/app/actions/reviews/amazonReview";
 import ImportedTestimonialsGroup from "../organisms/Testimonials/ImportedTestimonialsGroup";
-import { facebookReview } from "@/app/actions/facebookReview";
+import { facebookReview } from "@/app/actions/reviews/facebookReview";
+import { googlePlayReview } from "@/app/actions/reviews/googlePlayReview";
+import { appStoreReview } from "@/app/actions/reviews/appStoreReview";
 
 type Props = {
   isOpenModal: boolean;
@@ -72,15 +74,27 @@ const ImportTestimonialsModal = ({
   const [facebookReviews, setFacebookReviews] = useState<
     client.IBaseBusinessDataSerpElementItem[] | undefined[] | undefined
   >();
+  const [googlePlayReviews, setGooglePlayReviews] = useState<
+    client.IBaseBusinessDataSerpElementItem[] | undefined[] | undefined
+  >();
+  const [appStoreReviews, setAppStoreReviews] = useState<
+    client.IBaseBusinessDataSerpElementItem[] | undefined[] | undefined
+  >();
   const [placeError, setPlaceError] = useState<boolean>(false);
   const { data: session } = useSession();
 
   useEffect(() => {
     setBrowserLang(navigator?.language);
   }, []);
+
   useEffect(() => {
     setSelectedSocial("");
+    setError(false);
   }, [onClose]);
+
+  useEffect(() => {
+    setError(false);
+  }, [selectedSocial]);
 
   const handleFindGooglePlaces = async (id: string) => {
     setPlaceError(false);
@@ -116,6 +130,8 @@ const ImportTestimonialsModal = ({
     setTrustpilotReviews([]);
     setAmazonReviews([]);
     setFacebookReviews([]);
+    setGooglePlayReviews([]);
+    setAppStoreReviews([]);
     onClose();
   };
 
@@ -123,7 +139,10 @@ const ImportTestimonialsModal = ({
     if (!project) return;
     const testimonialRef = collection(db, "projects", project, "testimonials");
     const inputText = data?.[selectedSocial];
-    const id = inputText.split("/").slice(-1)[0];
+    const id =
+      typeof inputText.split("/").slice(-1)[0] === "string"
+        ? inputText.split("/").slice(-1)[0]
+        : inputText.split("/").slice(-2, -1)[0];
 
     if (selectedSocial === "Twitter") {
       const data = await twitterReview(id);
@@ -167,59 +186,116 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Trustpilot") {
       setPlaceError(false);
-      setReviewLoading(true);
-      setTrustpilotReviews([]);
-      const result: client.IBusinessDataTrustpilotReviewsTaskGetResponseInfo =
-        await trustpilotReview(id);
-      setSelectedReviews([]);
-      setTrustpilotReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
-      setPlaceError(result?.res.tasks_error !== 0 ? true : false);
-      setReviewLoading(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setTrustpilotReviews([]);
+        const result: client.IBusinessDataTrustpilotReviewsTaskGetResponseInfo =
+          await trustpilotReview(id);
+        setSelectedReviews([]);
+        setTrustpilotReviews(result?.res?.tasks?.[0]?.result?.[0]?.items);
+        setPlaceError(result?.res.tasks_error !== 0 ? true : false);
+        setReviewLoading(false);
+      }
     }
 
     if (selectedSocial === "Tripadvisor") {
       setPlaceError(false);
-      setReviewLoading(true);
-      setTripadvisorReviews([]);
-      const result: client.IBusinessDataTripadvisorReviewsTaskGetResponseInfo =
-        await tripadvisorReview(id);
-      setSelectedReviews([]);
-      setTripadvisorReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
-      setPlaceError(result?.res.tasks_error !== 0 ? true : false);
-      setReviewLoading(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setTripadvisorReviews([]);
+        const result: client.IBusinessDataTripadvisorReviewsTaskGetResponseInfo =
+          await tripadvisorReview(id);
+        setSelectedReviews([]);
+        setTripadvisorReviews(result?.res.tasks?.[0]?.result?.[0]?.items);
+        setPlaceError(result?.res.tasks_error !== 0 ? true : false);
+        setReviewLoading(false);
+      }
     }
 
     if (selectedSocial === "Amazon") {
       setPlaceError(false);
-      setReviewLoading(true);
-      setAmazonReviews([]);
-      const result = await amazonReview(inputText);
-      setSelectedReviews([]);
-      setAmazonReviews(result?.res?.data[0]);
-      setPlaceError(
-        result?.res?.status !== "Success" || result?.res?.error === true
-          ? true
-          : false
-      );
-      setReviewLoading(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setAmazonReviews([]);
+        const result = await amazonReview(inputText);
+        setSelectedReviews([]);
+        setAmazonReviews(result?.res?.data[0]);
+        setPlaceError(
+          result?.res?.status !== "Success" || result?.res?.error === true
+            ? true
+            : false
+        );
+        setReviewLoading(false);
+      }
     }
 
     if (selectedSocial === "Facebook") {
       setPlaceError(false);
-      setReviewLoading(true);
-      setFacebookReviews([]);
-      const result = await facebookReview(inputText);
-      console.log(result);
-      setSelectedReviews([]);
-      setFacebookReviews(result?.res?.data[0]);
-      setPlaceError(
-        result?.res?.status !== "Success" ||
-          result?.res?.error === true ||
-          result?.res?.data[0][0].review_id === "__NO_REVIEWS_FOUND__"
-          ? true
-          : false
-      );
-      setReviewLoading(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setFacebookReviews([]);
+        const result = await facebookReview(inputText);
+        setSelectedReviews([]);
+        setFacebookReviews(result?.res?.data[0]);
+        setPlaceError(
+          result?.res?.status !== "Success" ||
+            result?.res?.error === true ||
+            result?.res?.data[0][0].review_id === "__NO_REVIEWS_FOUND__"
+            ? true
+            : false
+        );
+        setReviewLoading(false);
+      }
+    }
+
+    if (selectedSocial === "Google Play") {
+      setPlaceError(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setGooglePlayReviews([]);
+        const result = await googlePlayReview(inputText, browserLang);
+        setSelectedReviews([]);
+        setGooglePlayReviews(result?.res?.data[0]);
+        setPlaceError(
+          result?.res?.status !== "Success" ||
+            result?.res?.error === true ||
+            result?.res?.data[0][0].review_id === "__NO_REVIEWS_FOUND__"
+            ? true
+            : false
+        );
+        setReviewLoading(false);
+      }
+    }
+
+    if (selectedSocial === "App Store") {
+      setPlaceError(false);
+      setError(!validURL(inputText));
+
+      if (validURL(inputText)) {
+        setReviewLoading(true);
+        setAppStoreReviews([]);
+        const result = await appStoreReview(inputText);
+        setSelectedReviews([]);
+        setAppStoreReviews(result?.res?.data[0]);
+        setPlaceError(
+          result?.res?.status !== "Success" ||
+            result?.res?.error === true ||
+            result?.res?.data[0][0].review_id === "__NO_REVIEWS_FOUND__"
+            ? true
+            : false
+        );
+        setReviewLoading(false);
+      }
     }
 
     reset();
@@ -235,7 +311,7 @@ const ImportTestimonialsModal = ({
       onOpenChange={onOpenChange}
       size="5xl"
       scrollBehavior="inside"
-      className="pb-0"
+      className="pb-4"
     >
       <ModalContent>
         {(onClose) => (
@@ -392,6 +468,28 @@ const ImportTestimonialsModal = ({
                 {selectedSocial === "Facebook" && (
                   <ImportedTestimonialsGroup
                     reviews={facebookReviews}
+                    setSelectedReviews={setSelectedReviews}
+                    selectedReviews={selectedReviews}
+                    placeError={placeError}
+                    handleAddTestimonials={handleAddTestimonials}
+                    source={selectedSocial}
+                  />
+                )}
+
+                {selectedSocial === "Google Play" && (
+                  <ImportedTestimonialsGroup
+                    reviews={googlePlayReviews}
+                    setSelectedReviews={setSelectedReviews}
+                    selectedReviews={selectedReviews}
+                    placeError={placeError}
+                    handleAddTestimonials={handleAddTestimonials}
+                    source={selectedSocial}
+                  />
+                )}
+
+                {selectedSocial === "App Store" && (
+                  <ImportedTestimonialsGroup
+                    reviews={appStoreReviews}
                     setSelectedReviews={setSelectedReviews}
                     selectedReviews={selectedReviews}
                     placeError={placeError}

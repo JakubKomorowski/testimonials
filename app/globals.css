@@ -90,7 +90,8 @@
   .thumb-slider {
     width: 260px;
     min-height: 140px !important;
-    -webkit-mask: linear-gradient(90deg, #0000, #000 5% 95%, #0000);
+    /* -webkit-mask: linear-gradient(90deg, #0000, #000 5% 95%, #0000); */
+
 
   }
   .thumb-slider .swiper-wrapper {
@@ -99,20 +100,55 @@
   
   .thumb-slider .swiper-slide-auto {
     width: 70px;
+    height: 70px;
     font-size: 0rem;
     margin-top: 5px;
     transition: all 0.2s;
+    span {
+      font-size: 1rem;
+  width: 70px;
+  justify-content: center;
+
+
+    }
   }
 
-  .thumb-slider .swiper-slide-auto span {
-    justify-content: center;
+  /* .thumb-slider .swiper-slide-prev {
+    width: 70px !important;
+    height: 70px !important;
+    font-size: 0rem;
+    margin-top: 5px;
+    transition: all 0.2s;
+    span {
+      font-size: 1rem;
+    }
   }
+
+  .thumb-slider .swiper-slide-next {
+    width: 70px !important;
+    height: 70px !important;
+    font-size: 0rem;
+    margin-top: 5px;
+    transition: all 0.2s;
+    span {
+      font-size: 1rem;
+    }
+  } */
+
+
   .thumb-slider .swiper-slide-active {
     width: 80px;
+    height: 80px;
     font-size: 1rem;
     margin-top: 0px;
     transition: all 0.2s;
+    span{
+      width: 80px;
+      height: 80px;
+    }
   }
+
+
 
   .thumb-slider .swiper-slide-auto img {
     width: 70px;
@@ -121,7 +157,7 @@
     border-radius: 500px;
     transition: all 0.2s;
   }
-  .thumb-slider .swiper-slide-active img {
+  .thumb-slider .swiper-slide-active span img {
     width: 80px;
     height: auto;
     object-fit: cover;

@@ -55,7 +55,7 @@ export const convertDateFormat = (date: Date) => {
 export const classNames = (...classes: string[]) =>
   classes.filter(Boolean).join(" ");
 
-export const firstTwoLetters = (name: string, mail: string) => {
+export const firstTwoLetters = (name: string, mail?: string) => {
   const firstTwoChars = mail?.slice(0, 2).toUpperCase();
   let rgx = new RegExp(/(\p{L}{1})\p{L}+/, "gu");
   let initials;
@@ -94,4 +94,17 @@ export function replaceCharacters(
       return p;
     }, [])
     .join("");
+}
+
+export function validURL(str: string) {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(str);
 }

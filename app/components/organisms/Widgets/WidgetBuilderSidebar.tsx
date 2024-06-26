@@ -101,7 +101,7 @@ const WidgetBuilderSidebar = ({ widgetLoading, widgetCard }: Props) => {
             </Popover>
           </div>
         </Tab>
-        <Tab key="carousel" title="Carousel">
+        <Tab key="carousel" title="Carousel / Grid">
           {widgetTemplatesData.map((item) => (
             <div className="mt-6" key={item.name}>
               <Card
