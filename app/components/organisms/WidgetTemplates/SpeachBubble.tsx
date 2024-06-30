@@ -13,7 +13,6 @@ import ArrowButton from "../../atoms/ArrowButton";
 import { Testimonial } from "@/types/Testimonial";
 import { firstTwoLetters } from "@/lib/utils";
 import { Avatar } from "@nextui-org/react";
-// import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Props {
   data?: Testimonial[];
@@ -84,19 +83,8 @@ export default function SpeachBubble({ data, preview }: Props) {
       >
         {data?.map((el, i) => (
           <SwiperSlide key={i} className="swiper-slide-auto">
-            {/* <Avatar className="w-full h-full mb-3 ">
-              <AvatarImage
-                src={el?.photo?.downloadUrl}
-                alt={el.photo?.name}
-                className="object-cover "
-              />
-              <AvatarFallback className="h-full">
-                {firstTwoLetters(el.name)}
-              </AvatarFallback>
-            </Avatar> */}
             <Avatar
               src={el?.photo?.downloadUrl}
-              // className=" w-full h-full mb-3 bg-transparent"
               classNames={{
                 base: "w-full h-full mb-3 bg-transparent",
                 icon: "bg-gray-300",

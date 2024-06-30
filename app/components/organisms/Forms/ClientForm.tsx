@@ -33,6 +33,7 @@ interface FileWithPath extends File {
 interface Inputs {
   testimonial: string;
   name: string;
+  workTitle?: string;
   email?: string;
   website?: string;
   socialLink?: string;

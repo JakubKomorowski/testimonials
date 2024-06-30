@@ -6,11 +6,25 @@ import {
   FaGooglePlay,
   FaLinkedin,
   FaAppStoreIos,
+  FaVideo,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { SiTrustpilot } from "react-icons/si";
+import { MdOutlineTextsms } from "react-icons/md";
 
 export const socials = [
+  {
+    icon: MdOutlineTextsms,
+    title: "Text",
+    label: "Your Bussiness",
+    exampleUrl: "Hair shop, London",
+  },
+  {
+    icon: FaVideo,
+    title: "Video",
+    label: "Your Bussiness",
+    exampleUrl: "Hair shop, London",
+  },
   {
     icon: FaGoogle,
     title: "Google",

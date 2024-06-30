@@ -17,9 +17,9 @@ export default async function DashboardLayout({
           <DashboardSidebar />
           <DashboardTopbar />
           <div className="col-span-3 col-start-2 row-start-2">{children}</div>
+          <Toaster />
         </div>
       </ProgressBarProvider>
-      <Toaster />
     </ThemeChangeProvider>
   );
 }

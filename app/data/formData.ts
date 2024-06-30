@@ -36,6 +36,13 @@ export const formData = (id: string) => ({
   customerTitle: "Almost finished",
   customerDetails: [
     {
+      id: "workTitle",
+      name: "Work title",
+      placeholder: "Sales Manager",
+      enabled: true,
+      required: false,
+    },
+    {
       id: "email",
       name: "Email address",
       placeholder: "johnsmith@email.com",

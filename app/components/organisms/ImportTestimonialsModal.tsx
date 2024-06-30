@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import { socials } from "@/app/data/socialData";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { inputConfig } from "../organisms/Forms/FormBuilderSidebar";
+import { inputConfig } from "./Forms/FormBuilderSidebar";
 import { useForm, SubmitHandler, FieldValues } from "react-hook-form";
 import { useProjectStore } from "@/store/store";
 import {
@@ -31,15 +31,26 @@ import { twitterReview } from "@/app/actions/reviews/twitterReview";
 import { trustpilotReview } from "@/app/actions/reviews/trustpilotReview";
 import { tripadvisorReview } from "@/app/actions/reviews/tripadvisorReview";
 import { amazonReview } from "@/app/actions/reviews/amazonReview";
-import ImportedTestimonialsGroup from "../organisms/Testimonials/ImportedTestimonialsGroup";
+import ImportedTestimonialsGroup from "./Testimonials/ImportedTestimonialsGroup";
 import { facebookReview } from "@/app/actions/reviews/facebookReview";
 import { googlePlayReview } from "@/app/actions/reviews/googlePlayReview";
 import { appStoreReview } from "@/app/actions/reviews/appStoreReview";
+import ImportTestimonialModalForm from "../molecules/Forms/ImportTestimonialModalForm";
 
 type Props = {
   isOpenModal: boolean;
   onOpenChange: () => void;
-  selectedSocial: string;
+  selectedSocial:
+    | "Text"
+    | "Video"
+    | "Google Play"
+    | "App Store"
+    | "Facebook"
+    | "Amazon"
+    | "Tripadvisor"
+    | "Trustpilot"
+    | "Google"
+    | "Twitter";
   setSelectedSocial: Dispatch<SetStateAction<string>>;
   onClose: () => void;
 };
@@ -52,6 +63,7 @@ const ImportTestimonialsModal = ({
   onClose,
 }: Props) => {
   const { register, handleSubmit, reset } = useForm();
+
   const project = useProjectStore((state) => state.project);
   const [error, setError] = useState(false);
   const [googlePlaces, setGooglePlaces] = useState<any[]>([]);
@@ -186,9 +198,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Trustpilot") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("trustpilot.com"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("trustpilot.com")) {
         setReviewLoading(true);
         setTrustpilotReviews([]);
         const result: client.IBusinessDataTrustpilotReviewsTaskGetResponseInfo =
@@ -202,9 +214,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Tripadvisor") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("tripadvisor.com"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("tripadvisor.com")) {
         setReviewLoading(true);
         setTripadvisorReviews([]);
         const result: client.IBusinessDataTripadvisorReviewsTaskGetResponseInfo =
@@ -218,9 +230,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Amazon") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("amazon.com"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("amazon.com")) {
         setReviewLoading(true);
         setAmazonReviews([]);
         const result = await amazonReview(inputText);
@@ -237,9 +249,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Facebook") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("facebook.com"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("facebook.com")) {
         setReviewLoading(true);
         setFacebookReviews([]);
         const result = await facebookReview(inputText);
@@ -258,9 +270,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "Google Play") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("play.google.com"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("play.google.com")) {
         setReviewLoading(true);
         setGooglePlayReviews([]);
         const result = await googlePlayReview(inputText, browserLang);
@@ -279,9 +291,9 @@ const ImportTestimonialsModal = ({
 
     if (selectedSocial === "App Store") {
       setPlaceError(false);
-      setError(!validURL(inputText));
+      setError(!validURL(inputText) || !inputText.includes("apps.apple"));
 
-      if (validURL(inputText)) {
+      if (validURL(inputText) && inputText.includes("apps.apple")) {
         setReviewLoading(true);
         setAppStoreReviews([]);
         const result = await appStoreReview(inputText);
@@ -319,15 +331,15 @@ const ImportTestimonialsModal = ({
             <ModalHeader className="flex flex-col gap-1">
               Import testimonials
             </ModalHeader>
-            <ModalBody className="flex flex-row pb-0">
-              <div className="flex border-r-1 border-gray-300 pr-4 w-fit">
-                <ul>
+            <ModalBody className="flex flex-row pb-0 h-full">
+              <div className="flex flex-col  pr-4 w-fit min-w-[190px] h-full border-r-1 border-gray-300">
+                <ul className="flex flex-col">
                   {socials.map((item) => {
                     return (
                       <li key={item.title}>
                         <button
                           onClick={() => setSelectedSocial(item.title)}
-                          className="flex gap-4 items-center rounded-2xl px-5 py-3 hover:bg-gray-100 w-fit cursor-pointer mb-2"
+                          className="flex gap-4 items-center rounded-2xl px-5 py-3 w-full hover:bg-gray-100  cursor-pointer mb-2"
                         >
                           {<item.icon />}
                           <p>{item.title}</p>
@@ -337,167 +349,170 @@ const ImportTestimonialsModal = ({
                   })}
                 </ul>
               </div>
-              <form
-                className="ml-4 flex-1 mr-4"
-                onSubmit={handleSubmit(onSubmit)}
-              >
-                <p className="text-xl mb-8">Import from {selectedSocial}</p>
-                <div className="w-full mb-8">
-                  <div className="flex items-end gap-2">
-                    {selectedSocial &&
-                      socials
-                        .filter((el) => el.title === selectedSocial)
-                        .map((item) => (
-                          <Input
-                            key={item.title}
-                            {...inputConfig}
-                            placeholder={item.exampleUrl}
-                            label={item.label}
-                            {...register(selectedSocial)}
-                          />
-                        ))}
-                    {twoStep && (
-                      <Button type="submit" color="primary">
-                        {buttonSpinner && reviewLoading ? (
-                          <Spinner color="current" size="sm" />
-                        ) : (
-                          "Search"
-                        )}
-                      </Button>
+              {selectedSocial === "Text" && <ImportTestimonialModalForm />}
+              {selectedSocial !== "Text" && selectedSocial !== "Video" && (
+                <form
+                  className="ml-4 flex-1 mr-4 "
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <p className="text-xl mb-8">Import from {selectedSocial}</p>
+                  <div className="w-full mb-8">
+                    <div className="flex items-end gap-2">
+                      {selectedSocial &&
+                        socials
+                          .filter((el) => el.title === selectedSocial)
+                          .map((item) => (
+                            <Input
+                              key={item.title}
+                              {...inputConfig}
+                              placeholder={item.exampleUrl}
+                              label={item.label}
+                              {...register(selectedSocial)}
+                            />
+                          ))}
+                      {twoStep && (
+                        <Button type="submit" color="primary">
+                          {buttonSpinner && reviewLoading ? (
+                            <Spinner color="current" size="sm" />
+                          ) : (
+                            "Search"
+                          )}
+                        </Button>
+                      )}
+                    </div>
+
+                    {error && (
+                      <p className="text-destructive text-sm">
+                        {selectedSocial} link is invalid
+                      </p>
                     )}
                   </div>
-
-                  {error && (
-                    <p className="text-destructive text-sm">
-                      {selectedSocial} link is invalid
-                    </p>
+                  {!twoStep && (
+                    <Button type="submit" color="primary">
+                      Add
+                    </Button>
                   )}
-                </div>
-                {!twoStep && (
-                  <Button type="submit" color="primary">
-                    Add
-                  </Button>
-                )}
-                {selectedSocial === "Google" && (
-                  <>
-                    {googlePlaces.length !== 0 && (
-                      <p className="mb-4">Select your business:</p>
-                    )}
-                    {googlePlaces?.map((place) => (
-                      <Card
-                        key={place.id}
-                        onPress={() => setGooglePlaceId(place.id)}
-                        className={classNames(
-                          "mb-4",
-                          place.id === googlePlaceId
-                            ? "border-primary border"
-                            : ""
-                        )}
-                        isPressable
-                      >
-                        <CardBody className="p-4">
-                          <div className="flex justify-between gap-12 ">
-                            <p className="text font-semibold flex mb-2">
-                              {place?.displayName.text}
-                            </p>
-                            <p className="text-sm text-gray-700 whitespace-nowrap">
-                              {place?.userRatingCount} reviews
-                            </p>
-                          </div>
+                  {selectedSocial === "Google" && (
+                    <>
+                      {googlePlaces.length !== 0 && (
+                        <p className="mb-4">Select your business:</p>
+                      )}
+                      {googlePlaces?.map((place) => (
+                        <Card
+                          key={place.id}
+                          onPress={() => setGooglePlaceId(place.id)}
+                          className={classNames(
+                            "mb-4",
+                            place.id === googlePlaceId
+                              ? "border-primary border"
+                              : ""
+                          )}
+                          isPressable
+                        >
+                          <CardBody className="p-4">
+                            <div className="flex justify-between gap-12 ">
+                              <p className="text font-semibold flex mb-2">
+                                {place?.displayName.text}
+                              </p>
+                              <p className="text-sm text-gray-700 whitespace-nowrap">
+                                {place?.userRatingCount} reviews
+                              </p>
+                            </div>
 
-                          <p className="text-sm text-gray-700">
-                            {place?.formattedAddress}
-                          </p>
-                        </CardBody>
-                      </Card>
-                    ))}
-                    {googlePlaces.length !== 0 && (
-                      <Button
-                        type="button"
-                        color="primary"
-                        onClick={() => handleFindGooglePlaces(googlePlaceId)}
-                      >
-                        {reviewLoading ? (
-                          <Spinner color="current" size="sm" />
-                        ) : (
-                          "Import testimonials"
-                        )}
-                      </Button>
-                    )}
+                            <p className="text-sm text-gray-700">
+                              {place?.formattedAddress}
+                            </p>
+                          </CardBody>
+                        </Card>
+                      ))}
+                      {googlePlaces.length !== 0 && (
+                        <Button
+                          type="button"
+                          color="primary"
+                          onClick={() => handleFindGooglePlaces(googlePlaceId)}
+                        >
+                          {reviewLoading ? (
+                            <Spinner color="current" size="sm" />
+                          ) : (
+                            "Import testimonials"
+                          )}
+                        </Button>
+                      )}
 
+                      <ImportedTestimonialsGroup
+                        reviews={googleReviews}
+                        setSelectedReviews={setSelectedReviews}
+                        selectedReviews={selectedReviews}
+                        placeError={placeError}
+                        handleAddTestimonials={handleAddTestimonials}
+                        source={selectedSocial}
+                      />
+                    </>
+                  )}
+                  {selectedSocial === "Trustpilot" && (
                     <ImportedTestimonialsGroup
-                      reviews={googleReviews}
+                      reviews={trustpilotReviews}
                       setSelectedReviews={setSelectedReviews}
                       selectedReviews={selectedReviews}
                       placeError={placeError}
                       handleAddTestimonials={handleAddTestimonials}
                       source={selectedSocial}
                     />
-                  </>
-                )}
-                {selectedSocial === "Trustpilot" && (
-                  <ImportedTestimonialsGroup
-                    reviews={trustpilotReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
-                {selectedSocial === "Tripadvisor" && (
-                  <ImportedTestimonialsGroup
-                    reviews={tripadvisorReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
-                {selectedSocial === "Amazon" && (
-                  <ImportedTestimonialsGroup
-                    reviews={amazonReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
-                {selectedSocial === "Facebook" && (
-                  <ImportedTestimonialsGroup
-                    reviews={facebookReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
+                  )}
+                  {selectedSocial === "Tripadvisor" && (
+                    <ImportedTestimonialsGroup
+                      reviews={tripadvisorReviews}
+                      setSelectedReviews={setSelectedReviews}
+                      selectedReviews={selectedReviews}
+                      placeError={placeError}
+                      handleAddTestimonials={handleAddTestimonials}
+                      source={selectedSocial}
+                    />
+                  )}
+                  {selectedSocial === "Amazon" && (
+                    <ImportedTestimonialsGroup
+                      reviews={amazonReviews}
+                      setSelectedReviews={setSelectedReviews}
+                      selectedReviews={selectedReviews}
+                      placeError={placeError}
+                      handleAddTestimonials={handleAddTestimonials}
+                      source={selectedSocial}
+                    />
+                  )}
+                  {selectedSocial === "Facebook" && (
+                    <ImportedTestimonialsGroup
+                      reviews={facebookReviews}
+                      setSelectedReviews={setSelectedReviews}
+                      selectedReviews={selectedReviews}
+                      placeError={placeError}
+                      handleAddTestimonials={handleAddTestimonials}
+                      source={selectedSocial}
+                    />
+                  )}
 
-                {selectedSocial === "Google Play" && (
-                  <ImportedTestimonialsGroup
-                    reviews={googlePlayReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
+                  {selectedSocial === "Google Play" && (
+                    <ImportedTestimonialsGroup
+                      reviews={googlePlayReviews}
+                      setSelectedReviews={setSelectedReviews}
+                      selectedReviews={selectedReviews}
+                      placeError={placeError}
+                      handleAddTestimonials={handleAddTestimonials}
+                      source={selectedSocial}
+                    />
+                  )}
 
-                {selectedSocial === "App Store" && (
-                  <ImportedTestimonialsGroup
-                    reviews={appStoreReviews}
-                    setSelectedReviews={setSelectedReviews}
-                    selectedReviews={selectedReviews}
-                    placeError={placeError}
-                    handleAddTestimonials={handleAddTestimonials}
-                    source={selectedSocial}
-                  />
-                )}
-              </form>
+                  {selectedSocial === "App Store" && (
+                    <ImportedTestimonialsGroup
+                      reviews={appStoreReviews}
+                      setSelectedReviews={setSelectedReviews}
+                      selectedReviews={selectedReviews}
+                      placeError={placeError}
+                      handleAddTestimonials={handleAddTestimonials}
+                      source={selectedSocial}
+                    />
+                  )}
+                </form>
+              )}
             </ModalBody>
           </>
         )}

@@ -5,10 +5,10 @@ import { collection, deleteDoc, doc, DocumentData } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { toast } from "sonner";
 import { Spinner, Tooltip } from "@nextui-org/react";
 import { useProjectStore } from "@/store/store";
 import { cn, sortByDate } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Props {
   firstTwo?: boolean;
@@ -25,6 +25,7 @@ const FormGroup = ({ firstTwo }: Props) => {
     project ? collection(db, "projects", project || "", "forms") : null
   );
   const slicedForms = sortByDate(value)?.slice(0, 2);
+  const { toast } = useToast();
 
   // useEffect(() => {
   //   if (!project) return;
@@ -41,9 +42,13 @@ const FormGroup = ({ firstTwo }: Props) => {
   const copyToClipBoard = (copyMe: string) => {
     try {
       navigator.clipboard.writeText(copyMe);
-      toast("Copied!");
+      toast({
+        title: "Copied to clipboard",
+      });
     } catch (err) {
-      toast("Failed to copy!");
+      toast({
+        title: "Failed to copy",
+      });
     }
   };
 

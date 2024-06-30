@@ -16,7 +16,7 @@ import { Popover, PopoverContent } from "@nextui-org/popover";
 import { useProjectStore } from "@/store/store";
 import Image from "next/image";
 import { Selection, Spinner, Button, useDisclosure } from "@nextui-org/react";
-import ImportTestimonialsModal from "../molecules/ImportTestimonialsModal";
+import ImportTestimonialsModal from "./ImportTestimonialsModal";
 
 const DashboardSidebar = () => {
   const [value, setValue] = useState<Selection>();
