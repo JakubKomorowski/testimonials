@@ -22,7 +22,7 @@ const WidgetBuilderSidebarRight = ({ widgetName, widgetLoading }: Props) => {
           labelPlacement="outside"
           placeholder="Widget name"
           label="Widget name"
-          value={name}
+          value={name || ""}
           {...register("name")}
         />
       </div>

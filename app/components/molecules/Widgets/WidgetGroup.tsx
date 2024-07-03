@@ -20,7 +20,6 @@ const WidgetGroup = ({ project, preview }: Props) => {
     await deleteDoc(docRef);
   };
 
-  console.log(loading);
   return (
     <section className="p-6 rounded-large w-full">
       <div className="flex justify-between">

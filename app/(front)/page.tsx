@@ -17,6 +17,7 @@ import PostCard from "../components/molecules/PostCard";
 import { authOptions } from "../api/auth/[...nextauth]/auth";
 import { Post } from "@/types/Post";
 import { sanityFetch } from "@/sanity/lib/client";
+import WebcamStreamCapture from "../components/molecules/Forms/WebcamStreamCapture";
 
 export const metadata: Metadata = {
   metadataBase: new URL("http://localhost:3000"),

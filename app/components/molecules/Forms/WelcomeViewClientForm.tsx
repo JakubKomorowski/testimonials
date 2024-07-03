@@ -2,16 +2,23 @@
 import { Button } from "@/components/ui/button";
 import { useFormViewStore } from "@/store/store";
 import Image from "next/image";
-import React from "react";
+import React, { Dispatch, Key, SetStateAction } from "react";
 
 interface Props {
   title: string;
   message: string;
   isPreview?: boolean;
+  setTabName?: Dispatch<SetStateAction<Key>>;
 }
 
-const WelcomeViewClientForm = ({ title, message, isPreview }: Props) => {
+const WelcomeViewClientForm = ({
+  title,
+  message,
+  isPreview,
+  setTabName,
+}: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
+
   return (
     <div className="flex  flex-col items-center">
       {title && <p className="mt-8 font-semibold text-xl">{title}</p>}
@@ -20,7 +27,13 @@ const WelcomeViewClientForm = ({ title, message, isPreview }: Props) => {
         variant={"default"}
         className="w-full rounded-medium mt-8 flex gap-2"
         type="button"
-        onClick={() => (!isPreview ? setFormView("response") : null)}
+        onClick={() =>
+          !isPreview
+            ? setFormView("response")
+            : setTabName
+            ? setTabName("response")
+            : null
+        }
       >
         <Image
           src="/Icons/pen.svg"

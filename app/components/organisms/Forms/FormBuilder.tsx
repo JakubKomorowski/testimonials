@@ -175,6 +175,7 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
                     view="welcome"
                     selectedKey={tabName as string}
                     isPreview={true}
+                    setTabName={setTabName}
                   />
                 </Tab>
                 <Tab key="response" title="Response page">
@@ -183,6 +184,7 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
                     view="response"
                     selectedKey={tabName as string}
                     isPreview={true}
+                    setTabName={setTabName}
                   />
                 </Tab>
                 <Tab key="customerDetails" title="Customer details page">
@@ -191,6 +193,7 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
                     view="customerDetails"
                     selectedKey={tabName as string}
                     isPreview={true}
+                    setTabName={setTabName}
                   />
                 </Tab>
                 <Tab key="thankYou" title="Thank you page">
@@ -199,6 +202,7 @@ const FormBuilder = ({ params, project, form, formLoading, docRef }: Props) => {
                     view="thankYou"
                     selectedKey={tabName as string}
                     isPreview={true}
+                    setTabName={setTabName}
                   />
                 </Tab>
               </Tabs>

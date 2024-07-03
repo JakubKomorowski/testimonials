@@ -9,6 +9,7 @@ interface Props {
   currentForm?: Iform & DocumentData;
   isRequired?: boolean;
   label?: string;
+  disabled?: boolean;
 }
 
 export const DropzoneField = ({
@@ -16,6 +17,7 @@ export const DropzoneField = ({
   currentForm,
   label,
   isRequired,
+  disabled,
 }: Props) => {
   const { control } = useFormContext();
 
@@ -27,6 +29,7 @@ export const DropzoneField = ({
           currentForm={currentForm}
           label={label}
           isRequired={isRequired}
+          disabled={disabled}
         />
       )}
       name={name}

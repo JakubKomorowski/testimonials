@@ -3,15 +3,16 @@ import { Button } from "@/components/ui/button";
 import { useFormViewStore } from "@/store/store";
 import { IRating, IResponseQuestions } from "@/types/Form";
 import { Textarea } from "@nextui-org/react";
-import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import RatingComponent from "../../atoms/RatingComponent";
+import React, { Dispatch, Key, SetStateAction, useState } from "react";
 
 interface Props {
   title: string;
   questions: IResponseQuestions[];
   isPreview?: boolean;
   rating: IRating;
+  setTabName?: Dispatch<SetStateAction<Key>>;
 }
 
 const ResponseViewClientForm = ({
@@ -19,6 +20,7 @@ const ResponseViewClientForm = ({
   questions,
   isPreview,
   rating,
+  setTabName,
 }: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
   const [clickedNext, setClickedNext] = useState(false);
@@ -50,18 +52,19 @@ const ResponseViewClientForm = ({
           ))}
         </ul>
       )}
-
-      <div className="mb-4">
-        <RatingComponent
-          readonly={isPreview}
-          rating={isPreview ? 5 : ratingValue}
-          size={25}
-          handleRating={handleRating}
-        />
-        {!isPreview && clickedNext && rating.required && (
-          <p className="text-xs pt-1">Please rate us</p>
-        )}
-      </div>
+      {rating.enabled && (
+        <div className="mb-4">
+          <RatingComponent
+            readonly={isPreview}
+            rating={isPreview ? 5 : ratingValue}
+            size={25}
+            handleRating={handleRating}
+          />
+          {!isPreview && clickedNext && rating.required && (
+            <p className="text-xs pt-1">Please rate us</p>
+          )}
+        </div>
+      )}
 
       <div className="w-full ">
         <Textarea
@@ -85,6 +88,8 @@ const ResponseViewClientForm = ({
         onClick={() =>
           !isPreview && testimonialValue && ratingValue
             ? setFormView("customerDetails")
+            : setTabName
+            ? setTabName("customerDetails")
             : setClickedNext(true)
         }
       >

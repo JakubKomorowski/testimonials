@@ -36,22 +36,13 @@ import { facebookReview } from "@/app/actions/reviews/facebookReview";
 import { googlePlayReview } from "@/app/actions/reviews/googlePlayReview";
 import { appStoreReview } from "@/app/actions/reviews/appStoreReview";
 import ImportTestimonialModalForm from "../molecules/Forms/ImportTestimonialModalForm";
+import { ISelectedSocials } from "./DashboardSidebar";
 
 type Props = {
   isOpenModal: boolean;
   onOpenChange: () => void;
-  selectedSocial:
-    | "Text"
-    | "Video"
-    | "Google Play"
-    | "App Store"
-    | "Facebook"
-    | "Amazon"
-    | "Tripadvisor"
-    | "Trustpilot"
-    | "Google"
-    | "Twitter";
-  setSelectedSocial: Dispatch<SetStateAction<string>>;
+  selectedSocial: ISelectedSocials;
+  setSelectedSocial: Dispatch<SetStateAction<ISelectedSocials>>;
   onClose: () => void;
 };
 
@@ -100,7 +91,6 @@ const ImportTestimonialsModal = ({
   }, []);
 
   useEffect(() => {
-    setSelectedSocial("");
     setError(false);
   }, [onClose]);
 
@@ -338,7 +328,9 @@ const ImportTestimonialsModal = ({
                     return (
                       <li key={item.title}>
                         <button
-                          onClick={() => setSelectedSocial(item.title)}
+                          onClick={() =>
+                            setSelectedSocial(item.title as ISelectedSocials)
+                          }
                           className="flex gap-4 items-center rounded-2xl px-5 py-3 w-full hover:bg-gray-100  cursor-pointer mb-2"
                         >
                           {<item.icon />}

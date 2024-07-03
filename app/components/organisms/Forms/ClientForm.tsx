@@ -1,7 +1,13 @@
 "use client";
 import { Iform } from "@/types/Form";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, {
+  Dispatch,
+  Key,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import WelcomeViewClientForm from "../../molecules/Forms/WelcomeViewClientForm";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import ResponseViewClientForm from "../../molecules/Forms/ResponseViewClientForm";
@@ -24,6 +30,7 @@ interface Props {
   selectedKey?: string;
   isPreview?: boolean;
   id?: string;
+  setTabName?: Dispatch<SetStateAction<Key>>;
 }
 
 interface FileWithPath extends File {
@@ -47,6 +54,7 @@ const ClientForm = ({
   selectedKey,
   isPreview,
   id,
+  setTabName,
 }: Props) => {
   const isEmailRequired = !!allFormFields?.customerDetails?.find(
     (item) => item.name === "Email address" && item.required
@@ -111,55 +119,63 @@ const ClientForm = ({
   const formView = useFormViewStore((state) => state.formView);
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const testimonialRef = collection(
-      db,
-      "projects",
-      projectId,
-      "testimonials"
-    );
+    if (isPreview) {
+      setFormView("thankYou");
+    } else {
+      const testimonialRef = collection(
+        db,
+        "projects",
+        projectId,
+        "testimonials"
+      );
 
-    try {
-      setFormUpdating(true);
-      if (data.photo && data.photo.name) {
-        const file = {
-          name: data.photo.name,
-          size: data.photo.size,
-          type: data.photo.type,
-          lastModified: data.photo.lastModified,
-          preview: data.photo.preview,
-          path: data.photo.path,
-        };
-        const imageRef = ref(storage, `testimonials/${id}/${data.photo?.name}`);
-        await uploadBytes(imageRef, data.photo);
-        const url = data.photo.name && (await getDownloadURL(imageRef));
-        const doc = await addDoc(testimonialRef, {
-          ...data,
-          photo: { downloadUrl: data.photo.path ? url : "", ...file },
-          formId: id,
-          userId: session?.user.id,
-          createdAt: new Date(),
-        });
-        updateDoc(doc, {
-          id: doc.id,
-        });
-      } else {
-        const doc = await addDoc(testimonialRef, {
-          ...data,
-          photo: { downloadUrl: "" },
-          formId: id,
-          userId: session?.user.id,
-          createdAt: new Date(),
-          source: "form",
-        });
-        updateDoc(doc, {
-          id: doc.id,
-        });
+      try {
+        setFormUpdating(true);
+        if (data.photo && data.photo.name) {
+          const file = {
+            name: data.photo.name,
+            size: data.photo.size,
+            type: data.photo.type,
+            lastModified: data.photo.lastModified,
+            preview: data.photo.preview,
+            path: data.photo.path,
+          };
+          const imageRef = ref(
+            storage,
+            `testimonials/${id}/${data.photo?.name}`
+          );
+          await uploadBytes(imageRef, data.photo);
+          const url = data.photo.name && (await getDownloadURL(imageRef));
+          const doc = await addDoc(testimonialRef, {
+            ...data,
+            photo: { downloadUrl: data.photo.path ? url : "", ...file },
+            formId: id,
+            userId: session?.user.id,
+            createdAt: new Date(),
+            source: "form",
+          });
+          updateDoc(doc, {
+            id: doc.id,
+          });
+        } else {
+          const doc = await addDoc(testimonialRef, {
+            ...data,
+            photo: { downloadUrl: "" },
+            formId: id,
+            userId: session?.user.id,
+            createdAt: new Date(),
+            source: "form",
+          });
+          updateDoc(doc, {
+            id: doc.id,
+          });
+        }
+        setFormView("thankYou");
+      } catch (error) {
+        console.log(error);
       }
-      !isPreview ? setFormView("thankYou") : null;
-    } catch (error) {
-      console.log(error);
+      setFormUpdating(false);
     }
-    setFormUpdating(false);
   };
 
   const views = ["welcome", "response", "customerDetails", "thankYou"];
@@ -183,7 +199,11 @@ const ClientForm = ({
                 aria-label="Back"
                 size="sm"
                 onClick={() =>
-                  !isPreview ? setFormView(views[indexOfView - 1]) : null
+                  !isPreview
+                    ? setFormView(views[indexOfView - 1])
+                    : setTabName
+                    ? setTabName(views[indexOfView - 1])
+                    : null
                 }
                 type="button"
               >
@@ -221,6 +241,7 @@ const ClientForm = ({
                   title={allFormFields.welcomeTitle}
                   message={allFormFields.welcomeMessage}
                   isPreview={isPreview}
+                  setTabName={setTabName}
                 />
               )}
               {formView === "response" && (
@@ -229,6 +250,7 @@ const ClientForm = ({
                   questions={allFormFields.responseQuestions}
                   rating={allFormFields.rating}
                   isPreview={isPreview}
+                  setTabName={setTabName}
                 />
               )}
               {formView === "customerDetails" && (
@@ -236,6 +258,7 @@ const ClientForm = ({
                   title={allFormFields.customerTitle}
                   customerDetails={allFormFields.customerDetails}
                   isPreview={isPreview}
+                  setTabName={setTabName}
                 />
               )}
               {formView === "thankYou" && (

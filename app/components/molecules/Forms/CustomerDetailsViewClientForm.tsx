@@ -4,7 +4,7 @@ import { useFormViewStore } from "@/store/store";
 import { ICustomerDetails } from "@/types/Form";
 import { Tooltip } from "@nextui-org/tooltip";
 import { Input } from "@nextui-org/input";
-import React from "react";
+import React, { Dispatch, Key, SetStateAction, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { inputConfig } from "../../organisms/Forms/FormBuilderSidebar";
 import { DropzoneField } from "../DropzoneField";
@@ -16,12 +16,14 @@ interface Props {
   title: string;
   customerDetails: ICustomerDetails[];
   isPreview?: boolean;
+  setTabName?: Dispatch<SetStateAction<Key>>;
 }
 
 const CustomerDetailsViewClientForm = ({
   title,
   customerDetails,
   isPreview,
+  setTabName,
 }: Props) => {
   const setFormView = useFormViewStore((state) => state.setFormView);
   const {
@@ -67,7 +69,7 @@ const CustomerDetailsViewClientForm = ({
             type="name"
             autoComplete="name"
             placeholder="John Smith"
-            isRequired={true}
+            isRequired={!isPreview ? true : false}
             value={nameValue || ""}
             defaultValue=""
             isReadOnly={isPreview}
@@ -116,7 +118,8 @@ const CustomerDetailsViewClientForm = ({
             <DropzoneField
               name="photo"
               label="Your photo"
-              isRequired={isPhotoRequired}
+              isRequired={!isPreview ? isPhotoRequired : false}
+              disabled={isPreview}
             />
           )}
 
@@ -156,15 +159,24 @@ const CustomerDetailsViewClientForm = ({
         })}
       </div>
       <div className="flex flex-col gap-2">
-        <Button
-          variant={"default"}
-          className="w-full rounded-medium mt-8 flex gap-2"
-          type={isPreview ? "button" : "submit"}
-          // type="submit"
-          // onClick={() => (!isPreview ? setFormView("thankYou") : null)}
-        >
-          Submit
-        </Button>
+        {isPreview ? (
+          <Button
+            variant={"default"}
+            className="w-full rounded-medium mt-8 flex gap-2"
+            type="button"
+            onClick={() => (setTabName ? setTabName("thankYou") : null)}
+          >
+            Submit
+          </Button>
+        ) : (
+          <Button
+            variant={"default"}
+            className="w-full rounded-medium mt-8 flex gap-2"
+            type="submit"
+          >
+            Submit
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -11,8 +11,15 @@ interface Props {
   name: string;
   label?: string;
   isRequired?: boolean;
+  disabled?: boolean;
 }
-const Dropzone = ({ currentForm, name, label, isRequired }: Props) => {
+const Dropzone = ({
+  currentForm,
+  name,
+  label,
+  isRequired,
+  disabled,
+}: Props) => {
   const { setValue, watch } = useFormContext();
   const image = watch(name, currentForm?.logo);
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -36,6 +43,7 @@ const Dropzone = ({ currentForm, name, label, isRequired }: Props) => {
     },
     multiple: false,
     maxSize: 5000000,
+    disabled,
   });
 
   const handleDeleteLogo = () => {

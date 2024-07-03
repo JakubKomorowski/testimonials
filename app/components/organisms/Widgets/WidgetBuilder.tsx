@@ -82,8 +82,8 @@ const WidgetBuilder = ({
     }
 
     const dataToAdd: Widget = {
-      card: data.card,
-      name: data.name,
+      card: card,
+      name: data.name || "My new widget",
       userId: data.testimonials[0].userId,
       createdAt: new Date(),
       testimonials: data.testimonials.map((testimonial: Testimonial) => ({

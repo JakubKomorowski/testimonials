@@ -102,7 +102,6 @@ const ImportTestimonialModalTestimonial = (props: Props) => {
     if (!project) return;
 
     const testimonialRef = collection(db, "projects", project, "testimonials");
-    console.log(data);
     if (data.photo && data.photo.name) {
       const file = {
         name: data.photo.name,
@@ -126,12 +125,9 @@ const ImportTestimonialModalTestimonial = (props: Props) => {
           storage,
           `testimonials/${testimonialDoc.id}/${data.photo.name}`
         );
-        console.log(imageRef);
 
         await uploadBytes(imageRef, data.photo);
         const url = await getDownloadURL(imageRef);
-
-        console.log(url);
 
         await updateDoc(testimonialDoc, {
           photo: { downloadUrl: url, ...file },
@@ -143,7 +139,6 @@ const ImportTestimonialModalTestimonial = (props: Props) => {
           title: "Testimonial successfully created",
         });
       } catch (error) {
-        console.log(error);
         toast({
           title: "Something went wrong",
         });
@@ -163,7 +158,6 @@ const ImportTestimonialModalTestimonial = (props: Props) => {
           title: "Testimonial successfully created",
         });
       } catch (error) {
-        console.log(error);
         toast({
           title: "Something went wrong",
         });

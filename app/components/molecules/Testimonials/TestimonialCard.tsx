@@ -77,7 +77,7 @@ const TestimonialCard = ({
             width={100}
             height={100}
             alt="photo"
-            className="w-10 h-10 rounded-full"
+            className="w-10 h-10 rounded-full object-cover"
           />
         ) : (
           <Avatar

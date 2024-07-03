@@ -17,6 +17,19 @@ import { useProjectStore } from "@/store/store";
 import Image from "next/image";
 import { Selection, Spinner, Button, useDisclosure } from "@nextui-org/react";
 import ImportTestimonialsModal from "./ImportTestimonialsModal";
+import useSetUserProject from "@/app/hooks/useSetUserProject";
+
+export type ISelectedSocials =
+  | "Text"
+  | "Video"
+  | "Google Play"
+  | "App Store"
+  | "Facebook"
+  | "Amazon"
+  | "Tripadvisor"
+  | "Trustpilot"
+  | "Google"
+  | "Twitter";
 
 const DashboardSidebar = () => {
   const [value, setValue] = useState<Selection>();
@@ -31,17 +44,15 @@ const DashboardSidebar = () => {
   const selectRef = useRef<any>();
   const userProjects = projects?.filter((el) => el.userId === session?.user.id);
   const setProject = useProjectStore((state) => state.setProject);
+  const [project] = useSetUserProject();
   const {
     isOpen: isOpenModal,
     onOpen,
     onOpenChange,
     onClose,
   } = useDisclosure();
-  const [selectedSocial, setSelectedSocial] = useState("");
-
-  useEffect(() => {
-    setProject(localStorage.getItem("projectId") || userProjects?.[0].id);
-  }, [userProjects?.[0]?.id]);
+  const [selectedSocial, setSelectedSocial] =
+    useState<ISelectedSocials>("Text");
 
   const handleAddProject = async () => {
     const doc = await addDoc(projectRef, {
@@ -51,6 +62,8 @@ const DashboardSidebar = () => {
     updateDoc(doc, {
       id: doc.id,
     });
+    setProject(doc.id);
+    localStorage.setItem("projectId", doc.id);
     setInputValue("");
     setIsOpen(false);
   };
@@ -89,11 +102,12 @@ const DashboardSidebar = () => {
               label="Select a project"
               className="max-w-xs"
               variant="bordered"
+              disallowEmptySelection
               selectedKeys={
                 value || [
-                  (typeof window !== "undefined" &&
-                    localStorage.getItem("projectId")) ??
-                    userProjects?.[0].id,
+                  typeof window !== "undefined" && project
+                    ? project
+                    : userProjects?.[0]?.id,
                 ]
               }
               onSelectionChange={setValue}
